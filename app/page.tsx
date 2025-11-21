@@ -3,7 +3,7 @@ import { TuringLanding } from "@/components/hero-landing-page";
 import { Default } from "@/components/price-card";
 import { Timeline } from "@/components/ui/timeline";
 import { Gallery4 } from "@/components/ui/gallery4";
-import  SplasyCursor from '../components/ui/SplashCursor'
+import SplashCursor from '../components/ui/SplashCursor'
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
 import ProfileCard from "../components/ui/ProfileCard";
 import StaggeredMenu from "../components/ui/StaggeredMenu";
@@ -13,52 +13,52 @@ import Particles from "../components/Particles";
 
 export default function Home() {
   const dataGallery = [
-  {
-    id: "shadcn-ui",
-    title: "shadcn/ui: Building a Modern Component Library",
-    description:
-      "Explore how shadcn/ui revolutionized React component libraries by providing a unique approach to component distribution and customization, making it easier for developers to build beautiful, accessible applications.",
-    href: "https://ui.shadcn.com",
-    image:
-      "https://images.unsplash.com/photo-1551250928-243dc937c49d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2NDI3NzN8MHwxfGFsbHwxMjN8fHx8fHwyfHwxNzIzODA2OTM5fA&ixlib=rb-4.0.3&q=80&w=1080",
-  },
-  {
-    id: "tailwind",
-    title: "Tailwind CSS: The Utility-First Revolution",
-    description:
-      "Discover how Tailwind CSS transformed the way developers style their applications, offering a utility-first approach that speeds up development while maintaining complete design flexibility.",
-    href: "https://tailwindcss.com",
-    image:
-      "https://images.unsplash.com/photo-1551250928-e4a05afaed1e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2NDI3NzN8MHwxfGFsbHwxMjR8fHx8fHwyfHwxNzIzODA2OTM5fA&ixlib=rb-4.0.3&q=80&w=1080",
-  },
-  {
-    id: "astro",
-    title: "Astro: The All-in-One Web Framework",
-    description:
-      "Learn how Astro's innovative 'Islands Architecture' and zero-JS-by-default approach is helping developers build faster websites while maintaining rich interactivity where needed.",
-    href: "https://astro.build",
-    image:
-      "https://images.unsplash.com/photo-1536735561749-fc87494598cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2NDI3NzN8MHwxfGFsbHwxNzd8fHx8fHwyfHwxNzIzNjM0NDc0fA&ixlib=rb-4.0.3&q=80&w=1080",
-  },
-  {
-    id: "react",
-    title: "React: Pioneering Component-Based UI",
-    description:
-      "See how React continues to shape modern web development with its component-based architecture, enabling developers to build complex user interfaces with reusable, maintainable code.",
-    href: "https://react.dev",
-    image:
-      "https://images.unsplash.com/photo-1548324215-9133768e4094?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2NDI3NzN8MHwxfGFsbHwxMzF8fHx8fHwyfHwxNzIzNDM1MzA1fA&ixlib=rb-4.0.3&q=80&w=1080",
-  },
-  {
-    id: "nextjs",
-    title: "Next.js: The React Framework for Production",
-    description:
-      "Explore how Next.js has become the go-to framework for building full-stack React applications, offering features like server components, file-based routing, and automatic optimization.",
-    href: "https://nextjs.org",
-    image:
-      "https://images.unsplash.com/photo-1550070881-a5d71eda5800?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2NDI3NzN8MHwxfGFsbHwxMjV8fHx8fHwyfHwxNzIzNDM1Mjk4fA&ixlib=rb-4.0.3&q=80&w=1080",
-  },
-];
+    {
+      id: "shadcn-ui",
+      title: "shadcn/ui: Building a Modern Component Library",
+      description:
+        "Explore how shadcn/ui revolutionized React component libraries by providing a unique approach to component distribution and customization, making it easier for developers to build beautiful, accessible applications.",
+      href: "https://ui.shadcn.com",
+      image:
+        "https://images.unsplash.com/photo-1551250928-243dc937c49d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2NDI3NzN8MHwxfGFsbHwxMjN8fHx8fHwyfHwxNzIzODA2OTM5fA&ixlib=rb-4.0.3&q=80&w=1080",
+    },
+    {
+      id: "tailwind",
+      title: "Tailwind CSS: The Utility-First Revolution",
+      description:
+        "Discover how Tailwind CSS transformed the way developers style their applications, offering a utility-first approach that speeds up development while maintaining complete design flexibility.",
+      href: "https://tailwindcss.com",
+      image:
+        "https://images.unsplash.com/photo-1551250928-e4a05afaed1e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2NDI3NzN8MHwxfGFsbHwxMjR8fHx8fHwyfHwxNzIzODA2OTM5fA&ixlib=rb-4.0.3&q=80&w=1080",
+    },
+    {
+      id: "astro",
+      title: "Astro: The All-in-One Web Framework",
+      description:
+        "Learn how Astro's innovative 'Islands Architecture' and zero-JS-by-default approach is helping developers build faster websites while maintaining rich interactivity where needed.",
+      href: "https://astro.build",
+      image:
+        "https://images.unsplash.com/photo-1536735561749-fc87494598cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2NDI3NzN8MHwxfGFsbHwxNzd8fHx8fHwyfHwxNzIzNjM0NDc0fA&ixlib=rb-4.0.3&q=80&w=1080",
+    },
+    {
+      id: "react",
+      title: "React: Pioneering Component-Based UI",
+      description:
+        "See how React continues to shape modern web development with its component-based architecture, enabling developers to build complex user interfaces with reusable, maintainable code.",
+      href: "https://react.dev",
+      image:
+        "https://images.unsplash.com/photo-1548324215-9133768e4094?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2NDI3NzN8MHwxfGFsbHwxMzF8fHx8fHwyfHwxNzIzNDM1MzA1fA&ixlib=rb-4.0.3&q=80&w=1080",
+    },
+    {
+      id: "nextjs",
+      title: "Next.js: The React Framework for Production",
+      description:
+        "Explore how Next.js has become the go-to framework for building full-stack React applications, offering features like server components, file-based routing, and automatic optimization.",
+      href: "https://nextjs.org",
+      image:
+        "https://images.unsplash.com/photo-1550070881-a5d71eda5800?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2NDI3NzN8MHwxfGFsbHwxMjV8fHx8fHwyfHwxNzIzNDM1Mjk4fA&ixlib=rb-4.0.3&q=80&w=1080",
+    },
+  ];
   const data = [
     {
       title: "2024",
@@ -205,76 +205,77 @@ export default function Home() {
   ];
   return (
     <div>
-      <div style={{ width: '100%', height: '100vh', position: 'relative'}}>
-  <Particles
-    particleColors={['#ff7a00']}
-    particleCount={600}
-    particleSpread={10}
-    speed={0.1}
-    particleBaseSize={300}
-    moveParticlesOnHover={true}
-    alphaParticles={false}
-    disableRotation={false}
-  />
-</div>
-      <StaggeredMenu isFixed/>
+      <div style={{ width: '100%', height: '100vh', position: 'relative' }}>
+        <Particles
+          particleColors={['#ff7a00']}
+          particleCount={600}
+          particleSpread={10}
+          speed={0.1}
+          particleBaseSize={300}
+          moveParticlesOnHover={true}
+          alphaParticles={false}
+          disableRotation={false}
+        />
+      </div>
+      <SplashCursor />
+      <StaggeredMenu isFixed />
       <Timeline data={data} />
-      <Gallery4 items={dataGallery}/>
+      <Gallery4 items={dataGallery} />
       <section id="pagamento">
-      <Default />
-      <MacbookScroll />
+        <Default />
+        <MacbookScroll />
 
 
-      <div>
-      <ProfileCard 
-  name="Fabio R Rocha"
-  title="Scrum Master"
-  handle="FabioRoberto-ppt"
-  status="Github"
-  contactText="Contato"
-  avatarUrl="/Fabio.svg"
-/>
-      <ProfileCard 
-  name="Luana Miron"
-  title="Produc Owner"
-  handle="javicodes"
-  status="Github"
-  contactText="Contato"
-  avatarUrl="/Luana.svg"
-/>
-      <ProfileCard 
-  name="Guilherme França"
-  title="Full Stack"
-  handle="GuilhermefDomingues"
-  status="Github"
-  contactText="Contato"
-  avatarUrl="/Guilherme.svg"
-/>
-      <ProfileCard 
-  name="Eduardo Barbosa"
-  title="Full Stack"
-  handle="Xcode-sketcher"
-  status="Github"
-  contactText="Contato"
-  avatarUrl="/Eduardo.svg"
-/>
-      <ProfileCard 
-  name="Erick Isaac"
-  title="Full Stack"
-  handle="javicodes"
-  status="Github"
-  contactText="Contato"
-  avatarUrl="/Erick.svg"
-/>
-      <ProfileCard 
-  name="Felipe Trivia"
-  title="Full Stack"
-  handle="Felipe_Koshimizu"
-  status="Github"
-  contactText="Contato"
-  avatarUrl="/Felipe.svg"
-/>
-</div>
+        <div>
+          <ProfileCard
+            name="Fabio R Rocha"
+            title="Scrum Master"
+            handle="FabioRoberto-ppt"
+            status="Github"
+            contactText="Contato"
+            avatarUrl="/Fabio.svg"
+          />
+          <ProfileCard
+            name="Luana Miron"
+            title="Produc Owner"
+            handle="javicodes"
+            status="Github"
+            contactText="Contato"
+            avatarUrl="/Luana.svg"
+          />
+          <ProfileCard
+            name="Guilherme França"
+            title="Full Stack"
+            handle="GuilhermefDomingues"
+            status="Github"
+            contactText="Contato"
+            avatarUrl="/Guilherme.svg"
+          />
+          <ProfileCard
+            name="Eduardo Barbosa"
+            title="Full Stack"
+            handle="Xcode-sketcher"
+            status="Github"
+            contactText="Contato"
+            avatarUrl="/Eduardo.svg"
+          />
+          <ProfileCard
+            name="Erick Isaac"
+            title="Full Stack"
+            handle="javicodes"
+            status="Github"
+            contactText="Contato"
+            avatarUrl="/Erick.svg"
+          />
+          <ProfileCard
+            name="Felipe Trivia"
+            title="Full Stack"
+            handle="Felipe_Koshimizu"
+            status="Github"
+            contactText="Contato"
+            avatarUrl="/Felipe.svg"
+          />
+        </div>
 
 
       </section>
