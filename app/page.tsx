@@ -102,7 +102,6 @@ export default function Home() {
 
         {/* Separador visual */}
         <div className="h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent w-full" />
-
         {/* Galeria de tecnologias */}
         <ViteProjectsGallery />
 

@@ -33,7 +33,6 @@ const InstitutionalIcon = () => (
         <rect x="17" y="11" width="2" height="2" stroke="currentColor" strokeWidth="2" fill="none" />
     </svg>
 );
-
 const PricingCard = ({ plan, index }: { plan: any; index: number }) => {
     const isPopular = plan.popular;
 
@@ -55,37 +54,45 @@ const PricingCard = ({ plan, index }: { plan: any; index: number }) => {
             )}
 
             <div className="mb-8">
+<<<<<<< HEAD
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-muted/50 border border-border">
-                    <plan.icon className="w-6 h-6 text-foreground" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-2">{plan.name}</h3>
-                <p className="text-muted-foreground text-sm mb-6 h-10">{plan.description}</p>
-                <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-foreground">{plan.price}</span>
-                    <span className="text-muted-foreground">/mês</span>
-                </div>
-            </div>
+=======
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-gradient-to-br ${plan.iconColor} bg-opacity-10`}>
+>>>>>>> 7c953ff48e2216ef6bcfe06d0905fae498bc2119
+            <plan.icon className="w-6 h-6 text-foreground" />
+        </div>
+        <h3 className="text-xl font-bold text-foreground mb-2">{plan.name}</h3>
+        <p className="text-muted-foreground text-sm mb-6 h-10">{plan.description}</p>
+        <div className="flex items-baseline gap-1">
+            <span className="text-4xl font-bold text-foreground">{plan.price}</span>
+            <span className="text-muted-foreground">/mês</span>
+        </div>
+    </div>
 
-            <div className="flex-grow mb-8">
-                <ul className="space-y-4">
-                    {plan.features.map((feature: string, i: number) => (
-                        <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
-                            <Check className={`w-5 h-5 shrink-0 ${isPopular ? "text-purple-400" : "text-muted-foreground"}`} />
-                            {feature}
-                        </li>
-                    ))}
-                </ul>
-            </div>
+        <div className="flex-grow mb-8">
+            <ul className="space-y-4">
+                {plan.features.map((feature: string, i: number) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
+                        <Check className={`w-5 h-5 shrink-0 ${isPopular ? "text-purple-400" : "text-muted-foreground"}`} />
+                        {feature}
+                    </li>
+                ))}
+            </ul>
+        </div>
 
-            <Link href="/register" className="w-full">
-                <button className={`w-full py-3 rounded-xl font-bold transition-all duration-300 ${isPopular
-                    ? "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
-                    : "bg-secondary hover:bg-secondary/80 text-secondary-foreground border border-border"
-                    }`}>
-                    Começar Agora
-                </button>
-            </Link>
-        </motion.div>
+        <Link href="/register" className="w-full">
+            <button className={`w-full py-3 rounded-xl font-bold transition-all duration-300 ${isPopular
+<<<<<<< HEAD
+                ? "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
+=======
+                    ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white shadow-lg shadow-purple-500/25"
+>>>>>>> 7c953ff48e2216ef6bcfe06d0905fae498bc2119
+                : "bg-secondary hover:bg-secondary/80 text-secondary-foreground border border-border"
+                }`}>
+                Começar Agora
+            </button>
+        </Link>
+        </motion.div >
     );
 };
 
@@ -95,7 +102,12 @@ export const VitePricing = () => {
             name: "Pessoal",
             price: "Gratuito",
             description: "Para uso individual. Recupere sua autonomia de comunicação básica.",
+<<<<<<< HEAD
             icon: PersonalIcon,
+=======
+            icon: Zap,
+            iconColor: "from-blue-500 to-cyan-500",
+>>>>>>> 7c953ff48e2216ef6bcfe06d0905fae498bc2119
             features: [
                 "Tradução de expressões básicas",
                 "Teclado virtual ocular",
@@ -109,7 +121,12 @@ export const VitePricing = () => {
             name: "Família",
             price: "R$ 49",
             description: "Recursos avançados para o paciente e ferramentas de monitoramento para cuidadores.",
+<<<<<<< HEAD
             icon: FamilyIcon,
+=======
+            icon: Star,
+            iconColor: "from-purple-500 to-pink-500",
+>>>>>>> 7c953ff48e2216ef6bcfe06d0905fae498bc2119
             features: [
                 "Tudo do plano Pessoal",
                 "App do Cuidador (até 3)",
@@ -124,7 +141,12 @@ export const VitePricing = () => {
             name: "Institucional",
             price: "Sob Consulta",
             description: "Para clínicas, hospitais e associações que atendem múltiplos pacientes.",
+<<<<<<< HEAD
             icon: InstitutionalIcon,
+=======
+            icon: Shield,
+            iconColor: "from-orange-500 to-red-500",
+>>>>>>> 7c953ff48e2216ef6bcfe06d0905fae498bc2119
             features: [
                 "Múltiplos perfis de pacientes",
                 "Dashboard clínico analítico",
