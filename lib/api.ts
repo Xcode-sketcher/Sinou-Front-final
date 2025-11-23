@@ -82,7 +82,7 @@ api.interceptors.response.use(
         // Tratamento especial para erros de autenticação
         // Evita logging excessivo de erros esperados (401 em endpoints de auth)
         const isAuthRelatedEndpoint = error.config?.url?.includes('/api/auth/') ||
-            error.config?.url?.includes('/api/user/') ||
+            error.config?.url?.includes('/api/users/me') ||
             error.config?.url?.includes('/api/patient/');
         const isUnauthorized = error.response?.status === 401;
 

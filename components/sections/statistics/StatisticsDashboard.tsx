@@ -198,7 +198,7 @@ export function StatisticsDashboard() {
                     data_cadastro: patientData.createdAt || patientData.data_cadastro || new Date().toISOString(),
                     status: true, // Default to true as status field was removed
                     informacoes_adicionais: patientData.additionalInfo || patientData.informacoes_adicionais || null,
-                    foto_perfil: patientData.profilePhoto || patientData.profilePicture || patientData.foto_perfil || null,
+                    foto_perfil: null, // Profile photo removed from User model
                     criado_por: patientData.createdBy || patientData.criado_por || 'user'
                 };
                 setPatient(mappedPatient);

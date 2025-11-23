@@ -5,14 +5,12 @@ import api from '@/lib/api';
 import { useRouter } from 'next/navigation';
 
 interface User {
-    id?: string;
-    name?: string;
-    email?: string;
-    role?: string;
+    id: string;
+    name: string;
+    email: string;
+    role: string;
     patientId?: string;
     patientName?: string;
-    profilePhoto?: number;
-    [key: string]: any;
 }
 
 interface AuthContextType {
@@ -77,7 +75,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setUser(null);
             router.push('/login');
         }
-    }; return (
+    };
+
+    return (
         <AuthContext.Provider value={{ user, loading, login, register, logout }}>
             {children}
         </AuthContext.Provider>

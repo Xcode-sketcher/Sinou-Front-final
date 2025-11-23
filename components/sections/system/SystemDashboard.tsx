@@ -19,8 +19,6 @@ export interface AnalysisResult {
 
 export function SystemDashboard() {
     const { user } = useAuth();
-    const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-    const [patientDetails, setPatientDetails] = useState<Patient | null>(null);
     const [lastAnalysis, setLastAnalysis] = useState<AnalysisResult | null>(null);
     const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
 
@@ -33,23 +31,39 @@ export function SystemDashboard() {
         alertsCount: 0
     });
 
-    // Buscar detalhes do paciente quando um paciente for selecionado
+    // Load stats from localStorage on mount and handle expiration
     useEffect(() => {
-        const fetchPatientDetails = async () => {
-            if (!selectedPatient) {
-                setPatientDetails(null);
-                return;
+        const loadStats = () => {
+            const storedStats = localStorage.getItem('dailyStats');
+            const storedDate = localStorage.getItem('statsDate');
+
+            const now = new Date();
+            // Adjust to Brasilia time (UTC-3)
+            const brasiliaTime = new Date(now.getTime() - (3 * 60 * 60 * 1000));
+            const todayStr = brasiliaTime.toISOString().split('T')[0];
+
+            if (storedStats && storedDate === todayStr) {
+                setStats(JSON.parse(storedStats));
+            } else {
+                // Reset stats if date changed or no stats found
+                const initialStats = { totalAnalysis: 0, alertsCount: 0 };
+                setStats(initialStats);
+                localStorage.setItem('dailyStats', JSON.stringify(initialStats));
+                localStorage.setItem('statsDate', todayStr);
             }
-
-            // Temporarily use selectedPatient data directly to avoid API errors
-            // TODO: Re-enable API call when backend endpoint is properly implemented
-            setPatientDetails(selectedPatient);
-
-
         };
 
-        fetchPatientDetails();
-    }, [selectedPatient]);
+        loadStats();
+
+        // Check for expiration every minute
+        const interval = setInterval(loadStats, 60000);
+        return () => clearInterval(interval);
+    }, []);
+
+    // Save stats to localStorage whenever they change
+    useEffect(() => {
+        localStorage.setItem('dailyStats', JSON.stringify(stats));
+    }, [stats]);
 
     const handleAnalysisComplete = (result: AnalysisResult) => {
         setLastAnalysis(result);
@@ -82,26 +96,20 @@ export function SystemDashboard() {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                     <div>
                         <h1 className="text-3xl font-bold text-foreground mb-2">
-                            {patientDetails ? `Monitorando: ${patientDetails.nome}` : selectedPatient ? `Monitorando: ${selectedPatient.nome}` : user?.patientName ? `Monitorando: ${user.patientName}` : 'Sistema de Monitoramento'}
+                            Análise facial
                         </h1>
                         <p className="text-muted-foreground">
-                            {patientDetails ? `Análise facial em tempo real para ${patientDetails.nome}` : selectedPatient ? `Análise facial em tempo real para ${selectedPatient.nome}` : 'Análise facial em tempo real com IA'}
+                            Quando o rosto fala, o mundo entende
                         </p>
-                        {(patientDetails || selectedPatient) && (
+                        {user?.patientName && (
                             <div className="flex items-center gap-4 mt-3">
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                    <span>ID: {patientDetails?._id || selectedPatient?._id}</span>
-                                    {(patientDetails?.idade || selectedPatient?.idade) && <span>• {patientDetails?.idade || selectedPatient?.idade} anos</span>}
-                                    {(patientDetails?.diagnostico || selectedPatient?.diagnostico) && <span>• {patientDetails?.diagnostico || selectedPatient?.diagnostico}</span>}
+                                    <span className="font-medium text-primary">Paciente: {user.patientName}</span>
                                 </div>
                             </div>
                         )}
                     </div>
                     <div className="w-full md:w-auto flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-                        <PatientSelector
-                            selectedPatient={selectedPatient}
-                            onSelect={setSelectedPatient}
-                        />
                         <button
                             onClick={() => setIsRuleModalOpen(true)}
                             className="h-11 px-6 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-medium transition-colors flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20"
@@ -114,7 +122,7 @@ export function SystemDashboard() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2 space-y-6">
                         <CameraCard
-                            selectedPatient={selectedPatient}
+                            selectedPatient={null} // No longer using selector
                             onAnalysisComplete={handleAnalysisComplete}
                             // Pass controlled state
                             isActive={isCameraActive}
@@ -133,16 +141,6 @@ export function SystemDashboard() {
                             animate={{ opacity: 1, y: 0 }}
                             className="bg-card border border-border rounded-xl p-6 shadow-sm"
                         >
-                            <div className="flex items-center gap-4 mb-6">
-                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-xl">
-                                    U
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold text-foreground">Cuidador</h3>
-                                    <p className="text-sm text-muted-foreground">Sessão Ativa</p>
-                                </div>
-                            </div>
-
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="bg-muted/30 rounded-lg p-4 text-center">
                                     <div className="text-2xl font-bold text-foreground mb-1">{stats.totalAnalysis}</div>
@@ -150,7 +148,7 @@ export function SystemDashboard() {
                                 </div>
                                 <div className="bg-muted/30 rounded-lg p-4 text-center">
                                     <div className="text-2xl font-bold text-foreground mb-1">{stats.alertsCount}</div>
-                                    <div className="text-xs text-muted-foreground">Alertas</div>
+                                    <div className="text-xs text-muted-foreground">Alertas Hoje</div>
                                 </div>
                             </div>
                         </motion.div>
