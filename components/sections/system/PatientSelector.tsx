@@ -55,7 +55,7 @@ export function PatientSelector({ selectedPatient, onSelect }: PatientSelectorPr
                     onSelect(patientsList[0]);
                 }
             } catch (error) {
-                console.error("Failed to fetch patients", error);
+                // console.error("Failed to fetch patients", error);
             } finally {
                 setLoading(false);
             }

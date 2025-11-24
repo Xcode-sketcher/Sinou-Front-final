@@ -15,10 +15,60 @@
  */
 
 import { motion } from "framer-motion";
-import { Heart, Lightbulb, Target, Rocket, Users, Code, Sparkles, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ModernMenu } from "@/components/layout/Header";
 import { OrbitalAnimation } from "@/components/sections/sobre/OrbitalAnimation";
+
+// Custom Icons to replace Lucide
+const CustomIcons = {
+    Heart: (props: any) => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+        </svg>
+    ),
+    Users: (props: any) => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+    ),
+    Target: (props: any) => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+            <circle cx="12" cy="12" r="10" />
+            <circle cx="12" cy="12" r="6" />
+            <circle cx="12" cy="12" r="2" />
+        </svg>
+    ),
+    Code: (props: any) => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
+        </svg>
+    ),
+    Rocket: (props: any) => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+            <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+            <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+        </svg>
+    ),
+    Lightbulb: (props: any) => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+            <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-1 1.5-2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+            <path d="M9 18h6" />
+            <path d="M10 22h4" />
+        </svg>
+    ),
+    ArrowRight: (props: any) => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+        </svg>
+    )
+};
 
 /**
  * Props do componente JourneyStep
@@ -59,12 +109,9 @@ const JourneyStep = ({
      * @returns Classe CSS do gradiente para a linha de conexão
      */
     const getConnectionColor = (colorClass: string) => {
-        if (colorClass.includes('red-500')) return 'from-red-500 to-pink-500';
-        if (colorClass.includes('purple-500')) return 'from-purple-500 to-indigo-500';
-        if (colorClass.includes('blue-500')) return 'from-blue-500 to-cyan-500';
-        if (colorClass.includes('emerald-500')) return 'from-emerald-500 to-teal-500';
-        if (colorClass.includes('orange-500')) return 'from-orange-500 to-red-500';
-        return 'from-purple-500 to-blue-500';
+        // Simplified to Purple/Orange theme
+        if (colorClass.includes('orange')) return 'from-orange-500 to-purple-500';
+        return 'from-purple-500 to-orange-500';
     };
 
     return (
@@ -148,8 +195,6 @@ export default function SobrePage() {
     // Configuração dos links das redes sociais para o menu
     const socialItems = [
         { label: "GitHub", href: "https://github.com" },
-        { label: "Twitter", href: "https://twitter.com" },
-        { label: "Discord", href: "https://discord.com" },
     ];
 
     return (
@@ -177,7 +222,7 @@ export default function SobrePage() {
                         </div>
 
                         {/* Título principal com gradiente */}
-                        <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 mb-6">
+                        <h1 className="text-5xl md:text-7xl font-bold mb-6 text-purple-600">
                             Nossa História
                         </h1>
 
@@ -219,8 +264,8 @@ export default function SobrePage() {
                                 step={1}
                                 title="O Nascimento da Ideia"
                                 description="Tudo começou com uma história real. Uma família enfrentando as barreiras da comunicação não-verbal. Vimos a necessidade urgente de criar uma ponte entre o mundo digital e as expressões humanas, nascida da pura empatia e solidariedade."
-                                icon={Heart}
-                                color="bg-gradient-to-r from-red-500 to-pink-500"
+                                icon={CustomIcons.Heart}
+                                color="bg-purple-600"
                                 delay={0.1}
                             />
 
@@ -229,8 +274,8 @@ export default function SobrePage() {
                                 step={2}
                                 title="Pesquisa e Empatia Profunda"
                                 description="Mergulhamos no universo das pessoas com deficiência motora e suas famílias. Entrevistas, observações e imersão nos permitiram entender não apenas os desafios técnicos, mas as emoções, frustrações e esperanças de cada pessoa."
-                                icon={Users}
-                                color="bg-gradient-to-r from-purple-500 to-indigo-500"
+                                icon={CustomIcons.Users}
+                                color="bg-orange-500"
                                 delay={0.2}
                             />
 
@@ -239,8 +284,8 @@ export default function SobrePage() {
                                 step={3}
                                 title="Planejamento Estruturado"
                                 description="Transformamos nossa empatia em ação concreta. Desenvolvemos um plano abrangente que incluía pesquisa de tecnologias emergentes, arquitetura de sistema escalável, e uma estratégia de implementação realista e sustentável."
-                                icon={Target}
-                                color="bg-gradient-to-r from-blue-500 to-cyan-500"
+                                icon={CustomIcons.Target}
+                                color="bg-purple-500"
                                 delay={0.3}
                             />
 
@@ -249,8 +294,8 @@ export default function SobrePage() {
                                 step={4}
                                 title="Desenvolvimento Técnico"
                                 description="Nossa equipe multidisciplinar começou a construir. Algoritmos de reconhecimento facial, interfaces intuitivas, síntese de voz neural e integração IoT foram desenvolvidos com rigor técnico e atenção aos detalhes."
-                                icon={Code}
-                                color="bg-gradient-to-r from-emerald-500 to-teal-500"
+                                icon={CustomIcons.Code}
+                                color="bg-orange-600"
                                 delay={0.4}
                             />
 
@@ -259,8 +304,8 @@ export default function SobrePage() {
                                 step={5}
                                 title="Lançamento e Impacto"
                                 description="O Sinout deixou o laboratório e entrou na vida real. Cada usuário que consegue se comunicar, cada família que se reconecta, cada barreira que é quebrada, valida nossa missão e nos impulsiona a continuar inovando."
-                                icon={Rocket}
-                                color="bg-gradient-to-r from-orange-500 to-red-500"
+                                icon={CustomIcons.Rocket}
+                                color="bg-purple-700"
                                 delay={0.5}
                             />
                         </div>
@@ -292,20 +337,20 @@ export default function SobrePage() {
                             {
                                 title: "Empatia Primeiro",
                                 description: "Cada recurso é desenvolvido pensando primeiro nas pessoas, não na tecnologia.",
-                                icon: Heart,
-                                color: "from-red-500 to-pink-500"
+                                icon: CustomIcons.Heart,
+                                color: "from-purple-600 to-purple-500"
                             },
                             {
                                 title: "Inovação Acessível",
                                 description: "Tecnologia de ponta deve estar ao alcance de todos, independente da condição financeira.",
-                                icon: Lightbulb,
-                                color: "from-yellow-500 to-orange-500"
+                                icon: CustomIcons.Lightbulb,
+                                color: "from-orange-500 to-orange-400"
                             },
                             {
                                 title: "Impacto Sustentável",
                                 description: "Buscamos mudanças reais e duradouras na vida das pessoas que atendemos.",
-                                icon: Target,
-                                color: "from-green-500 to-emerald-500"
+                                icon: CustomIcons.Target,
+                                color: "from-purple-500 to-orange-500"
                             }
                         ].map((value, index) => (
                             <motion.div
@@ -356,10 +401,10 @@ export default function SobrePage() {
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold text-lg shadow-lg shadow-purple-500/25 transition-all flex items-center gap-2"
+                                    className="px-8 py-4 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-bold text-lg shadow-lg shadow-purple-500/25 transition-all flex items-center gap-2"
                                 >
                                     Conheça Nossos Planos
-                                    <ArrowRight className="w-5 h-5" />
+                                    <CustomIcons.ArrowRight className="w-5 h-5" />
                                 </motion.button>
                             </Link>
 

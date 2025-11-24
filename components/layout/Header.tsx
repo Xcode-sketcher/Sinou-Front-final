@@ -104,8 +104,9 @@ export function ModernMenu({
         if (isHome) {
             return [
                 { label: "Sobre", href: "/sobre" },
+                { label: "Docs", href: "/equipe/docs" },
                 { label: "Equipe", href: "/equipe" },
-                { label: "Planos", href: "/#pagamento" },
+                { label: "Planos", href: "/#pricing" },
                 { label: "Estatística", href: "/estatistica" },
                 { label: "Central de Ajuda", href: "/ajuda" },
             ];
@@ -113,7 +114,8 @@ export function ModernMenu({
             return [
                 { label: "Home", href: "/" },
                 { label: "Sobre", href: "/sobre" },
-                { label: "Planos", href: "/#pagamento" },
+                { label: "Docs", href: "/equipe/docs" },
+                { label: "Planos", href: "/#pricing" },
                 { label: "Estatística", href: "/estatistica" },
                 { label: "Central de Ajuda", href: "/ajuda" },
             ];
@@ -121,15 +123,16 @@ export function ModernMenu({
             return [
                 { label: "Home", href: "/" },
                 { label: "Sobre", href: "/sobre" },
+                { label: "Docs", href: "/equipe/docs" },
                 { label: "Equipe", href: "/equipe" },
-                { label: "Planos", href: "/#pagamento" },
+                { label: "Planos", href: "/#pricing" },
                 { label: "Central de Ajuda", href: "/ajuda" },
             ];
         } else if (isSobre) {
             return [
                 { label: "Home", href: "/" },
                 { label: "Equipe", href: "/equipe" },
-                { label: "Planos", href: "/#pagamento" },
+                { label: "Planos", href: "/#pricing" },
                 { label: "Estatística", href: "/estatistica" },
                 { label: "Central de Ajuda", href: "/ajuda" },
             ];
@@ -137,8 +140,9 @@ export function ModernMenu({
             return [
                 { label: "Home", href: "/" },
                 { label: "Sobre", href: "/sobre" },
+                { label: "Docs", href: "/equipe/docs" },
                 { label: "Equipe", href: "/equipe" },
-                { label: "Planos", href: "/#pagamento" },
+                { label: "Planos", href: "/#pricing" },
                 { label: "Estatística", href: "/estatistica" },
                 { label: "Central de Ajuda", href: "/ajuda" },
             ];
@@ -146,13 +150,25 @@ export function ModernMenu({
             return [
                 { label: "Home", href: "/" },
                 { label: "Sobre", href: "/sobre" },
+                { label: "Docs", href: "/equipe/docs" },
                 { label: "Equipe", href: "/equipe" },
-                { label: "Planos", href: "/#pagamento" },
+                { label: "Planos", href: "/#pricing" },
                 { label: "Estatística", href: "/estatistica" },
             ];
         } else {
-            // Para outras páginas, manter padrão ou ajustar conforme necessário
-            return items;
+            // Para outras páginas: se `items` foi passado use-os, senão fornecer um menu padrão
+            if (items && items.length > 0) return items;
+
+            // Menu padrão (usado quando 'items' está vazio)
+            return [
+                { label: "Home", href: "/" },
+                { label: "Sobre", href: "/sobre" },
+                { label: "Docs", href: "/equipe/docs" },
+                { label: "Equipe", href: "/equipe" },
+                { label: "Planos", href: "/#pagamento" },
+                { label: "Estatística", href: "/estatistica" },
+                { label: "Central de Ajuda", href: "/ajuda" },
+            ];
         }
     };
 

@@ -22,7 +22,7 @@ export const Footer7 = ({ className = "" }: { className?: string }) => {
       links: [
         { name: "Sobre Nós", href: "/sobre" },
         { name: "Equipe", href: "/equipe" },
-        { name: "Blog", href: "/blog" },
+        { name: "Recursos", href: "/sistema" },
         { name: "Carreiras", href: "/carreiras" },
       ],
     },

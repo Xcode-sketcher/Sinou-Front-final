@@ -2,11 +2,15 @@
 
 import dynamic from 'next/dynamic';
 import { ModernMenu } from "@/components/layout/Header";
+import { motion } from "framer-motion";
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import { ViteHero } from "@/components/sections/vite-hero";
 import { ViteFeatures } from "@/components/sections/vite-features";
 import { FrameworkLogos } from "@/components/sections/framework-logos";
 import { CodeComparison } from "@/components/sections/code-comparison";
 import { TechTeam } from "@/components/sections/tech-team";
+// Removed local CTAs (buttons) per request — content simplified
 
 const Footer7 = dynamic(() => import("@/components/layout/Footer").then(mod => mod.Footer7));
 
@@ -59,9 +63,8 @@ export default function TeamPage() {
     // Configuração dos links sociais para o menu
     const socialItems = [
         { label: "GitHub", href: "https://github.com" },
-        { label: "Twitter", href: "https://twitter.com" },
-        { label: "Discord", href: "https://discord.com" },
     ];
+
 
     return (
         <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -76,6 +79,36 @@ export default function TeamPage() {
                 {/* Framework Logos Marquee */}
                 <FrameworkLogos />
 
+                {/* Top info area (heading + description) — restored without CTAs */}
+                <section className="py-8 bg-muted/0">
+                    <div className="container mx-auto px-4">
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                            className="text-center max-w-4xl mx-auto mb-8"
+                        >
+                            <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-3">
+                                Conheça Nossa Equipe
+                            </h2>
+                            <p className="text-lg text-muted-foreground mb-6 max-w-xl mx-auto">
+                                Descubra os profissionais por trás da Sinout: suas funções, contribuições e a metodologia que usamos para entregar valor rápido.
+                            </p>
+
+                            {/* CTA buttons: link to docs page */}
+                            <div className="flex items-center justify-center gap-3 mt-4">
+                                <Button asChild>
+                                    <Link href="/equipe/docs">Ver Documentação</Link>
+                                </Button>
+                                <Link href="/equipe/docs" className="text-sm text-muted-foreground hover:text-foreground underline">Ir para a docs →</Link>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+
+                {/* (previously here) */}
+
                 {/* Features Grid */}
                 <ViteFeatures />
 
@@ -84,7 +117,11 @@ export default function TeamPage() {
 
                 {/* Team Section */}
                 <TechTeam />
+
+                {/* bottom CTA removed — moved to top hero area per user request */}
             </main>
+
+            {/* Page-level methodology modal removed (modal still available elsewhere) */}
 
             {/* Rodapé */}
             <Footer7 className="mt-auto border-t border-border bg-muted/30" />

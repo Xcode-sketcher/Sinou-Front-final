@@ -76,8 +76,6 @@ export default function StatisticsPage() {
 
     const socialItems = [
         { label: "GitHub", href: "https://github.com" },
-        { label: "Twitter", href: "https://twitter.com" },
-        { label: "Discord", href: "https://discord.com" },
     ];
 
     return (

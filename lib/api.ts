@@ -24,7 +24,7 @@ import axios from 'axios';
  * - Configuração CORS
  */
 const api = axios.create({
-    baseURL: typeof window !== 'undefined' ? '/' : process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5240',
+    baseURL: typeof window !== 'undefined' ? '/' : process.env.NEXT_PUBLIC_API_BASE_URL || 'https://sinout-back.onrender.com',
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
@@ -44,18 +44,18 @@ const api = axios.create({
  */
 api.interceptors.request.use(
     (config) => {
-        console.log('🚀 API Request:', {
-            method: config.method?.toUpperCase(),
-            url: config.url,
-            baseURL: config.baseURL,
-            fullURL: `${config.baseURL}${config.url}`,
-            data: config.data,
-            params: config.params
-        });
+        // console.log('🚀 API Request:', {
+        //     method: config.method?.toUpperCase(),
+        //     url: config.url,
+        //     baseURL: config.baseURL,
+        //     fullURL: `${config.baseURL}${config.url}`,
+        //     data: config.data,
+        //     params: config.params
+        // });
         return config;
     },
     (error) => {
-        console.error('❌ Request Error:', error);
+        // console.error('❌ Request Error:', error);
         return Promise.reject(error);
     }
 );
@@ -71,11 +71,11 @@ api.interceptors.request.use(
  */
 api.interceptors.response.use(
     (response) => {
-        console.log('✅ API Response:', {
-            url: response.config.url,
-            status: response.status,
-            data: response.data
-        });
+        // console.log('✅ API Response:', {
+        //     url: response.config.url,
+        //     status: response.status,
+        //     data: response.data
+        // });
         return response;
     },
     (error) => {
@@ -87,25 +87,25 @@ api.interceptors.response.use(
         const isUnauthorized = error.response?.status === 401;
 
         if (!(isAuthRelatedEndpoint && isUnauthorized)) {
-            console.error('❌ API Error:', {
-                url: error.config?.url,
-                status: error.response?.status,
-                statusText: error.response?.statusText,
-                data: error.response?.data,
-                message: error.message
-            });
+            // console.error('❌ API Error:', {
+            //     url: error.config?.url,
+            //     status: error.response?.status,
+            //     statusText: error.response?.statusText,
+            //     data: error.response?.data,
+            //     message: error.message
+            // });
 
             // Fornece mensagens de erro mais específicas baseadas no tipo
             if (error.response) {
                 // Servidor respondeu com erro
                 const message = error.response.data?.message || error.response.statusText;
-                console.error(`Server Error (${error.response.status}):`, message);
+                // console.error(`Server Error (${error.response.status}):`, message);
             } else if (error.request) {
                 // Requisição feita mas sem resposta
-                console.error('Network Error: No response received from server. Is the backend running?');
+                // console.error('Network Error: No response received from server. Is the backend running?');
             } else {
                 // Erro na configuração da requisição
-                console.error('Request Error:', error.message);
+                // console.error('Request Error:', error.message);
             }
         }
 

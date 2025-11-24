@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Camera, StopCircle, Clock, RefreshCw, ArrowUp, Moon, Sun, Share2, Settings, HelpCircle, Info, CreditCard } from "lucide-react";
+import { Camera, StopCircle, Clock, RefreshCw, ArrowUp, Moon, Sun, Share2, Settings, HelpCircle, Info, CreditCard, FileText } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 
@@ -108,13 +108,18 @@ export function SystemContextMenu({
                     label: "Planos",
                     icon: CreditCard,
                     action: () => {
-                        const element = document.getElementById("pagamento");
+                        const element = document.getElementById("pricing");
                         if (element) {
                             element.scrollIntoView({ behavior: "smooth" });
                         } else {
-                            router.push("/#pagamento");
+                            router.push("/#pricing");
                         }
                     }
+                },
+                {
+                    label: "Docs",
+                    icon: FileText,
+                    action: () => router.push('/equipe/docs')
                 }
             ]
         },

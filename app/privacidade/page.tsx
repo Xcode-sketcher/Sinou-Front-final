@@ -6,8 +6,6 @@ const Footer7 = dynamic(() => import("@/components/layout/Footer").then(mod => m
 export default function Privacidade() {
     const socialItems = [
         { label: "GitHub", href: "https://github.com" },
-        { label: "Twitter", href: "https://twitter.com" },
-        { label: "Discord", href: "https://discord.com" },
     ];
 
     return (

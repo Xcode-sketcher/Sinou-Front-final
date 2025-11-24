@@ -197,7 +197,7 @@ export const VitePricing = () => {
     ];
 
     return (
-        <section className="py-20 relative overflow-hidden">
+        <section id="pricing" className="py-20 relative overflow-hidden">
             {/* Efeitos de fundo com gradientes sutis */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/10 rounded-full blur-[120px] pointer-events-none" />
 

@@ -49,7 +49,7 @@ export function CreateRuleModal({ isOpen, onClose, onRuleCreated }: CreateRuleMo
             const response = await api.get('/api/emotion-mappings/my-rules');
             setRules(response.data || []);
         } catch (error) {
-            console.error("Failed to fetch rules", error);
+            // console.error("Failed to fetch rules", error);
         }
     };
 
@@ -59,7 +59,7 @@ export function CreateRuleModal({ isOpen, onClose, onRuleCreated }: CreateRuleMo
             await api.delete(`/api/emotion-mappings/${id}`);
             fetchRules();
         } catch (error) {
-            console.error("Failed to delete rule", error);
+            // console.error("Failed to delete rule", error);
         }
     };
 
@@ -103,7 +103,7 @@ export function CreateRuleModal({ isOpen, onClose, onRuleCreated }: CreateRuleMo
                 message: ""
             });
         } catch (error) {
-            console.error("Failed to save rule", error);
+            // console.error("Failed to save rule", error);
             alert("Erro ao salvar regra");
         } finally {
             setLoading(false);

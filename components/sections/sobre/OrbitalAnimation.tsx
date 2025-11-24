@@ -65,33 +65,33 @@ const SinoutIcons = {
     )
 };
 
-// Sinout Logo Component
+// Sinout Logo Component - Infinity Symbol
 const SinoutLogo = ({ lit = false }: { lit?: boolean }) => (
-    <svg width="60" height="60" viewBox="0 0 100 100" fill="none">
+    <svg width="70" height="70" viewBox="0 0 100 100" fill="none">
         <defs>
             <linearGradient id="sinout-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#9333EA" />
                 <stop offset="100%" stopColor="#F97316" />
             </linearGradient>
         </defs>
-        {/* S letter shape */}
+        {/* Infinity Symbol - Corrected Shape */}
         <path
-            d="M30 25 Q20 25 20 35 Q20 45 30 45 L50 45 Q60 45 60 55 Q60 65 50 65 L30 65"
-            stroke={lit ? "url(#sinout-gradient)" : "currentColor"}
-            strokeWidth="8"
-            strokeLinecap="round"
-            fill="none"
-            opacity={lit ? 1 : 0.3}
-        />
-        {/* Out wave */}
-        <path
-            d="M70 35 Q75 30 80 35 Q85 40 80 45"
+            d="M30 50 C30 30, 50 30, 50 50 C50 70, 70 70, 70 50 C70 30, 50 30, 50 50 C50 70, 30 70, 30 50 Z"
             stroke={lit ? "url(#sinout-gradient)" : "currentColor"}
             strokeWidth="6"
             strokeLinecap="round"
+            strokeLinejoin="round"
             fill="none"
-            opacity={lit ? 1 : 0.2}
+            opacity={lit ? 1 : 0.3}
+            transform="scale(1.2) translate(-8, 0)"
         />
+        {/* Inner glow dots */}
+        {lit && (
+            <>
+                <circle cx="35" cy="50" r="3" fill="#9333EA" opacity="0.8" />
+                <circle cx="65" cy="50" r="3" fill="#F97316" opacity="0.8" />
+            </>
+        )}
     </svg>
 );
 
@@ -99,14 +99,14 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
     const [animationPhase, setAnimationPhase] = useState<'dark' | 'spark' | 'lit' | 'orbiting'>('dark');
     const [mounted, setMounted] = useState(false);
 
-    // Define the 6 core values as satellites  
+    // Define the 6 core values as satellites with solid colors
     const satellites: ValueSatellite[] = [
-        { label: "Empatia", angle: 0, color: "from-purple-600 to-purple-500", icon: <SinoutIcons.Heart /> },
-        { label: "Solidariedade", angle: 60, color: "from-orange-500 to-orange-600", icon: <SinoutIcons.Hands /> },
-        { label: "Inovação", angle: 120, color: "from-purple-500 to-orange-500", icon: <SinoutIcons.Spark /> },
-        { label: "Impacto", angle: 180, color: "from-orange-600 to-purple-600", icon: <SinoutIcons.Target /> },
-        { label: "Inclusão", angle: 240, color: "from-purple-600 to-orange-500", icon: <SinoutIcons.People /> },
-        { label: "Crescimento", angle: 300, color: "from-orange-500 to-purple-500", icon: <SinoutIcons.Growth /> }
+        { label: "Empatia", angle: 0, color: "bg-purple-600", icon: <SinoutIcons.Heart /> },
+        { label: "Solidariedade", angle: 60, color: "bg-orange-500", icon: <SinoutIcons.Hands /> },
+        { label: "Inovação", angle: 120, color: "bg-purple-500", icon: <SinoutIcons.Spark /> },
+        { label: "Impacto", angle: 180, color: "bg-orange-600", icon: <SinoutIcons.Target /> },
+        { label: "Inclusão", angle: 240, color: "bg-purple-700", icon: <SinoutIcons.People /> },
+        { label: "Crescimento", angle: 300, color: "bg-orange-400", icon: <SinoutIcons.Growth /> }
     ];
 
     // Size configurations
@@ -245,8 +245,8 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
             {/* Central Core Element with Sinout Logo */}
             <motion.div
                 className={`absolute rounded-3xl flex items-center justify-center overflow-hidden bg-gray-900 dark:bg-gray-900 border-2 ${animationPhase === 'lit' || animationPhase === 'orbiting'
-                        ? 'border-purple-500'
-                        : 'border-gray-800 dark:border-gray-800'
+                    ? 'border-purple-500'
+                    : 'border-gray-800 dark:border-gray-800'
                     }`}
                 style={{
                     width: config.core,
@@ -334,7 +334,7 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
                                         className="w-full h-full rounded-xl bg-gray-800/80 dark:bg-gray-800/80 border border-gray-700 backdrop-blur-sm shadow-lg flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
                                     >
                                         <div className="text-center px-2">
-                                            <div className={`w-8 h-8 mx-auto mb-1 rounded-lg bg-gradient-to-r ${satellite.color} flex items-center justify-center text-white`}>
+                                            <div className={`w-8 h-8 mx-auto mb-1 rounded-lg ${satellite.color} flex items-center justify-center text-white`}>
                                                 {satellite.icon}
                                             </div>
                                             <span className="text-xs font-bold text-white whitespace-nowrap">

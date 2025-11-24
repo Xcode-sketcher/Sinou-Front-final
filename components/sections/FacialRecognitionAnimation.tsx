@@ -133,7 +133,7 @@ const FacialRecognitionAnimation = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-blue-500 to-pink-500 mb-4"
+                        className="text-3xl md:text-5xl font-bold mb-4 text-purple-600"
                     >
                         Reconhecimento Facial em Ação
                     </motion.h2>

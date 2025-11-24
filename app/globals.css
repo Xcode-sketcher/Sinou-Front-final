@@ -58,9 +58,9 @@
   --card-foreground: #213547;
   --popover: #ffffff;
   --popover-foreground: #213547;
-  --primary: #646cff;
+  --primary: #9333ea;
   --primary-foreground: #ffffff;
-  --secondary: #42b883;
+  --secondary: #f97316;
   --secondary-foreground: #ffffff;
   --muted: #f1f1f1;
   --muted-foreground: #8e8e8e;
@@ -69,20 +69,20 @@
   --destructive: #ef4444;
   --border: #e2e2e3;
   --input: #e2e2e3;
-  --ring: #646cff;
-  --chart-1: #646cff;
-  --chart-2: #42b883;
-  --chart-3: #ff7e67;
-  --chart-4: #f8c555;
-  --chart-5: #8e8e8e;
+  --ring: #9333ea;
+  --chart-1: #9333ea;
+  --chart-2: #f97316;
+  --chart-3: #a855f7;
+  --chart-4: #fb923c;
+  --chart-5: #7e22ce;
   --sidebar: #f9f9f9;
   --sidebar-foreground: #213547;
-  --sidebar-primary: #646cff;
+  --sidebar-primary: #9333ea;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #f1f1f1;
   --sidebar-accent-foreground: #213547;
   --sidebar-border: #e2e2e3;
-  --sidebar-ring: #646cff;
+  --sidebar-ring: #9333ea;
   --button-ripple-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -93,9 +93,9 @@
   --card-foreground: rgba(255, 255, 255, 0.87);
   --popover: #242424;
   --popover-foreground: rgba(255, 255, 255, 0.87);
-  --primary: #646cff;
+  --primary: #9333ea;
   --primary-foreground: #ffffff;
-  --secondary: #42b883;
+  --secondary: #f97316;
   --secondary-foreground: #ffffff;
   --muted: #2f2f2f;
   --muted-foreground: #a1a1a1;
@@ -104,20 +104,20 @@
   --destructive: #ef4444;
   --border: #3c3c3c;
   --input: #3c3c3c;
-  --ring: #646cff;
-  --chart-1: #646cff;
-  --chart-2: #42b883;
-  --chart-3: #ff7e67;
-  --chart-4: #f8c555;
-  --chart-5: #a1a1a1;
+  --ring: #9333ea;
+  --chart-1: #9333ea;
+  --chart-2: #f97316;
+  --chart-3: #a855f7;
+  --chart-4: #fb923c;
+  --chart-5: #7e22ce;
   --sidebar: #242424;
   --sidebar-foreground: rgba(255, 255, 255, 0.87);
-  --sidebar-primary: #646cff;
+  --sidebar-primary: #9333ea;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #2f2f2f;
   --sidebar-accent-foreground: rgba(255, 255, 255, 0.87);
   --sidebar-border: #3c3c3c;
-  --sidebar-ring: #646cff;
+  --sidebar-ring: #9333ea;
   --button-ripple-color: rgba(255, 255, 255, 0.1);
 }
 

@@ -57,7 +57,7 @@ export const ViteContactSection = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // Lidar com submissão do formulário aqui
-        console.log('Form submitted:', formData);
+        // console.log('Form submitted:', formData);
     };
 
     /**

@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+// Link removed, CTAs stripped from this component
+// CTA buttons intentionally removed per request
 import { VitePipelineAnimation } from "./vite-pipeline-animation";
 
 /**
@@ -63,30 +63,7 @@ export function ViteHero() {
                             Conheça como nossa equipe transforma ideias inovadoras em soluções tecnológicas reais e acessíveis.
                         </motion.p>
 
-                        {/* Botões de ação com animação mais atrasada */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
-                            className="flex flex-wrap gap-4 justify-center md:justify-start"
-                        >
-                            {/* Botão primário para conhecer a equipe */}
-                            <Link
-                                href="/docs"
-                                className="px-8 py-3 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-medium transition-colors text-lg"
-                            >
-                                Conheça a Equipe
-                            </Link>
-
-                            {/* Botão secundário para metodologia com ícone */}
-                            <Link
-                                href="https://github.com/vitejs/vite"
-                                target="_blank"
-                                className="px-8 py-3 rounded-full bg-secondary/20 hover:bg-secondary/30 text-foreground font-medium transition-colors text-lg flex items-center gap-2"
-                            >
-                                Nossa Metodologia <ArrowRight className="w-4 h-4" />
-                            </Link>
-                        </motion.div>
+                        {/* (CTA buttons intentionally removed) */}
                     </div>
 
                     {/* Seção de animação visual - ocupa metade da largura no desktop */}

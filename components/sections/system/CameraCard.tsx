@@ -101,16 +101,16 @@ export function CameraCard({
             const age = analysis.idade ? String(analysis.idade) : (analysis.age ? String(analysis.age) : String(selectedPatient.idade || "0"));
             const gender = analysis.genero || analysis.gender || "unknown";
 
-            console.log('🔍 Full analysis response:', data);
-            console.log('🔍 Extracted analysis object:', analysis);
-            console.log('🔍 Emotions extracted:', emotions);
-            console.log('🔍 Dominant emotion:', dominantEmotion);
+            // console.log('🔍 Full analysis response:', data);
+            // console.log('🔍 Extracted analysis object:', analysis);
+            // console.log('🔍 Emotions extracted:', emotions);
+            // console.log('🔍 Dominant emotion:', dominantEmotion);
 
             // Ensure emotions is not empty - add fallback
             const safeEmotions = Object.keys(emotions).length > 0 ? emotions : { neutral: 1.0 };
 
-            console.log('✅ Safe emotions being sent:', safeEmotions);
-            console.log('✅ Number of emotions:', Object.keys(safeEmotions).length);
+            // console.log('✅ Safe emotions being sent:', safeEmotions);
+            // console.log('✅ Number of emotions:', Object.keys(safeEmotions).length);
 
             // 2. Save to History using v1.json schema
             const historyPayload = {
@@ -123,7 +123,7 @@ export function CameraCard({
                 timestamp: new Date().toISOString()
             };
 
-            console.log('📤 History payload being sent:', JSON.stringify(historyPayload, null, 2));
+            // console.log('📤 History payload being sent:', JSON.stringify(historyPayload, null, 2));
 
             // Get current user ID
             try {
@@ -132,10 +132,10 @@ export function CameraCard({
                 const userId = meResponse.data.id || meResponse.data.userId || meResponse.data._id || meResponse.data.sub;
                 if (userId) historyPayload.cuidadorId = String(userId);
             } catch (e) {
-                console.error("Could not get user ID", e);
+                // console.error("Could not get user ID", e);
             }
 
-            console.log('Sending history payload:', historyPayload);
+            // console.log('Sending history payload:', historyPayload);
 
             let suggestedMessage: string | undefined = undefined; // Não usar mensagem padrão
 
@@ -146,7 +146,7 @@ export function CameraCard({
                     suggestedMessage = historyResponse.data.suggestedMessage;
                 }
             } catch (error) {
-                console.error('Failed to save emotion history:', error);
+                // console.error('Failed to save emotion history:', error);
             }
 
             const result: AnalysisResult = {
@@ -159,7 +159,7 @@ export function CameraCard({
             onAnalysisComplete(result);
 
         } catch (error) {
-            console.error("Analysis failed", error);
+            // console.error("Analysis failed", error);
             // Optional: Show error toast to user
         } finally {
             setIsCapturing(false);
@@ -278,7 +278,7 @@ export function CameraCard({
                                 <Button
                                     size="lg"
                                     onClick={captureAndAnalyze}
-                                    disabled={!selectedPatient}
+                                    disabled={!selectedPatient || !isActive}
                                     className="rounded-full w-16 h-16 p-0 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 shadow-xl hover:scale-105 transition-all duration-300 group/btn"
                                 >
                                     <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 blur opacity-0 group-hover/btn:opacity-100 transition-opacity" />
@@ -306,10 +306,6 @@ export function CameraCard({
                         <div
                             className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-colors ${autoCapture ? 'bg-purple-600' : 'bg-gray-300 dark:bg-gray-600'}`}
                             onClick={() => {
-                                if (!selectedPatient) {
-                                    alert("Selecione um paciente primeiro");
-                                    return;
-                                }
                                 onAutoCaptureChange(!autoCapture);
                             }}
                         >

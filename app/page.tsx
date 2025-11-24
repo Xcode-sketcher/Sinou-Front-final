@@ -20,13 +20,11 @@ const Footer7 = dynamic(() => import("@/components/layout/Footer").then(mod => m
  * Landing page focada em apresentar a Sinout e direcionar para a equipe.
  */
 export default function Home() {
-  const particleColors = ['#8b5cf6', '#3b82f6', '#ec4899']; // Vite colors: Purple, Blue, Pink
+  const particleColors = ['#9333EA', '#F97316', '#A855F7']; // Sinout colors: Purple, Orange, Light Purple
 
   // Configuração dos links sociais
   const socialItems = [
     { label: "GitHub", href: "https://github.com" },
-    { label: "Twitter", href: "https://twitter.com" },
-    { label: "Discord", href: "https://discord.com" },
   ];
 
 
@@ -60,7 +58,7 @@ export default function Home() {
           <HeroGeometricAnimation />
 
           <div className="container mx-auto px-4 text-center relative z-10 pt-20">
-            <h1 className="text-6xl md:text-8xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-2xl">
+            <h1 className="text-6xl md:text-8xl font-bold tracking-tight mb-6 text-purple-600 drop-shadow-2xl">
               Sinout
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 backdrop-blur-sm bg-muted/50 p-4 rounded-xl border border-border/50">
@@ -68,9 +66,9 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <Link href="/equipe">
-                <button className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold text-lg shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all hover:scale-105 flex items-center gap-2">
-                  Saiba Mais sobre ELA <ArrowRight className="w-5 h-5" />
+              <Link href="/sobre">
+                <button className="px-8 py-4 rounded-full bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white font-bold text-lg shadow-[0_0_20px_rgba(249,115,22,0.5)] transition-all hover:scale-105 flex items-center gap-2">
+                  Saiba mais sobre o projeto <ArrowRight className="w-5 h-5" />
                 </button>
               </Link>
               <Link href="/login">
@@ -97,43 +95,24 @@ export default function Home() {
         {/* Separador visual */}
         <div className="h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent w-full" />
 
-        {/* Animação de Reconhecimento Facial */}
-        <FacialRecognitionAnimation />
+        {/* Seção de Preços */}
+        <VitePricing />
 
         {/* Separador visual */}
-        <div className="h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent w-full" />
-        {/* Galeria de tecnologias */}
-        <ViteProjectsGallery />
+        <div className="h-px bg-gradient-to-r from-transparent via-orange-500/50 to-transparent w-full" />
 
         {/* Separador visual */}
-        <div className="h-px bg-gradient-to-r from-transparent via-pink-500/50 to-transparent w-full" />
-
-        {/* Seção de pagamento e equipe */}
-        <section id="pagamento" className="py-20 bg-muted/20">
-          <div className="container mx-auto px-4">
-            <VitePricing />
-            <div className="text-center mt-10">
-              <Link href="/equipe">
-                <button className="px-8 py-3 rounded-full bg-card hover:bg-card/80 border border-border text-foreground font-medium transition-all hover:scale-105">
-                  Ver Detalhes da Equipe
-                </button>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Separador visual */}
-        <div className="h-px bg-gradient-to-r from-transparent via-pink-500/50 to-transparent w-full" />
+        < div className="h-px bg-gradient-to-r from-transparent via-orange-500/50 to-transparent w-full" />
 
         {/* Seção de Contato */}
-        <ViteContactSection />
+        < ViteContactSection />
 
         {/* Separador visual */}
-        <div className="h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent w-full" />
-      </main>
+        < div className="h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent w-full" />
+      </main >
 
       {/* Rodapé */}
-      <Footer7 className="mt-auto border-t border-border bg-muted/30" />
-    </div>
+      < Footer7 className="mt-auto border-t border-border bg-muted/30" />
+    </div >
   );
 }

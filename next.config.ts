@@ -18,14 +18,25 @@ const nextConfig: NextConfig = {
     ],
   },
   async rewrites() {
+    // Validação das variáveis de ambiente obrigatórias
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const processingApiUrl = process.env.NEXT_PUBLIC_PROCESSING_API_URL;
+
+    if (!apiBaseUrl) {
+      throw new Error('NEXT_PUBLIC_API_BASE_URL is required');
+    }
+    if (!processingApiUrl) {
+      throw new Error('NEXT_PUBLIC_PROCESSING_API_URL is required');
+    }
+
     return [
       {
         source: '/api/FacialAnalysis/:path*',
-        destination: 'http://localhost:5236/api/FacialAnalysis/:path*',
+        destination: `${processingApiUrl}/api/FacialAnalysis/:path*`,
       },
       {
         source: '/api/:path*',
-        destination: 'http://localhost:5240/api/:path*',
+        destination: `${apiBaseUrl}/api/:path*`,
       },
     ];
   },

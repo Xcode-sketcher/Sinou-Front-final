@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             await api.post('/api/auth/logout');
         } catch (error) {
-            console.error('Erro no logout:', error);
+            // console.error('Erro no logout:', error);
         } finally {
             setUser(null);
             router.push('/login');

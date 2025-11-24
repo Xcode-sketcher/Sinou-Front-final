@@ -18,7 +18,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUp, Moon, Sun, Share2, Settings, HelpCircle, Info, CreditCard, type LucideIcon } from "lucide-react";
+import { ArrowUp, Moon, Sun, Share2, Settings, HelpCircle, Info, CreditCard, FileText, type LucideIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useRouter, usePathname } from "next/navigation";
 
@@ -162,13 +162,18 @@ export function ContextMenu() {
                     label: "Planos",
                     icon: CreditCard,
                     action: () => {
-                        const element = document.getElementById("pagamento");
+                        const element = document.getElementById("pricing");
                         if (element) {
                             element.scrollIntoView({ behavior: "smooth" });
                         } else {
-                            router.push("/#pagamento");
+                            router.push("/#pricing");
                         }
                     },
+                },
+                {
+                    label: "Docs",
+                    icon: FileText,
+                    action: () => router.push('/equipe/docs')
                 }
             ]
         },
