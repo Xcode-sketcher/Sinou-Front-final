@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Heart, Mail, Phone, MapPin, Github, Twitter, Linkedin } from "lucide-react";
+import { Heart, Mail, Phone, MapPin, Github, Linkedin } from "lucide-react";
 
 export const Footer7 = ({ className = "" }: { className?: string }) => {
   const currentYear = new Date().getFullYear();
@@ -11,10 +11,10 @@ export const Footer7 = ({ className = "" }: { className?: string }) => {
     {
       title: "Produto",
       links: [
-        { name: "Como Funciona", href: "#demo" },
-        { name: "Planos", href: "#pricing" },
-        { name: "Funcionalidades", href: "#features" },
-        { name: "Demonstração", href: "#demo" },
+        { name: "Como Funciona", href: "/ajuda" },
+        { name: "Planos", href: "/#pricing" },
+        { name: "Funcionalidades", href: "/#features" },
+        { name: "Demonstração", href: "/#demo" },
       ],
     },
     {
@@ -30,7 +30,7 @@ export const Footer7 = ({ className = "" }: { className?: string }) => {
       title: "Suporte",
       links: [
         { name: "Ajuda", href: "/ajuda" },
-        { name: "Contato", href: "#contact" },
+        { name: "Contato", href: "/#contact" },
         { name: "Privacidade", href: "/privacidade" },
         { name: "Termos", href: "/termos" },
       ],
@@ -39,7 +39,6 @@ export const Footer7 = ({ className = "" }: { className?: string }) => {
 
   const socialLinks = [
     { icon: Github, href: "https://github.com/sinout", label: "GitHub" },
-    { icon: Twitter, href: "https://twitter.com/sinout", label: "Twitter" },
     { icon: Linkedin, href: "https://linkedin.com/company/sinout", label: "LinkedIn" },
   ];
 
@@ -65,7 +64,7 @@ export const Footer7 = ({ className = "" }: { className?: string }) => {
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-foreground mb-2">Sinout</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
-                  Transformando micro-expressões em comunicação. Dando voz àqueles que precisam.
+                  Quando o rosto fala, o mundo entende!
                 </p>
               </div>
 

@@ -12,6 +12,7 @@ import { ViteDemoSection } from "@/components/sections/vite-demo-section";
 import { ViteContactSection } from "@/components/sections/vite-contact-section";
 import FacialRecognitionAnimation from "@/components/sections/FacialRecognitionAnimation";
 import CustomCursor  from "@/components/ui/pointer";
+import Script from "next/script";
 
 const Particles = dynamic(() => import('@/components/ui/Particles'), { ssr: false });
 const Footer7 = dynamic(() => import("@/components/layout/Footer").then(mod => mod.Footer7));
@@ -25,7 +26,7 @@ export default function Home() {
 
   // Configuração dos links sociais
   const socialItems = [
-    { label: "GitHub", href: "https://github.com" },
+    { label: "", href: "#" },
   ];
 
 
@@ -115,6 +116,11 @@ export default function Home() {
       {/* Rodapé */}
       < Footer7 className="mt-auto border-t border-border bg-muted/30" />
     < CustomCursor />
+    <Script
+      src="https://cdn.jsdelivr.net/npm/sienna-accessibility@latest/dist/sienna-accessibility.umd.js"
+      strategy="lazyOnload"
+      defer
+    />
     </div >
   );
 }

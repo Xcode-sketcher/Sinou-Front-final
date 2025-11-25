@@ -6,16 +6,6 @@
  * Seção que apresenta a equipe técnica da Sinout com perfis detalhados de cada membro.
  * Exibe informações sobre responsabilidades, habilidades técnicas e links para redes sociais,
  * com design responsivo e animações de entrada elegantes.
- *
- * Funcionalidades principais:
- * - Perfis de 6 membros da equipe com fotos e informações completas
- * - Responsabilidades específicas de cada membro com ícones coloridos
- * - Tags de tecnologias/habilidades para cada perfil
- * - Links para GitHub e LinkedIn (placeholders)
- * - Animações de entrada escalonadas com Framer Motion
- * - Design responsivo (1 coluna mobile, 2 tablet, 3 desktop)
- * - Efeitos hover com gradientes e sombras
- * - Cards com bordas gradientes personalizadas por membro
  */
 
 import { motion } from "framer-motion";
@@ -39,6 +29,10 @@ interface TeamMember {
     tags: string[];
     /** Classe CSS para gradiente de cor */
     color: string;
+    /** URL do perfil GitHub */
+    github: string;
+    /** URL do perfil LinkedIn */
+    linkedin: string;
     /** Lista de responsabilidades com ícones */
     responsibilities: Array<{
         icon: React.ComponentType<{ className?: string }>;
@@ -53,12 +47,14 @@ interface TeamMember {
  */
 const team: TeamMember[] = [
     {
-        name: "Fabio R Rocha",
+        name: "Fabio Rocha",
         role: "Scrum Master & Full Stack",
         handle: "@FabioRoberto-ppt",
         avatar: "/Fabio.svg",
         tags: ["Agile", "Leadership", "Jira"],
         color: "from-blue-500 to-cyan-500",
+        github: "https://github.com/FabioRoberto-ppt",
+        linkedin: "https://www.linkedin.com/in/fabio-rocha",
         responsibilities: [
             { icon: Palette, label: "UI/UX", color: "text-purple-400" },
             { icon: Users, label: "Leadership", color: "text-yellow-400" },
@@ -73,6 +69,8 @@ const team: TeamMember[] = [
         avatar: "/Luana.svg",
         tags: ["Product", "Strategy", "UX"],
         color: "from-purple-500 to-pink-500",
+        github: "https://github.com/luanarochamiron",
+        linkedin: "https://www.linkedin.com/in/luana-miron",
         responsibilities: [
             { icon: Layout, label: "Estratégia", color: "text-blue-400" },
             { icon: Palette, label: "UX Design", color: "text-purple-400" },
@@ -87,6 +85,8 @@ const team: TeamMember[] = [
         avatar: "/Eduardo.svg",
         tags: ["Full Stack", "QA", "DevOps", "DBA"],
         color: "from-green-500 to-emerald-500",
+        github: "https://github.com/Xcode-sketcher",
+        linkedin: "https://www.linkedin.com/in/eduardo-barbosa-silva-896635363/",
         responsibilities: [
             { icon: Bug, label: "QA Testing", color: "text-red-400" },
             { icon: Server, label: "DevOps", color: "text-blue-400" },
@@ -101,6 +101,8 @@ const team: TeamMember[] = [
         avatar: "/Guilherme.svg",
         tags: ["React", "Next.js", "TypeScript"],
         color: "from-orange-500 to-red-500",
+        github: "https://github.com/GuilhermefDomingues",
+        linkedin: "https://www.linkedin.com/in/guilherme-fran%C3%A7a-domingues-84a070276/",
         responsibilities: [
             { icon: Palette, label: "UI/UX", color: "text-purple-400" },
             { icon: Layout, label: "React", color: "text-blue-400" },
@@ -113,8 +115,10 @@ const team: TeamMember[] = [
         role: "Full Stack & Finance",
         handle: "@ErickIsaac",
         avatar: "/Erick.svg",
-        tags: ["Frontend", "Backend", "UI"],
+        tags: ["Frontend", "Backend", "IA"],
         color: "from-indigo-500 to-blue-500",
+        github: "https://github.com/IsaacZ33",
+        linkedin: "https://www.linkedin.com/in/erick-isaac",
         responsibilities: [
             { icon: DollarSign, label: "Financeiro", color: "text-green-400" },
             { icon: Headphones, label: "Suporte", color: "text-blue-400" },
@@ -129,6 +133,8 @@ const team: TeamMember[] = [
         avatar: "/Felipe.svg",
         tags: ["Web", "Mobile", "Cloud"],
         color: "from-teal-500 to-green-500",
+        github: "https://github.com/Felipe-Koshimizu",
+        linkedin: "https://www.linkedin.com/in/felipe-trivia-koshimizu-90058721a/",
         responsibilities: [
             { icon: Layout, label: "Prototipagem", color: "text-blue-400" },
             { icon: Palette, label: "Estilização", color: "text-pink-400" },
@@ -153,7 +159,7 @@ export function TechTeam() {
                         As Mentes por Trás da Sinout
                     </h2>
                     <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                        Uma equipe multidisciplinar de especialistas construindo a próxima geração de ferramentas web.
+                       Equipe completa, com diferentes habilidades, dedicada a criar experiências web mais inteligentes e acessíveis.
                     </p>
                 </div>
 
@@ -186,12 +192,22 @@ export function TechTeam() {
                                             className="relative rounded-full border-2 border-border bg-background"
                                         />
                                     </div>
-                                    {/* Links para redes sociais */}
+                                    {/* Links para redes sociais individualizados */}
                                     <div className="flex gap-2">
-                                        <Link href="#" className="p-2 rounded-lg bg-muted hover:bg-muted/80 transition-colors text-muted-foreground hover:text-foreground">
+                                        <Link 
+                                            href={member.github} 
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="p-2 rounded-lg bg-muted hover:bg-muted/80 transition-colors text-muted-foreground hover:text-foreground"
+                                        >
                                             <Github className="w-4 h-4" />
                                         </Link>
-                                        <Link href="#" className="p-2 rounded-lg bg-muted hover:bg-muted/80 transition-colors text-muted-foreground hover:text-foreground">
+                                        <Link 
+                                            href={member.linkedin}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="p-2 rounded-lg bg-muted hover:bg-muted/80 transition-colors text-muted-foreground hover:text-foreground"
+                                        >
                                             <Linkedin className="w-4 h-4" />
                                         </Link>
                                     </div>

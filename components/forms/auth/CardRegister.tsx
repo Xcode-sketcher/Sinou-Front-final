@@ -68,11 +68,11 @@ const CardRegister: React.FC = () => {
         if (!formData.email) newErrors.email = 'Por favor, insira seu e-mail';
         else if (!validateEmail(formData.email)) newErrors.email = 'E-mail inválido';
         if (!formData.password) newErrors.password = 'Por favor, insira sua senha';
-        else if (formData.password.length < 6) newErrors.password = 'A senha deve ter no mínimo 6 caracteres';
+        else if (formData.password.length < 8) newErrors.password = 'A senha deve ter no mínimo 8 caracteres';
         if (!formData.confirmPassword) newErrors.confirmPassword = 'Por favor, confirme sua senha';
         else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'As senhas não coincidem';
         if (!formData.phone.trim()) newErrors.phone = 'Por favor, insira seu telefone';
-        else if (!/^\(\d{2}\)\s\d{5}-\d{4}$/.test(formData.phone)) newErrors.phone = 'Formato de telefone inválido. Use (11) 99999-9999';
+        // else if (!/^\(\d{2}\)\s\d{5}-\d{4}$/.test(formData.phone)) newErrors.phone = 'Formato de telefone inválido. Use (11) 99999-9999';
         if (!formData.patientName.trim()) newErrors.patientName = 'Por favor, insira o nome do paciente';
 
         if (Object.keys(newErrors).length > 0) {

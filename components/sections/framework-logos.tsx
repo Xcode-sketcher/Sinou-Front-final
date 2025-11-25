@@ -26,7 +26,7 @@ const frameworks = [
     { name: "JavaScript", color: "#f7df1e" },
     { name: "TypeScript", color: "#3178c6" },
     { name: "React", color: "#61dafb" },
-    { name: "Next.js", color: "#000000" },
+    { name: "Next.js", color: "#f0f" },
     { name: "ASP.NET", color: "#512bd4" },
     { name: "C#", color: "#239120" },
 ];
@@ -41,7 +41,7 @@ export function FrameworkLogos() {
             {/* Cabeçalho da seção */}
             <div className="container mx-auto px-4 md:px-6 text-center mb-8">
                 <h2 className="text-2xl font-semibold text-muted-foreground">
-                    Nossa stack tecnologica
+                    Nossa stack tecnológica
                 </h2>
             </div>
 

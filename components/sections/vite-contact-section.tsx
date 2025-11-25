@@ -74,7 +74,7 @@ export const ViteContactSection = () => {
     };
 
     return (
-        <section className="py-20 relative overflow-hidden">
+        <section  className="py-20 relative overflow-hidden" id="contact">
             {/* Elementos decorativos de fundo com gradientes sutis */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/5 to-transparent" />
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/8 rounded-full blur-[100px] pointer-events-none" />
@@ -87,7 +87,7 @@ export const ViteContactSection = () => {
                         Entre em Contato
                     </h2>
                     <p className="text-muted-foreground max-w-2xl mx-auto">
-                        Tem dúvidas sobre nossa tecnologia ou quer saber como ajudar pessoas com ELA? Estamos aqui para conversar.
+                        Tem dúvidas sobre nossa tecnologia? Estamos aqui para conversar.
                     </p>
                 </div>
 

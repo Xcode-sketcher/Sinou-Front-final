@@ -51,7 +51,7 @@ export function CodeComparison() {
                             viewport={{ once: true }}
                             className="text-3xl md:text-4xl font-bold mb-6"
                         >
-                            Equipe que entrega em segundos
+                            Ideias que ganham vida rápido
                         </motion.h2>
                         <motion.p
                             initial={{ opacity: 0, x: -20 }}
@@ -60,8 +60,7 @@ export function CodeComparison() {
                             transition={{ delay: 0.1 }}
                             className="text-lg text-muted-foreground mb-8"
                         >
-                            Nossa equipe configura projetos completos rapidamente. De ideias a protótipos funcionais,
-                            trabalhamos com eficiência para transformar conceitos em realidade acessível.
+                            Pegamos o conceito, construímos, testamos e já colocamos para funcionar tudo com foco em inclusão e comunicação.
                         </motion.p>
 
                         {/* Terminal interativo com comando de clone */}

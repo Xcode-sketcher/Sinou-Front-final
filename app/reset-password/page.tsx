@@ -27,6 +27,9 @@ import CustomCursor  from "@/components/ui/pointer";
 export default function ResetPasswordPage() {
     return(
         <>
+        <header>
+            <title>Sinout - Redefinir Senha</title>
+        </header>
             <CardResetPassword />;
             <CustomCursor />
         </>

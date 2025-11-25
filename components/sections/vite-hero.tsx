@@ -59,7 +59,7 @@ export function ViteHero() {
                             transition={{ duration: 0.5, delay: 0.1 }}
                             className="text-lg md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto md:mx-0"
                         >
-                           Profissionais dedicados a desenvolver soluções que ampliam a autonomia e a comunicação de pessoas com limitações motoras.
+                           Profissionais dedicados a desenvolver soluções que ampliam a autonomia e dão mais liberdade para se expressar.
                         </motion.p>
 
                         {/* (CTA buttons intentionally removed) */}

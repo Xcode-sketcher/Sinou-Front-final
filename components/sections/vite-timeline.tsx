@@ -108,28 +108,28 @@ export const ViteTimeline = () => {
         {
             date: "Inclusividade",
             title: "Tecnologia para Todos",
-            description: "Nossa IA foi treinada para reconhecer micro-expressões em rostos de todas as etnias, gêneros e idades, garantindo acesso universal.",
+            description: "Nossa IA foi treinada para reconhecer micro-expressões em rostos de todas as etnias, gêneros e idades, e garantimos acesso universal.",
             icon: Users,
             color: "from-blue-500 to-cyan-500"
         },
         {
             date: "Acessibilidade",
             title: "Comunicação Sem Barreiras",
-            description: "Projetado especificamente para pessoas com ELA e limitações motoras severas, transformando o mínimo movimento em palavras.",
+            description: "Projetado para pessoas com limitações motoras severas, transformamos o mínimo movimento em palavras.",
             icon: Trophy,
             color: "from-purple-500 to-violet-500"
         },
         {
             date: "Inovação",
             title: "IA de Alta Precisão",
-            description: "Algoritmos avançados que aprendem e se adaptam ao padrão único de cada usuário, melhorando a precisão a cada uso.",
+            description: "Algoritmos avançados que aprendem e se adaptam ao padrão único de cada usuário, que melhora a precisão a cada uso.",
             icon: Rocket,
             color: "from-pink-500 to-rose-500"
         },
         {
             date: "Futuro",
             title: "Autonomia Recuperada",
-            description: "Mais do que software, entregamos independência. Permitindo que pensamentos e sentimentos sejam expressos livremente.",
+            description: "Entregamos independência. Permitimos que pensamentos e sentimentos sejam expressos livremente.",
             icon: Calendar,
             color: "from-amber-500 to-orange-500"
         }
@@ -144,7 +144,7 @@ export const ViteTimeline = () => {
                         Nossos Valores
                     </h2>
                     <p className="text-muted-foreground max-w-2xl mx-auto">
-                        Construindo um futuro onde a tecnologia serve à humanidade, quebrando o silêncio e conectando vidas.
+                        Construimos um futuro onde a tecnologia serve à humanidade, quebramos o silêncio e conectamos vidas.
                     </p>
                 </motion.div>
 

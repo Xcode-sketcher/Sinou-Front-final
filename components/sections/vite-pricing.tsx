@@ -151,36 +151,33 @@ export const VitePricing = () => {
     // Array com dados completos dos três planos de preços
     const plans: PricingPlan[] = [
         {
-            name: "Pessoal",
+            name: "Olhar Básico",
             price: "Gratuito",
             description: "Para uso individual. Recupere sua autonomia de comunicação básica.",
             icon: PersonalIcon,
             features: [
                 "Tradução de expressões básicas",
-                "Teclado virtual ocular",
-                "Síntese de voz padrão",
-                "App móvel básico",
-                "Suporte comunitário"
+                "Relatório simplificado",
+                "Acesso sem suporte prioritário",
+                "Atualizações regulares"
             ],
             popular: false
         },
         {
-            name: "Família",
+            name: "Olhar Completo",
             price: "R$ 49",
-            description: "Recursos avançados para o paciente e ferramentas de monitoramento para cuidadores.",
+            description: "Recursos avançados para o paciente e ferramentas de monitoramento para cuidador.",
             icon: FamilyIcon,
             features: [
-                "Tudo do plano Pessoal",
-                "App do Cuidador (até 3)",
-                "Voz neural personalizada",
-                "Histórico de comunicação",
-                "Integração Smart Home",
-                "Suporte prioritário"
+                "Tudo do plano Olhar Básico",
+                "Relatórios detalhados",
+                "Suporte prioritário",
+                "Histórico de comunicação"
             ],
             popular: true
         },
         {
-            name: "Institucional",
+            name: "Olhar Corporativo",
             price: "Sob Consulta",
             description: "Para clínicas, hospitais e associações que atendem múltiplos pacientes.",
             icon: InstitutionalIcon,
@@ -188,9 +185,7 @@ export const VitePricing = () => {
                 "Múltiplos perfis de pacientes",
                 "Dashboard clínico analítico",
                 "API para integração hospitalar",
-                "Treinamento da equipe",
-                "Hardware dedicado opcional",
-                "SLA garantido"
+                "Treinamento da equipe"
             ],
             popular: false
         }

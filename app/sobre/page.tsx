@@ -195,11 +195,14 @@ const FloatingElement = ({ children, delay = 0 }: FloatingElementProps) => (
 export default function SobrePage() {
     // Configuração dos links das redes sociais para o menu
     const socialItems = [
-        { label: "GitHub", href: "https://github.com" },
+        { label: "", href: "#" },
     ];
 
     return (
         <div className="min-h-screen bg-background">
+            <header>
+                <title>Sobre Sinout</title>
+            </header>
             {/* Menu de navegação moderno */}
             <ModernMenu items={[]} socialItems={socialItems} />
 
@@ -264,7 +267,7 @@ export default function SobrePage() {
                             <JourneyStep
                                 step={1}
                                 title="O Nascimento da Ideia"
-                                description="Tudo começou com uma história real. Uma família enfrentando as barreiras da comunicação não-verbal. Vimos a necessidade urgente de criar uma ponte entre o mundo digital e as expressões humanas, nascida da pura empatia e solidariedade."
+                                description="Tudo começou com uma história real. Uma família enfrentando as barreiras da comunicação não-verbal. Vimos a necessidade urgente de criar uma ponte entre o mundo digital e as expressões humanas, nascida da empatia e solidariedade."
                                 icon={CustomIcons.Heart}
                                 color="bg-purple-600"
                                 delay={0.1}
@@ -273,7 +276,7 @@ export default function SobrePage() {
                             {/* Passo 2: Pesquisa e empatia profunda */}
                             <JourneyStep
                                 step={2}
-                                title="Pesquisa e Empatia Profunda"
+                                title="Pesquisa e Empatia"
                                 description="Mergulhamos no universo das pessoas com deficiência motora e suas famílias. Entrevistas, observações e imersão nos permitiram entender não apenas os desafios técnicos, mas as emoções, frustrações e esperanças de cada pessoa."
                                 icon={CustomIcons.Users}
                                 color="bg-orange-500"
@@ -284,7 +287,7 @@ export default function SobrePage() {
                             <JourneyStep
                                 step={3}
                                 title="Planejamento Estruturado"
-                                description="Transformamos nossa empatia em ação concreta. Desenvolvemos um plano abrangente que incluía pesquisa de tecnologias emergentes, arquitetura de sistema escalável, e uma estratégia de implementação realista e sustentável."
+                                description="Desenvolvemos um plano abrangente que incluía pesquisa de tecnologias emergentes, arquitetura de sistema escalável, e uma estratégia de implementação realista e sustentável."
                                 icon={CustomIcons.Target}
                                 color="bg-purple-500"
                                 delay={0.3}
@@ -294,7 +297,7 @@ export default function SobrePage() {
                             <JourneyStep
                                 step={4}
                                 title="Desenvolvimento Técnico"
-                                description="Nossa equipe multidisciplinar começou a construir. Algoritmos de reconhecimento facial, interfaces intuitivas, síntese de voz neural e integração IoT foram desenvolvidos com rigor técnico e atenção aos detalhes."
+                                description="Nossa equipe multidisciplinar começou a construir. Algoritmos de reconhecimento facial, interfaces intuitivas, foram desenvolvidos com rigor técnico e atenção aos detalhes."
                                 icon={CustomIcons.Code}
                                 color="bg-orange-600"
                                 delay={0.4}
@@ -304,7 +307,7 @@ export default function SobrePage() {
                             <JourneyStep
                                 step={5}
                                 title="Lançamento e Impacto"
-                                description="O Sinout deixou o laboratório e entrou na vida real. Cada usuário que consegue se comunicar, cada família que se reconecta, cada barreira que é quebrada, valida nossa missão e nos impulsiona a continuar inovando."
+                                description="O Sinout deixou de ser uma ideia e entrou na vida real. Cada usuário que consegue se comunicar, cada família que se reconecta, cada barreira que é quebrada, valida nossa missão e nos impulsiona a continuar inovando."
                                 icon={CustomIcons.Rocket}
                                 color="bg-purple-700"
                                 delay={0.5}
@@ -336,19 +339,19 @@ export default function SobrePage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                         {[
                             {
-                                title: "Empatia Primeiro",
+                                title: "Empatia",
                                 description: "Cada recurso é desenvolvido pensando primeiro nas pessoas, não na tecnologia.",
                                 icon: CustomIcons.Heart,
                                 color: "from-purple-600 to-purple-500"
                             },
                             {
-                                title: "Inovação Acessível",
+                                title: "Inovação",
                                 description: "Tecnologia de ponta deve estar ao alcance de todos, independente da condição financeira.",
                                 icon: CustomIcons.Lightbulb,
                                 color: "from-orange-500 to-orange-400"
                             },
                             {
-                                title: "Impacto Sustentável",
+                                title: "Impacto",
                                 description: "Buscamos mudanças reais e duradouras na vida das pessoas que atendemos.",
                                 icon: CustomIcons.Target,
                                 color: "from-purple-500 to-orange-500"
@@ -392,13 +395,13 @@ export default function SobrePage() {
                             Faça Parte Desta História
                         </h2>
                         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                            Junte-se a nós nesta missão de transformar vidas através da tecnologia acessível
+                            Junte-se a nós nesta missão de transformar vidas através da tecnologia
                         </p>
 
                         {/* Botões de ação */}
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                             {/* Botão principal para planos */}
-                            <Link href="/#pagamento">
+                            <Link href="/#pricing">
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}

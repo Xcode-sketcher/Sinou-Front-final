@@ -5,11 +5,13 @@ import { ModernMenu } from "@/components/layout/Header";
 import CustomCursor  from "@/components/ui/pointer";
 // import VLibrasWidget from '../../acessibilidade/vLibras'; 
 
+
+
+
 export default function AjudaPage() {
     const socialItems = [
-        { label: "GitHub", href: "https://github.com/" },
-        { label: "Twitter", href: "https://twitter.com/" },
-        { label: "LinkedIn", href: "https://linkedin.com/" },
+        { label: "", href: "#" },
+        { label: "", href: "#" },
     ];
 
     return (

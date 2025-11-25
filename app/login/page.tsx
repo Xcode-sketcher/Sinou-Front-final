@@ -43,6 +43,9 @@ import CustomCursor  from "@/components/ui/pointer";
 export default function LoginPage() {
     return(
         <>
+        <header>
+            <title>Sinout - Login</title>
+        </header>
             <CardLogin />;
             <CustomCursor />
         </>

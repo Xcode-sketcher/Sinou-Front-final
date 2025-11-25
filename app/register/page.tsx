@@ -42,6 +42,9 @@ import CustomCursor  from "@/components/ui/pointer";
 export default function RegisterPage() {
     return(
         <>
+        <header>
+            <title>Sinout - Cadastre-se</title>
+        </header>
             <CardRegister />;
             <CustomCursor />
         </>

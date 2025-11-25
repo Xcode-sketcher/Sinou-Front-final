@@ -10,10 +10,10 @@ import Image from "next/image";
 // Dados reais da equipe (preenchido a partir dos perfis no site)
 const teamMembers = [
     {
-        name: "Fabio R Rocha",
+        name: "Fabio Rocha",
         role: "Scrum Master & Full Stack",
         avatar: "/Fabio.svg",
-        description: "Scrum Master e full stack. Foco em coordenação de equipes, definição de processos ágeis e entrega de valor iterativo.",
+        description: "Foco em coordenação de equipes, definição de processos ágeis e entrega de valor iterativo.",
         contributions: [
             "Facilitação das Sprints e remoção de impedimentos",
             "Definição de práticas ágeis e governança do processo",
@@ -22,15 +22,15 @@ const teamMembers = [
         ],
         social: {
             github: "https://github.com/FabioRoberto-ppt",
-            linkedin: "https://linkedin.com/in/fabio-r-rocha",
-            email: "mailto:fabio@sinout.com"
+            linkedin: "https://www.linkedin.com/in/fabio-roberto-980199301/",
+            
         }
     },
     {
         name: "Luana Miron",
         role: "Product Owner & Marketing",
         avatar: "/Luana.svg",
-        description: "Product Owner com forte foco em estratégia de produto, UX e posicionamento de mercado.",
+        description: "Forte foco em estratégia de produto, UX e posicionamento de mercado.",
         contributions: [
             "Definição da visão do produto e roadmap",
             "Estratégia de comunicação e marketing",
@@ -39,15 +39,14 @@ const teamMembers = [
         ],
         social: {
             github: "https://github.com/luanarochamiron",
-            linkedin: "https://linkedin.com/in/luana-miron",
-            email: "mailto:luana@sinout.com"
+            linkedin: "https://www.linkedin.com/in/luanarochamiron/",
         }
     },
     {
         name: "Eduardo Barbosa",
         role: "Full Stack & DevOps Lead",
         avatar: "/Eduardo.svg",
-        description: "Tech Lead e DevOps — responsável pela arquitetura, integração com IA e operação dos ambientes de produção.",
+        description: "Responsável pela arquitetura, integração com IA e operação dos ambientes de produção.",
         contributions: [
             "Arquitetura do sistema em Next.js",
             "Implementação do reconhecimento facial e integração com APIs de IA",
@@ -56,15 +55,15 @@ const teamMembers = [
         ],
         social: {
             github: "https://github.com/Xcode-sketcher",
-            linkedin: "https://linkedin.com/in/eduardo-barbosa",
-            email: "mailto:eduardo@sinout.com"
+            linkedin: "https://www.linkedin.com/in/eduardo-barbosa-silva-896635363/",
+
         }
     },
     {
         name: "Guilherme França",
         role: "Front End & Marketing",
         avatar: "/Guilherme.svg",
-        description: "Front-end focado em interfaces ricas, acessibilidade e material de divulgação/marketing.",
+        description: "Focado em interfaces ricas, acessibilidade e material de divulgação/marketing.",
         contributions: [
             "Desenvolvimento de interfaces e componentes reativos",
             "Criação de material de marketing e conteúdo",
@@ -73,15 +72,15 @@ const teamMembers = [
         ],
         social: {
             github: "https://github.com/GuilhermefDomingues",
-            linkedin: "https://linkedin.com/in/guilherme-franca",
-            email: "mailto:guilherme@sinout.com"
+            linkedin: "https://www.linkedin.com/in/guilherme-fran%C3%A7a-domingues-84a070276/",
+
         }
     },
     {
         name: "Erick Isaac",
         role: "Full Stack & Finance",
         avatar: "/Erick.svg",
-        description: "Full stack com foco em integração servidor/cliente e apoio às áreas financeiras do produto.",
+        description: "Foco em integração servidor/cliente e apoio às áreas financeiras do produto.",
         contributions: [
             "Integração backend/frontend e APIs",
             "Suporte a operações e integração financeira",
@@ -89,16 +88,15 @@ const teamMembers = [
             "Garantia de estabilidade nas entregas"
         ],
         social: {
-            github: "https://github.com/ErickIsaac",
+            github: "https://github.com/IsaacZ33",
             linkedin: "https://linkedin.com/in/erick-isaac",
-            email: "mailto:erick@sinout.com"
         }
     },
     {
         name: "Felipe Trivia",
         role: "Front End Developer",
         avatar: "/Felipe.svg",
-        description: "Front-end developer dedicado a prototipagem, estilização e performance web/mobile.",
+        description: "Dedicado a prototipagem, estilização e performance web/mobile.",
         contributions: [
             "Prototipagem e telas de alta fidelidade",
             "Estilização, temas e UX para dispositivos móveis",
@@ -106,16 +104,15 @@ const teamMembers = [
             "Colaboração com QA para garantir qualidade"
         ],
         social: {
-            github: "https://github.com/Felipe_Koshimizu",
-            linkedin: "https://linkedin.com/in/felipe-trivia",
-            email: "mailto:felipe@sinout.com"
+            github: "https://github.com/Felipe-Koshimizu",
+            linkedin: "https://www.linkedin.com/in/felipe-trivia-koshimizu-90058721a/",
         }
     }
 ];
 
 export default function TeamDocsPage() {
     const socialItems = [
-        { label: "GitHub", href: "https://github.com" },
+        { label: "", href: "#" },
     ];
 
     return (
@@ -185,9 +182,9 @@ export default function TeamDocsPage() {
                                 <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-blue-600 transition-colors">
                                     <Linkedin className="w-5 h-5" />
                                 </a>
-                                <a href={member.social.email} className="text-muted-foreground hover:text-orange-500 transition-colors">
+                                {/* <a href={member.social.email} className="text-muted-foreground hover:text-orange-500 transition-colors">
                                     <Mail className="w-5 h-5" />
-                                </a>
+                                </a> */}
                             </div>
                         </motion.div>
                     ))}

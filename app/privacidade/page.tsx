@@ -6,11 +6,14 @@ const Footer7 = dynamic(() => import("@/components/layout/Footer").then(mod => m
 
 export default function Privacidade() {
     const socialItems = [
-        { label: "GitHub", href: "https://github.com" },
+        { label: "", href: "#" },
     ];
 
     return (
         <div className="min-h-screen flex flex-col bg-background text-foreground">
+            <header>
+                <title>Sinout - Privacidade</title>
+            </header>
             <ModernMenu items={[]} socialItems={socialItems} />
 
             <main className="flex-grow pt-36 pb-16">

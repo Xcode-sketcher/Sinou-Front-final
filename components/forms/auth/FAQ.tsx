@@ -50,8 +50,8 @@ const menuItems = [
   { label: "Estatística", href: "/estatistica" },
 ];
 const socialItems = [
-  { label: "Github", href: "https://github.com" },
-  { label: "Linkedin", href: "https://linkedin.com" },
+  { label: "", href: "#" },
+  { label: "", href: "#" },
 ];
 
 interface FAQItemProps {
@@ -66,6 +66,9 @@ interface FAQItemProps {
 const FAQItem = ({ icon: Icon, question, answer, isOpen, toggle }: FAQItemProps) => {
   return (
     <div className="mb-4">
+      <header>
+        <title>Sinout - FAQ</title>
+      </header>
       <button
         onClick={toggle}
         className={`w-full flex items-center justify-between p-5 rounded-xl transition-all duration-300 border 
@@ -220,7 +223,7 @@ export default function AjudaPage() {
                       Nossa equipe está pronta para ajudar você a configurar tudo para suas necessidades.
                   </p>
                   
-                  <Link href="/contato">
+                  <Link href="/#contact">
                       <Button 
                           size="lg" 
                           className="bg-white text-purple-700 hover:bg-gray-50 hover:text-purple-800 font-bold rounded-full px-10 py-7 text-lg shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 active:scale-95 border-2 border-transparent hover:border-purple-200"
