@@ -9,6 +9,14 @@ declare global {
   }
 }
 
+declare module "react" {
+  interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
+    vw?: string;
+    "vw-access-button"?: string;
+    "vw-plugin-wrapper"?: string;
+  }
+}
+
 export function VLibras() {
   useEffect(() => {
     // Evita adicionar o script mais de uma vez
