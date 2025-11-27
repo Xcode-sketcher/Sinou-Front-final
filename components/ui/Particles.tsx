@@ -3,20 +3,51 @@ import React, { useEffect, useRef } from 'react';
 import { Renderer, Camera, Geometry, Program, Mesh } from 'ogl';
 
 /**
+ * Componente Particles
+ *
+ * Sistema avançado de partículas 3D renderizado com WebGL usando OGL.
+ * Cria efeitos visuais dinâmicos com partículas animadas em espaço 3D,
+ * com suporte a interação com mouse, personalização de cores e controle
+ * completo sobre movimento e aparência.
+ *
+ * Funcionalidades principais:
+ * - Renderização WebGL de alta performance
+ * - Distribuição esférica uniforme de partículas
+ * - Animações orgânicas com movimento sinusoidal
+ * - Interação com mouse (opcional)
+ * - Controle de transparência e tamanho
+ * - Rotação automática configurável
+ * - Múltiplas cores com paleta personalizável
+ * - Otimização de performance com instancing
+ */
+
+/**
  * Propriedades do componente Particles
  */
 interface ParticlesProps {
+  /** Número de partículas a renderizar (padrão: 200) */
   particleCount?: number;
+  /** Raio de distribuição das partículas (padrão: 10) */
   particleSpread?: number;
+  /** Velocidade da animação (padrão: 0.1) */
   speed?: number;
+  /** Array de cores hexadecimais para as partículas */
   particleColors?: string[];
+  /** Habilita movimento das partículas com o mouse (padrão: false) */
   moveParticlesOnHover?: boolean;
+  /** Fator de influência do mouse no movimento (padrão: 1) */
   particleHoverFactor?: number;
+  /** Habilita transparência nas partículas (padrão: false) */
   alphaParticles?: boolean;
+  /** Tamanho base das partículas (padrão: 100) */
   particleBaseSize?: number;
+  /** Fator de aleatoriedade no tamanho (padrão: 1) */
   sizeRandomness?: number;
+  /** Distância da câmera (padrão: 20) */
   cameraDistance?: number;
+  /** Desabilita rotação automática (padrão: false) */
   disableRotation?: boolean;
+  /** Classes CSS adicionais */
   className?: string;
 }
 
@@ -25,8 +56,9 @@ const defaultColors: string[] = ['#ff7a00', '#ff9a3c', '#ff6b00'];
 
 /**
  * Converte cor hexadecimal para RGB normalizado (0-1)
- * @param hex - Cor em formato hexadecimal
- * @returns Array com valores RGB normalizados
+ * Utilizado para passar cores do JavaScript para os shaders GLSL
+ * @param hex - Cor em formato hexadecimal (#RRGGBB ou #RGB)
+ * @returns Array com valores RGB normalizados entre 0 e 1
  */
 const hexToRgb = (hex: string): [number, number, number] => {
   hex = hex.replace(/^#/, '');
@@ -146,6 +178,10 @@ const Particles: React.FC<ParticlesProps> = ({
     const camera = new Camera(gl, { fov: 15 });
     camera.position.set(0, 0, cameraDistance);
 
+    /**
+     * Função de redimensionamento do canvas
+     * Ajusta o tamanho do renderer e perspectiva da câmera
+     */
     const resize = () => {
       const width = container.clientWidth;
       const height = container.clientHeight;
@@ -155,6 +191,10 @@ const Particles: React.FC<ParticlesProps> = ({
     window.addEventListener('resize', resize, false);
     resize();
 
+    /**
+     * Manipulador de movimento do mouse
+     * Converte coordenadas da tela para coordenadas normalizadas (-1 a 1)
+     */
     const handleMouseMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;

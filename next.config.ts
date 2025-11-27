@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  compress: true, // Enable gzip compression
+  compress: true,
   experimental: {
     optimizePackageImports: ['lucide-react', 'react-icons', '@tabler/icons-react', 'framer-motion'],
   },
@@ -10,16 +10,35 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "assets.aceternity.com",
-        // se quiser, pode ser mais específico:
-        // pathname: "/templates/**",
       },
       {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
     ],
-    // ou, se preferir, a forma antiga:
-    // domains: ["assets.aceternity.com"],
+  },
+  async rewrites() {
+    // Validação das variáveis de ambiente obrigatórias
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const processingApiUrl = process.env.NEXT_PUBLIC_PROCESSING_API_URL;
+
+    if (!apiBaseUrl) {
+      throw new Error('NEXT_PUBLIC_API_BASE_URL is required');
+    }
+    if (!processingApiUrl) {
+      throw new Error('NEXT_PUBLIC_PROCESSING_API_URL is required');
+    }
+
+    return [
+      {
+        source: '/api/FacialAnalysis/:path*',
+        destination: `${processingApiUrl}/api/FacialAnalysis/:path*`,
+      },
+      {
+        source: '/api/:path*',
+        destination: `${apiBaseUrl}/api/:path*`,
+      },
+    ];
   },
 };
 

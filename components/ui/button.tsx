@@ -1,3 +1,19 @@
+/**
+ * Componente Button
+ *
+ * Botão versátil e acessível baseado no design system Shadcn/ui.
+ * Suporta múltiplas variantes visuais, tamanhos e estados, com foco
+ * na acessibilidade e experiência do usuário.
+ *
+ * Funcionalidades principais:
+ * - Múltiplas variantes (default, destructive, outline, secondary, ghost, link)
+ * - Diferentes tamanhos (sm, default, lg, icon)
+ * - Suporte a Radix Slot para composição
+ * - Estados de foco e hover acessíveis
+ * - Desabilitação automática com opacidade reduzida
+ * - Transições suaves entre estados
+ */
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -33,14 +49,24 @@ const buttonVariants = cva(
   },
 )
 
+/**
+ * Propriedades do componente Button
+ * Extende as propriedades nativas do HTMLButtonElement e variantes do CVA
+ */
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
+  /** Se true, renderiza o conteúdo filho como elemento raiz usando Radix Slot */
   asChild?: boolean
 }
 
+/**
+ * Componente Button com forwardRef para acesso ao elemento DOM
+ * Utiliza composição com Radix Slot quando asChild é true
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
+    // Determina se usar Slot do Radix ou elemento button nativo
     const Comp = asChild ? Slot : "button"
     return (
       <Comp

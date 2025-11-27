@@ -1,12 +1,11 @@
 "use client";
-import React, { useState, useRef } from 'react';
-import type { FormEvent, ChangeEvent } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Eye, EyeOff, ArrowLeft, Loader2 } from 'lucide-react';
 
-const CardNewPassword: React.FC = () => {
+import { useState, useRef, ChangeEvent, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
+
+const CardNewPassword = () => {
     const [formData, setFormData] = useState({ password: '', confirmPassword: '' });
     const [errors, setErrors] = useState<{ password?: string; confirmPassword?: string }>({});
     const [isLoading, setIsLoading] = useState(false);
