@@ -65,35 +65,7 @@ const SinoutIcons = {
     )
 };
 
-// Sinout Logo Component - Infinity Symbol
-const SinoutLogo = ({ lit = false }: { lit?: boolean }) => (
-    <svg width="70" height="70" viewBox="0 0 100 100" fill="none">
-        <defs>
-            <linearGradient id="sinout-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#9333EA" />
-                <stop offset="100%" stopColor="#F97316" />
-            </linearGradient>
-        </defs>
-        {/* Infinity Symbol - Corrected Shape */}
-        <path
-            d="M30 50 C30 30, 50 30, 50 50 C50 70, 70 70, 70 50 C70 30, 50 30, 50 50 C50 70, 30 70, 30 50 Z"
-            stroke={lit ? "url(#sinout-gradient)" : "currentColor"}
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-            opacity={lit ? 1 : 0.3}
-            transform="scale(1.2) translate(-8, 0)"
-        />
-        {/* Inner glow dots */}
-        {lit && (
-            <>
-                <circle cx="35" cy="50" r="3" fill="#9333EA" opacity="0.8" />
-                <circle cx="65" cy="50" r="3" fill="#F97316" opacity="0.8" />
-            </>
-        )}
-    </svg>
-);
+
 
 export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimationProps) {
     const [animationPhase, setAnimationPhase] = useState<'dark' | 'spark' | 'lit' | 'orbiting'>('dark');
@@ -173,7 +145,11 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
                         opacity: 0.3
                     }}
                 >
-                    <SinoutLogo lit={false} />
+                    <img
+                        src="/Logo.svg"
+                        alt="Sinout Logo"
+                        className="w-20 h-20 opacity-30 object-contain"
+                    />
                 </div>
             </div>
         );
@@ -276,7 +252,12 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
 
                 {/* Sinout Logo */}
                 <div className="relative z-10">
-                    <SinoutLogo lit={animationPhase === 'lit' || animationPhase === 'orbiting'} />
+                    <img
+                        src="/Logo.svg"
+                        alt="Sinout Logo"
+                        className={`w-20 h-20 object-contain transition-opacity duration-500 ${animationPhase === 'lit' || animationPhase === 'orbiting' ? 'opacity-100' : 'opacity-30'
+                            }`}
+                    />
                 </div>
             </motion.div>
 

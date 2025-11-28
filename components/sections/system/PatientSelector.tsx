@@ -5,11 +5,22 @@ import { Patient } from "@/components/sections/statistics/types";
 import api from "@/lib/api";
 import { User, ChevronDown, Loader2 } from "lucide-react";
 
+/**
+ * Propriedades do componente PatientSelector.
+ */
 interface PatientSelectorProps {
+    /** O paciente atualmente selecionado. */
     selectedPatient: Patient | null;
+    /** Função chamada quando um novo paciente é selecionado. */
     onSelect: (patient: Patient) => void;
 }
 
+/**
+ * Componente Seletor de Pacientes.
+ * 
+ * Exibe um menu suspenso (dropdown) que permite ao usuário selecionar o paciente ativo.
+ * Carrega a lista de pacientes associados ao cuidador logado via API.
+ */
 export function PatientSelector({ selectedPatient, onSelect }: PatientSelectorProps) {
     const [patients, setPatients] = useState<Patient[]>([]);
     const [loading, setLoading] = useState(true);
@@ -20,7 +31,6 @@ export function PatientSelector({ selectedPatient, onSelect }: PatientSelectorPr
                 const response = await api.get('/api/patients');
                 const data = response.data;
 
-                // Robust data parsing to handle various API response structures
                 let patientsList: Patient[] = [];
 
                 if (Array.isArray(data)) {
@@ -31,7 +41,6 @@ export function PatientSelector({ selectedPatient, onSelect }: PatientSelectorPr
                     patientsList = data.patients;
                 }
 
-                // Normalize _id to string for consistency
                 patientsList = patientsList.map(patient => ({
                     ...patient,
                     _id: String(patient._id)
@@ -39,7 +48,6 @@ export function PatientSelector({ selectedPatient, onSelect }: PatientSelectorPr
 
                 setPatients(patientsList);
 
-                // If no patients from API, use mock data for testing
                 if (patientsList.length === 0) {
                     const mockPatients: Patient[] = [
                         { _id: "1", nome: "João Silva", idade: 65, diagnostico: "Alzheimer", id_cuidador: 1, data_cadastro: "2024-01-15", status: true, informacoes_adicionais: null, foto_perfil: null, criado_por: "admin" },
@@ -49,7 +57,6 @@ export function PatientSelector({ selectedPatient, onSelect }: PatientSelectorPr
                     setPatients(mockPatients);
                 }
             } catch (error) {
-                // console.error("Failed to fetch patients", error);
             } finally {
                 setLoading(false);
             }
@@ -58,7 +65,6 @@ export function PatientSelector({ selectedPatient, onSelect }: PatientSelectorPr
         fetchPatients();
     }, []);
 
-    // Auto-select first patient if none selected
     useEffect(() => {
         if (!loading && patients.length > 0 && !selectedPatient) {
             onSelect(patients[0]);

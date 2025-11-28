@@ -10,9 +10,11 @@ import { Button } from "@/components/ui/button";
 import { Filter } from "lucide-react";
 import { motion } from "framer-motion";
 import api from "@/lib/api";
+import { mockHistory, mockRules, mockPatient } from "./mock-data";
+
 /**
- * Interface para itens de histórico retornados pela API
- * Representa um registro de detecção emocional com dados brutos da API
+ * Interface para itens de histórico retornados pela API.
+ * Representa um registro de detecção emocional com dados brutos da API.
  */
 interface ApiHistoryItem {
     id: string;
@@ -27,8 +29,8 @@ interface ApiHistoryItem {
 }
 
 /**
- * Interface para regras retornadas pela API
- * Define as regras de mapeamento emocional com configurações de prioridade
+ * Interface para regras retornadas pela API.
+ * Define as regras de mapeamento emocional com configurações de prioridade.
  */
 interface ApiRuleItem {
     id: string;
@@ -44,58 +46,49 @@ interface ApiRuleItem {
 }
 
 /**
- * Dashboard principal de estatísticas do sistema Sinout
+ * Dashboard principal de estatísticas do sistema Sinout.
  *
  * Componente central que orquestra a exibição de dados estatísticos do paciente,
  * incluindo métricas em tempo real, gráficos de volume, análise de tendências,
  * distribuição emocional e lista de atividades recentes.
  *
  * Funcionalidades principais:
- * - Filtragem temporal de dados (6h, 12h, 24h)
- * - Integração com API para busca de histórico, regras e dados do paciente
- * - Mapeamento e validação de dados da API para formato interno
- * - Estados de carregamento e tratamento de erros
- * - Layout responsivo com grid adaptativo
- *
- * @component
- * @example
- * ```tsx
- * <StatisticsDashboard />
- * ```
- *
- * @returns {JSX.Element} Dashboard completo com todas as seções estatísticas
+ * - Filtragem temporal de dados (6h, 12h, 24h).
+ * - Integração com API para busca de histórico, regras e dados do paciente.
+ * - Mapeamento e validação de dados da API para formato interno.
+ * - Estados de carregamento e tratamento de erros.
+ * - Layout responsivo com grid adaptativo.
  */
 export function StatisticsDashboard() {
-    // Estados para controle de filtro temporal (6, 12 ou 24 horas)
     const [timeFilter, setTimeFilter] = useState<number>(24);
-
-    // Estados para armazenamento de dados do histórico emocional
     const [filteredHistory, setFilteredHistory] = useState<HistoryItem[]>([]);
-
-    // Estado para regras de mapeamento emocional ativas
     const [rules, setRules] = useState<Rule[]>([]);
-
-    // Estado para dados do paciente atual
     const [patient, setPatient] = useState<Patient | null>(null);
-
-    // Estados para controle de UI (carregamento e erros)
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     /**
-     * Função assíncrona para buscar dados da API
-     * Executa múltiplas requisições em paralelo e processa os dados retornados
-     *
-     * Processamento realizado:
-     * 1. Busca histórico emocional filtrado por tempo
-     * 2. Busca regras de mapeamento ativas do usuário
-     * 3. Busca dados do paciente autenticado
-     * 4. Mapeia dados da API para formato interno do componente
-     * 5. Filtra entradas inválidas e calcula percentuais quando necessário
+     * Atualiza o filtro temporal selecionado.
+     * 
+     * @param hours - Número de horas para filtrar o histórico.
+     */
+    const handleFilterChange = (hours: number) => {
+        setTimeFilter(hours);
+    };
+
+    /**
+     * Busca dados da API de forma assíncrona.
+     * Executa múltiplas requisições em paralelo e processa os dados retornados.
      */
     const fetchData = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+
+        let historyResponse: { data: any } | undefined;
+        let rulesResponse: { data: any } | undefined;
+        let patientResponse: { data: any } | undefined;
+
         try {
-            // Helper function to fetch with timeout
             const fetchWithTimeout = <T,>(promise: Promise<T>, timeoutMs: number): Promise<T> => {
                 const timeout = new Promise<T>((_, reject) => {
                     const id = setTimeout(() => {
@@ -110,8 +103,6 @@ export function StatisticsDashboard() {
                 ]);
             };
 
-            let historyResponse, rulesResponse, patientResponse;
-
             try {
                 [historyResponse, rulesResponse, patientResponse] = await fetchWithTimeout(
                     Promise.all([
@@ -119,27 +110,23 @@ export function StatisticsDashboard() {
                         api.get('/api/emotion-mappings/my-rules'),
                         api.get('/api/users/me')
                     ]),
-                    5000 // 5 segundos de timeout
+                    5000
                 );
             } catch (error) {
                 console.warn("API request timed out or failed, using mock data", error);
-                // Fallback para dados mockados
                 historyResponse = { data: mockHistory };
                 rulesResponse = { data: mockRules };
                 patientResponse = { data: mockPatient };
-                // Opcional: setar um estado para avisar o usuário que são dados mockados
             }
 
-            // Processamento do histórico emocional
+            if (!historyResponse || !rulesResponse || !patientResponse) {
+                throw new Error("Falha ao inicializar dados");
+            }
+
             const rawHistory = historyResponse.data;
             let historyArray: HistoryItem[] = [];
 
-            /**
-             * Função auxiliar para mapear item da API para formato interno
-             * Realiza cálculo de percentual dominante quando necessário
-             */
             const mapHistoryItem = (item: ApiHistoryItem): HistoryItem => {
-                // Calcula percentual se não fornecido pela API
                 let percentage = item.percentage;
                 if (percentage === undefined || percentage === null) {
                     if (item.emotionsDetected && item.dominantEmotion) {
@@ -162,7 +149,6 @@ export function StatisticsDashboard() {
                 };
             };
 
-            // Processa diferentes formatos possíveis de resposta da API
             if (Array.isArray(rawHistory)) {
                 historyArray = rawHistory.map(mapHistoryItem);
             } else if (rawHistory && Array.isArray((rawHistory as { data?: ApiHistoryItem[] }).data)) {
@@ -173,23 +159,16 @@ export function StatisticsDashboard() {
                 console.error("Unexpected history response format", rawHistory);
             }
 
-            // Filtra entradas inválidas (sem dados de emoções detectadas)
             historyArray = historyArray.filter(item =>
                 item &&
                 item.emocoes_detectadas && typeof item.emocoes_detectadas === "object"
             );
 
-            // Atualiza estados com dados processados
             setFilteredHistory(historyArray);
 
-            // Processamento das regras de mapeamento emocional
             const rawRules = rulesResponse.data;
             let rulesArray: Rule[] = [];
 
-            /**
-             * Função auxiliar para mapear regra da API para formato interno
-             * Normaliza nomes de emoções para minúsculas
-             */
             const mapRuleItem = (item: ApiRuleItem): Rule => ({
                 _id: item.id,
                 userId: item.userId,
@@ -203,7 +182,6 @@ export function StatisticsDashboard() {
                 updatedAt: item.updatedAt
             });
 
-            // Processa diferentes formatos de resposta para regras
             if (Array.isArray(rawRules)) {
                 rulesArray = rawRules.map(mapRuleItem);
             } else if (rawRules && Array.isArray((rawRules as { data?: ApiRuleItem[] }).data)) {
@@ -214,27 +192,23 @@ export function StatisticsDashboard() {
 
             setRules(rulesArray);
 
-            // Processamento dos dados do paciente
             const patientData = patientResponse.data;
             if (patientData) {
-                // Mapeia dados do paciente com fallbacks para diferentes formatos de API
                 const mappedPatient: Patient = {
                     _id: patientData.patientId || patientData.id || patientData._id,
                     nome: patientData.patientName || patientData.name || patientData.nome || patientData.username || patientData.email,
-                    id_cuidador: patientData.userId || patientData.caregiverId || patientData.id_cuidador || 1, // fallback
+                    id_cuidador: patientData.userId || patientData.caregiverId || patientData.id_cuidador || 1,
                     data_cadastro: patientData.createdAt || patientData.data_cadastro || new Date().toISOString(),
-                    status: true, // Default to true as status field was removed
+                    status: true,
                     informacoes_adicionais: patientData.additionalInfo || patientData.informacoes_adicionais || null,
-                    foto_perfil: null, // Profile photo removed from User model
+                    foto_perfil: null,
                     criado_por: patientData.createdBy || patientData.criado_por || 'user'
                 };
                 setPatient(mappedPatient);
             }
 
-            // Limpa estado de erro em caso de sucesso
             setError(null);
         } catch (err: unknown) {
-            // Tratamento de erros com logging e atualização de estados
             const error = err as Error;
             console.error("Failed to fetch data", err);
             setError(error?.message || "Erro ao carregar dados");
@@ -242,41 +216,22 @@ export function StatisticsDashboard() {
             setRules([]);
             setPatient(null);
         } finally {
-            // Garante que loading seja desativado independentemente do resultado
             setLoading(false);
         }
     }, [timeFilter]);
 
-    // Hook useEffect para buscar dados quando filtro temporal muda
     useEffect(() => {
         fetchData();
     }, [fetchData]);
 
-    /**
-     * Manipulador para mudança de filtro temporal
-     * Atualiza o estado timeFilter que dispara nova busca de dados
-     *
-     * @param {number} hours - Número de horas para filtrar (6, 12 ou 24)
-                */
-    const handleFilterChange = (hours: number) => {
-        setTimeFilter(hours);
-    };
-
-    // Debug logging para desenvolvimento
-    console.log('Filtered History:', filteredHistory);
-
     return (
-        <div className="min-h-screen bg-background p-4 md:p-8 space-y-8">
-            {/* Renderiza cabeçalho do paciente se dados estiverem disponíveis */}
+        <div className="space-y-6">
             {patient && <PatientHeader patient={patient} />}
 
-            {/* Seção de controles de filtro temporal */}
             <div className="flex justify-end mb-4">
                 <div className="flex items-center gap-2 bg-muted/30 p-1 rounded-lg border border-border">
-                    {/* Ícone de filtro para identificação visual */}
                     <Filter className="w-4 h-4 ml-2 text-muted-foreground" />
                     <span className="text-sm text-muted-foreground mr-2">Filtrar:</span>
-                    {/* Botões de filtro para diferentes períodos temporais */}
                     {[6, 12, 24].map((hours) => (
                         <Button
                             key={hours}
@@ -291,43 +246,41 @@ export function StatisticsDashboard() {
                 </div>
             </div>
 
-            {/* Renderização condicional baseada no estado dos dados */}
             {loading ? (
-                // Estado de carregamento com animação
                 <div className="flex items-center justify-center min-h-[400px]">
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mx-auto mb-4"></div>
                         <p className="text-muted-foreground">Carregando dados...</p>
                     </motion.div>
                 </div>
-            ) : error ? (
-                // Estado de erro com mensagem descritiva
-                <div className="flex items-center justify-center min-h-[400px]">
-                    <p className="text-destructive">{error}</p>
-                </div>
-            ) : filteredHistory.length > 0 ? (
-                // Estado com dados - renderiza dashboard completo
-                <>
-                    {/* Grade de métricas em tempo real */}
-                    <MetricsGrid history={filteredHistory} rules={rules} />
-
-                    {/* Grid responsivo com gráficos de volume e emoções */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-auto lg:h-[500px]">
-                        <VolumeChart history={filteredHistory} />
-                        <EmotionsPieChart history={filteredHistory} />
-                    </div>
-
-                    {/* Grid com análise de tendências e atividades recentes */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <TrendsAnalysis history={filteredHistory} />
-                        <RecentActivityList history={filteredHistory} rules={rules} />
-                    </div>
-                </>
             ) : (
-                // Estado sem dados disponíveis
-                <div className="flex items-center justify-center min-h-[400px]">
-                    <p className="text-muted-foreground">Nenhum dado encontrado.</p>
-                </div>
+                <>
+                    {error && (
+                        <div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm text-center">
+                            {error}
+                        </div>
+                    )}
+
+                    {filteredHistory.length > 0 ? (
+                        <>
+                            <MetricsGrid history={filteredHistory} rules={rules} />
+
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-auto lg:h-[500px]">
+                                <VolumeChart history={filteredHistory} />
+                                <EmotionsPieChart history={filteredHistory} />
+                            </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                <TrendsAnalysis history={filteredHistory} />
+                                <RecentActivityList history={filteredHistory} rules={rules} />
+                            </div>
+                        </>
+                    ) : (
+                        <div className="flex items-center justify-center min-h-[400px]">
+                            <p className="text-muted-foreground">Nenhum dado encontrado.</p>
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );

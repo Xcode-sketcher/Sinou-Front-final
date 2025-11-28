@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { User, CreditCard, LogOut, Save, Edit2, Camera, Sun, Moon, Globe, Shield, Lock, Mail, FileText } from 'lucide-react';
@@ -155,10 +157,10 @@ const GerenciarPerfil: React.FC = () => {
             <button
               onClick={() => setIdioma('pt')}
               className={`p-4 rounded-lg border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg transform ${idioma === 'pt'
-                  ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-900'
-                  : temaEscuro
-                    ? 'border-gray-600 bg-gray-700 hover:border-indigo-400'
-                    : 'border-gray-300 hover:border-indigo-400'
+                ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-900'
+                : temaEscuro
+                  ? 'border-gray-600 bg-gray-700 hover:border-indigo-400'
+                  : 'border-gray-300 hover:border-indigo-400'
                 }`}
             >
               <div className="flex items-center justify-center gap-3">
@@ -172,10 +174,10 @@ const GerenciarPerfil: React.FC = () => {
             <button
               onClick={() => setIdioma('en')}
               className={`p-4 rounded-lg border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg transform ${idioma === 'en'
-                  ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-900'
-                  : temaEscuro
-                    ? 'border-gray-600 bg-gray-700 hover:border-indigo-400'
-                    : 'border-gray-300 hover:border-indigo-400'
+                ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-900'
+                : temaEscuro
+                  ? 'border-gray-600 bg-gray-700 hover:border-indigo-400'
+                  : 'border-gray-300 hover:border-indigo-400'
                 }`}
             >
               <div className="flex items-center justify-center gap-3">

@@ -7,9 +7,15 @@ import { Button } from "@/components/ui/button";
 import api from "@/lib/api";
 import { Rule } from "@/components/sections/statistics/types";
 
+/**
+ * Propriedades para o modal de criação de regras.
+ */
 interface CreateRuleModalProps {
+    /** Indica se o modal está visível. */
     isOpen: boolean;
+    /** Função chamada para fechar o modal. */
     onClose: () => void;
+    /** Função chamada quando uma regra é criada ou atualizada com sucesso. */
     onRuleCreated: () => void;
 }
 
@@ -23,6 +29,13 @@ const emotions = [
     { value: "neutral", label: "Neutro" },
 ];
 
+/**
+ * Modal de Criação e Gerenciamento de Regras.
+ * 
+ * Este componente permite aos usuários criar, editar, listar e excluir regras de mapeamento
+ * de emoções. As regras definem gatilhos baseados em emoções detectadas e intensidade,
+ * permitindo a personalização do comportamento do sistema.
+ */
 export function CreateRuleModal({ isOpen, onClose, onRuleCreated }: CreateRuleModalProps) {
     const [loading, setLoading] = useState(false);
     const [rules, setRules] = useState<Rule[]>([]);
@@ -44,25 +57,37 @@ export function CreateRuleModal({ isOpen, onClose, onRuleCreated }: CreateRuleMo
         }
     }, [isOpen]);
 
+    /**
+     * Busca as regras existentes do usuário via API.
+     */
     const fetchRules = async () => {
         try {
             const response = await api.get('/api/emotion-mappings/my-rules');
             setRules(response.data || []);
         } catch (error) {
-            // console.error("Failed to fetch rules", error);
+
         }
     };
 
+    /**
+     * Exclui uma regra específica após confirmação do usuário.
+     * 
+     * @param id - O identificador único da regra a ser excluída.
+     */
     const handleDelete = async (id: string) => {
         if (!confirm("Tem certeza que deseja excluir esta regra?")) return;
         try {
             await api.delete(`/api/emotion-mappings/${id}`);
             fetchRules();
         } catch (error) {
-            // console.error("Failed to delete rule", error);
         }
     };
 
+    /**
+     * Prepara o formulário para edição de uma regra existente.
+     * 
+     * @param rule - O objeto da regra a ser editada.
+     */
     const handleEdit = (rule: Rule) => {
         setFormData({
             emotion: rule.emotion || "",
@@ -75,6 +100,11 @@ export function CreateRuleModal({ isOpen, onClose, onRuleCreated }: CreateRuleMo
         setView("form");
     };
 
+    /**
+     * Processa o envio do formulário para criar ou atualizar uma regra.
+     * 
+     * @param e - Evento de submissão do formulário.
+     */
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!formData.emotion || !formData.intensityLevel || !formData.message) {
@@ -87,7 +117,6 @@ export function CreateRuleModal({ isOpen, onClose, onRuleCreated }: CreateRuleMo
             if (editingId) {
                 await api.put(`/api/emotion-mappings/${editingId}`, formData);
             } else {
-                // The API will infer userId from the authenticated session
                 await api.post('/api/emotion-mappings', formData);
             }
 
@@ -103,7 +132,6 @@ export function CreateRuleModal({ isOpen, onClose, onRuleCreated }: CreateRuleMo
                 message: ""
             });
         } catch (error) {
-            // console.error("Failed to save rule", error);
             alert("Erro ao salvar regra");
         } finally {
             setLoading(false);

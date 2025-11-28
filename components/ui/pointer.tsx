@@ -1,20 +1,43 @@
 "use client";
 import React, { useEffect, useState, useCallback } from 'react';
 
+interface Particle {
+  id: number;
+  x: number;
+  y: number;
+  angle: number;
+  speed: number;
+  duration: number;
+  size: number;
+}
+
+/**
+ * Componente CustomCursor
+ *
+ * Cursor personalizado que substitui o ponteiro padrão do mouse.
+ * Adiciona efeitos visuais interativos como partículas e mudanças de estado
+ * ao clicar ou passar sobre elementos.
+ *
+ * Funcionalidades:
+ * - Cursor circular personalizado
+ * - Efeito de rastro com partículas
+ * - Feedback visual de clique (escala)
+ * - Ocultação automática quando o mouse sai da janela
+ */
 export default function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   // Novo estado para as partículas
-  const [particles, setParticles] = useState([]);
+  const [particles, setParticles] = useState<Particle[]>([]);
   // Contador para IDs únicas das partículas
   const [particleIdCounter, setParticleIdCounter] = useState(0);
 
   // Função para criar e adicionar partículas
-  const createParticles = useCallback((x, y) => {
-    const newParticles = [];
+  const createParticles = useCallback((x: number, y: number) => {
+    const newParticles: Particle[] = [];
     // Gera um número pequeno de partículas (ex: 3 a 6)
-    const numParticles = Math.floor(Math.random() * 4) + 5; 
+    const numParticles = Math.floor(Math.random() * 4) + 5;
 
     for (let i = 0; i < numParticles; i++) {
       const id = particleIdCounter + i;
@@ -47,7 +70,7 @@ export default function CustomCursor() {
   }, [particleIdCounter]); // particleIdCounter como dependência para o useCallback
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
       setIsVisible(true);
     };
@@ -60,7 +83,7 @@ export default function CustomCursor() {
       setIsVisible(true);
     };
 
-    const handleMouseDown = (e) => {
+    const handleMouseDown = (e: MouseEvent) => {
       setIsClicked(true);
       // Cria partículas na posição do clique
       createParticles(e.clientX, e.clientY);
@@ -86,7 +109,7 @@ export default function CustomCursor() {
   }, [createParticles]); // createParticles como dependência
 
   const cursorOpacity = isVisible ? (isClicked ? 0.5 : 1) : 0;
-  const cursorScale = isClicked ? 0.8 : 1; 
+  const cursorScale = isClicked ? 0.8 : 1;
 
   return (
     <>
@@ -117,13 +140,13 @@ export default function CustomCursor() {
           transform: `translate(-50%, -50%) scale(${cursorScale})`,
           pointerEvents: 'none',
           zIndex: 9999,
-          opacity: cursorOpacity, 
-          transition: 'opacity 0.2s ease, transform 0.1s ease', 
+          opacity: cursorOpacity,
+          transition: 'opacity 0.2s ease, transform 0.1s ease',
         }}
       >
         <svg width="20" height="20" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="25" cy="25" r="25" fill="#FD7B2F"/>
-          <circle cx="24.5" cy="24.5" r="12.5" fill="white"/>
+          <circle cx="25" cy="25" r="25" fill="#FD7B2F" />
+          <circle cx="24.5" cy="24.5" r="12.5" fill="white" />
         </svg>
       </div>
 

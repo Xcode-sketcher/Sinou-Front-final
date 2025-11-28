@@ -11,23 +11,38 @@ import { SystemContextMenu } from "@/components/ui/SystemContextMenu";
 import { useAuth } from "@/context/AuthContext";
 import api from "@/lib/api";
 
+/**
+ * Interface que define a estrutura dos resultados de uma análise facial.
+ */
 export interface AnalysisResult {
+    /** Dicionário contendo as emoções detectadas e seus respectivos percentuais. */
     emotions: Record<string, number>;
+    /** A emoção predominante identificada na análise. */
     dominantEmotion: string;
+    /** Mensagem sugerida pelo sistema com base na análise (opcional). */
     suggestedMessage?: string;
+    /** Data e hora em que a análise foi realizada. */
     timestamp: string;
 }
 
+/**
+ * Componente principal do Dashboard do Sistema.
+ * 
+ * Este componente atua como o controlador central da área logada, gerenciando:
+ * - A visualização da câmera e o processo de análise em tempo real.
+ * - A seleção e o estado do paciente ativo.
+ * - A exibição dos resultados da análise e estatísticas de uso.
+ * - O acesso ao gerenciamento de regras de alerta.
+ * - O menu de contexto do sistema.
+ */
 export function SystemDashboard() {
     const { user } = useAuth();
     const [lastAnalysis, setLastAnalysis] = useState<AnalysisResult | null>(null);
     const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
 
-    // Camera State lifted up for Context Menu control
     const [isCameraActive, setIsCameraActive] = useState(false);
     const [isAutoCaptureActive, setIsAutoCaptureActive] = useState(false);
 
-    // Patient state - auto-load the user's patient
     const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
     const [loadingPatient, setLoadingPatient] = useState(true);
 
@@ -36,21 +51,18 @@ export function SystemDashboard() {
         alertsCount: 0
     });
 
-    // Load stats from localStorage on mount and handle expiration
     useEffect(() => {
         const loadStats = () => {
             const storedStats = localStorage.getItem('dailyStats');
             const storedDate = localStorage.getItem('statsDate');
 
             const now = new Date();
-            // Adjust to Brasilia time (UTC-3)
             const brasiliaTime = new Date(now.getTime() - (3 * 60 * 60 * 1000));
             const todayStr = brasiliaTime.toISOString().split('T')[0];
 
             if (storedStats && storedDate === todayStr) {
                 setStats(JSON.parse(storedStats));
             } else {
-                // Reset stats if date changed or no stats found
                 const initialStats = { totalAnalysis: 0, alertsCount: 0 };
                 setStats(initialStats);
                 localStorage.setItem('dailyStats', JSON.stringify(initialStats));
@@ -60,12 +72,10 @@ export function SystemDashboard() {
 
         loadStats();
 
-        // Check for expiration every minute
         const interval = setInterval(loadStats, 60000);
         return () => clearInterval(interval);
     }, []);
 
-    // Auto-load patient's patient when component mounts
     useEffect(() => {
         const loadPatient = async () => {
             if (!user) return;
@@ -74,7 +84,6 @@ export function SystemDashboard() {
                 const response = await api.get('/api/patients');
                 const data = response.data;
 
-                // Robust data parsing to handle various API response structures
                 let patientsList: Patient[] = [];
 
                 if (Array.isArray(data)) {
@@ -85,13 +94,11 @@ export function SystemDashboard() {
                     patientsList = data.patients;
                 }
 
-                // Normalize _id to string for consistency
                 patientsList = patientsList.map(patient => ({
                     ...patient,
                     _id: String(patient._id)
                 }));
 
-                // Use mock data if no patients from API (for development)
                 if (patientsList.length === 0) {
                     const mockPatient: Patient = {
                         _id: "1",
@@ -108,13 +115,10 @@ export function SystemDashboard() {
                     patientsList = [mockPatient];
                 }
 
-                // Auto-select the first (and likely only) patient
                 if (patientsList.length > 0) {
                     setSelectedPatient(patientsList[0]);
                 }
             } catch (error) {
-                console.error("Failed to load patient", error);
-                // Fallback to mock patient if API fails
                 if (user) {
                     const fallbackPatient: Patient = {
                         _id: "1",
@@ -138,11 +142,16 @@ export function SystemDashboard() {
         loadPatient();
     }, [user]);
 
-    // Save stats to localStorage whenever they change
     useEffect(() => {
         localStorage.setItem('dailyStats', JSON.stringify(stats));
     }, [stats]);
 
+    /**
+     * Processa o resultado de uma análise facial concluída.
+     * Atualiza o estado da última análise e incrementa os contadores estatísticos.
+     * 
+     * @param result - O objeto contendo os dados da análise realizada.
+     */
     const handleAnalysisComplete = (result: AnalysisResult) => {
         setLastAnalysis(result);
         setStats(prev => ({
@@ -167,7 +176,6 @@ export function SystemDashboard() {
                     isOpen={isRuleModalOpen}
                     onClose={() => setIsRuleModalOpen(false)}
                     onRuleCreated={() => {
-                        // Optional: Show success toast
                     }}
                 />
 
@@ -208,7 +216,6 @@ export function SystemDashboard() {
                         <CameraCard
                             selectedPatient={selectedPatient}
                             onAnalysisComplete={handleAnalysisComplete}
-                            // Pass controlled state
                             isActive={isCameraActive}
                             onActiveChange={setIsCameraActive}
                             autoCapture={isAutoCaptureActive}
@@ -219,7 +226,6 @@ export function SystemDashboard() {
                     <div className="space-y-6">
                         <ResultsCard result={lastAnalysis} />
 
-                        {/* User Stats Card */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}

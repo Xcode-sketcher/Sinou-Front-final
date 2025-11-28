@@ -26,6 +26,18 @@ interface PasswordValidation {
     hasSpecialChar: boolean;
 }
 
+/**
+ * Componente de Login (CardLogin)
+ *
+ * Formulário de autenticação de usuários.
+ * Gerencia o login de cuidadores no sistema.
+ *
+ * Funcionalidades:
+ * - Validação de email e senha
+ * - Feedback visual de erros
+ * - Integração com AuthContext
+ * - Redirecionamento após login
+ */
 const CardLogin: React.FC = () => {
     const router = useRouter();
     const { login } = useAuth();
@@ -131,7 +143,7 @@ const CardLogin: React.FC = () => {
         try {
             await login(formData);
         } catch (error) {
-            console.error(error);
+            // Silently fail log
             setErrors({ email: 'Falha no login. Verifique suas credenciais.' });
         } finally {
             setIsLoading(false);
@@ -167,8 +179,8 @@ const CardLogin: React.FC = () => {
 
             <div className="w-full max-w-md bg-card border border-border rounded-2xl p-8 shadow-2xl relative z-10">
                 {/* Logo */}
-                <div className="flex justify-center mb-8">
-                    <div className="relative w-24 h-24">
+                <div className="flex justify-center">
+                    <div className="relative w-56 h-56">
                         <Image
                             src="/Logo.svg"
                             alt="Logo"

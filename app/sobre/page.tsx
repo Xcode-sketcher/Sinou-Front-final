@@ -81,7 +81,7 @@ interface JourneyStepProps {
     /** Descrição detalhada do passo */
     description: string;
     /** Componente do ícone a ser exibido */
-    icon: any;
+    icon: React.ElementType;
     /** Classe CSS para cor de fundo do ícone */
     color: string;
     /** Atraso da animação em segundos */

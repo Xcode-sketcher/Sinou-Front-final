@@ -5,6 +5,17 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 
+/**
+ * Componente de Nova Senha (CardNewPassword).
+ *
+ * Formulário para redefinição de senha após recuperação.
+ * Permite que o usuário defina uma nova senha segura.
+ *
+ * Funcionalidades:
+ * - Validação de senha e confirmação.
+ * - Feedback visual de sucesso.
+ * - Redirecionamento para login.
+ */
 const CardNewPassword = () => {
     const [formData, setFormData] = useState({ password: '', confirmPassword: '' });
     const [errors, setErrors] = useState<{ password?: string; confirmPassword?: string }>({});
@@ -15,6 +26,12 @@ const CardNewPassword = () => {
     const confirmRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
 
+    /**
+     * Gerencia as alterações nos campos de entrada.
+     * Atualiza o estado do formulário e limpa erros associados ao campo modificado.
+     * 
+     * @param e - Evento de mudança do input.
+     */
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((p) => ({ ...p, [name]: value }));
@@ -23,6 +40,13 @@ const CardNewPassword = () => {
         }
     };
 
+    /**
+     * Gerencia o envio do formulário de redefinição de senha.
+     * Realiza validações de campos obrigatórios e igualdade de senhas.
+     * Simula o processo de redefinição com feedback visual.
+     * 
+     * @param e - Evento de submissão do formulário.
+     */
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         const newErrors: typeof errors = {};
@@ -48,7 +72,6 @@ const CardNewPassword = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center p-6 bg-background relative overflow-hidden">
-            {/* Background Gradients */}
             <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-purple-500/20 blur-[120px] rounded-full pointer-events-none" />
             <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-500/20 blur-[120px] rounded-full pointer-events-none" />
 

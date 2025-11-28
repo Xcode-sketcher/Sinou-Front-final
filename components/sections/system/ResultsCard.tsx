@@ -4,7 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AnalysisResult } from "./SystemDashboard";
 import { MessageSquare, AlertCircle, CheckCircle2 } from "lucide-react";
 
+/**
+ * Propriedades do componente ResultsCard.
+ */
 interface ResultsCardProps {
+    /** O resultado da análise facial a ser exibido. */
     result: AnalysisResult | null;
 }
 
@@ -28,6 +32,12 @@ const emotionColors: Record<string, string> = {
     neutral: "text-gray-500",
 };
 
+/**
+ * Componente de Cartão de Resultados.
+ * 
+ * Exibe os resultados da última análise facial realizada, incluindo
+ * as emoções detectadas, seus percentuais e a mensagem sugerida (se houver).
+ */
 export function ResultsCard({ result }: ResultsCardProps) {
     if (!result) {
         return (

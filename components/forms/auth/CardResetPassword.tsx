@@ -6,6 +6,17 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 
+/**
+ * Componente de Redefinição de Senha (CardResetPassword)
+ *
+ * Formulário inicial para recuperação de senha.
+ * Solicita o email do usuário para envio do link de recuperação.
+ *
+ * Funcionalidades:
+ * - Validação de email
+ * - Simulação de envio de email
+ * - Feedback visual
+ */
 const CardResetPassword: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [error, setError] = useState<string | null>(null);

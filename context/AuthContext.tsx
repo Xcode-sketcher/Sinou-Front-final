@@ -13,21 +13,52 @@ interface User {
     patientName?: string;
 }
 
+interface LoginData {
+    email: string;
+    password: string;
+}
+
+interface RegisterData {
+    name: string;
+    email: string;
+    password: string;
+    [key: string]: unknown;
+}
+
 interface AuthContextType {
     user: User | null;
     loading: boolean;
-    login: (data: any) => Promise<void>;
-    register: (data: any) => Promise<void>;
+    login: (data: LoginData) => Promise<void>;
+    register: (data: RegisterData) => Promise<void>;
     logout: () => Promise<void>;
 }
 
+/**
+ * Contexto de Autenticação.
+ *
+ * Gerencia o estado global de autenticação do usuário, incluindo:
+ * - Dados do usuário logado.
+ * - Status de carregamento.
+ * - Funções de login, registro e logout.
+ */
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+/**
+ * Provedor de Autenticação.
+ *
+ * Envolve a aplicação para fornecer acesso ao contexto de autenticação.
+ * Verifica a sessão atual ao iniciar e gerencia a persistência do token.
+ */
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
+    /**
+     * Verifica se o usuário possui uma sessão válida.
+     * 
+     * @returns Uma promessa que resolve para verdadeiro se autenticado, falso caso contrário.
+     */
     const checkAuth = async (): Promise<boolean> => {
         try {
             const response = await api.get('/api/users/me');
@@ -45,15 +76,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         checkAuth();
     }, []);
 
-    const login = async (data: any) => {
-        await api.post('/api/auth/login', data);
+    /**
+     * Realiza o login do usuário.
+     * 
+     * @param data - Dados de login (email, senha).
+     */
+    const login = async (data: LoginData) => {
+        const response = await api.post('/api/auth/login', data);
+        if (response.data?.token) {
+            localStorage.setItem('authToken', response.data.token);
+        }
         await checkAuth();
         router.push('/');
     };
 
-    const register = async (data: any) => {
+    /**
+     * Realiza o registro de um novo usuário.
+     * 
+     * @param data - Dados de registro.
+     */
+    const register = async (data: RegisterData) => {
         await api.post('/api/auth/register', data);
-        // Tenta verificar se o registro já logou o usuário
         try {
             const isAuthenticated = await checkAuth();
             if (isAuthenticated) {
@@ -66,12 +109,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
+    /**
+     * Realiza o logout do usuário e limpa a sessão.
+     */
     const logout = async () => {
         try {
             await api.post('/api/auth/logout');
         } catch (error) {
-            // console.error('Erro no logout:', error);
         } finally {
+            localStorage.removeItem('authToken');
             setUser(null);
             router.push('/login');
         }
@@ -84,6 +130,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
+/**
+ * Hook personalizado para acessar o contexto de autenticação.
+ * 
+ * @returns O contexto de autenticação (user, loading, login, register, logout).
+ * @throws Erro se usado fora de um AuthProvider.
+ */
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {

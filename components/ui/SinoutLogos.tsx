@@ -1,5 +1,9 @@
 import React from 'react';
 
+/**
+ * Logo Sinout Infinity.
+ * Símbolo do infinito estilizado usado como ícone da marca.
+ */
 export const SinoutLogoInfinity = ({ className = "w-12 h-12", color = "currentColor" }: { className?: string, color?: string }) => (
     <svg viewBox="0 0 100 100" fill="none" className={className}>
         <path
@@ -14,9 +18,12 @@ export const SinoutLogoInfinity = ({ className = "w-12 h-12", color = "currentCo
     </svg>
 );
 
+/**
+ * Logo Sinout Branco.
+ * Versão completa do logo (símbolo + texto) em branco para fundos escuros.
+ */
 export const SinoutLogoWhite = ({ className = "w-32 h-12" }: { className?: string }) => (
     <svg viewBox="0 0 200 60" fill="none" className={className}>
-        {/* Infinity Symbol */}
         <path
             d="M30 30 C30 15, 45 15, 45 30 C45 45, 60 45, 60 30 C60 15, 45 15, 45 30 C45 45, 30 45, 30 30 Z"
             stroke="white"
@@ -25,14 +32,16 @@ export const SinoutLogoWhite = ({ className = "w-32 h-12" }: { className?: strin
             strokeLinejoin="round"
             fill="none"
         />
-        {/* Text */}
         <text x="75" y="40" fontFamily="Arial, sans-serif" fontWeight="bold" fontSize="32" fill="white">Sinout</text>
     </svg>
 );
 
+/**
+ * Logo Sinout Preto.
+ * Versão completa do logo (símbolo + texto) em preto para fundos claros.
+ */
 export const SinoutLogoBlack = ({ className = "w-32 h-12" }: { className?: string }) => (
     <svg viewBox="0 0 200 60" fill="none" className={className}>
-        {/* Infinity Symbol */}
         <path
             d="M30 30 C30 15, 45 15, 45 30 C45 45, 60 45, 60 30 C60 15, 45 15, 45 30 C45 45, 30 45, 30 30 Z"
             stroke="black"
@@ -41,7 +50,6 @@ export const SinoutLogoBlack = ({ className = "w-32 h-12" }: { className?: strin
             strokeLinejoin="round"
             fill="none"
         />
-        {/* Text */}
         <text x="75" y="40" fontFamily="Arial, sans-serif" fontWeight="bold" fontSize="32" fill="black">Sinout</text>
     </svg>
 );

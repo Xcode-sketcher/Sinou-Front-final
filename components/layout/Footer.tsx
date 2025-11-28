@@ -4,6 +4,20 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Mail, Phone, MapPin, Github, Linkedin } from "lucide-react";
 
+/**
+ * Componente de Rodapé (Footer7)
+ *
+ * Rodapé principal da aplicação com links de navegação,
+ * informações de contato e redes sociais.
+ *
+ * Funcionalidades:
+ * - Navegação organizada por seções
+ * - Links para redes sociais com animação
+ * - Informações de contato e copyright
+ * - Elementos decorativos de fundo
+ *
+ * @param className - Classes CSS adicionais
+ */
 export const Footer7 = ({ className = "" }: { className?: string }) => {
   const currentYear = new Date().getFullYear();
 

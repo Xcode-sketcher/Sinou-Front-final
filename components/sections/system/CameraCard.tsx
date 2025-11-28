@@ -7,7 +7,7 @@ import { Camera, StopCircle, Aperture, Clock, Settings, RefreshCw } from "lucide
 import { Button } from "@/components/ui/button";
 import { Patient } from "@/components/sections/statistics/types";
 import { AnalysisResult } from "./SystemDashboard";
-import api from "@/lib/api";
+import api, { processingApi } from "@/lib/api";
 
 interface CameraCardProps {
     selectedPatient: Patient | null;
@@ -38,6 +38,13 @@ const getSuggestedMessage = (emotion: string): string => {
     return messages[emotion] || "Análise emocional concluída. Continue monitorando.";
 };
 
+/**
+ * Card da Câmera
+ *
+ * Componente responsável pela captura de vídeo e análise facial.
+ * Utiliza a webcam para capturar imagens e envia para a API de processamento.
+ * Suporta captura manual e automática.
+ */
 export function CameraCard({
     selectedPatient,
     onAnalysisComplete,
@@ -75,20 +82,20 @@ export function CameraCard({
         setIsCapturing(true);
 
         try {
-            // Convert base64 to blob
+            // Convert base64 to blob (keep for now, but also send base64)
             const res = await fetch(imageSrc);
             const blob = await res.blob();
 
-            const formData = new FormData();
-            formData.append("file", blob, "capture.jpg");
-            formData.append("model_name", selectedModel); // Changed from 'model' to 'model_name'
-            formData.append("actions", "emotion,age,gender"); // Revert to string format
-            formData.append("detector_backend", "opencv"); // Explicitly set backend
+            // Send as JSON to base64 endpoint
+            const base64Data = imageSrc.split(',')[1];
+            const payload = {
+                imageBase64: base64Data,
+                model: selectedModel,
+                detector: "opencv"
+            };
 
-            // 1. Analyze Face (Real API Call)
-            const analyzeResponse = await api.post('/api/FacialAnalysis/analyze', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+            // 1. Analyze Face (Real API Call) - using base64 endpoint
+            const analyzeResponse = await processingApi.post('/api/FacialAnalysis/analyze-base64', payload);
 
             const data = analyzeResponse.data;
 
@@ -101,16 +108,8 @@ export function CameraCard({
             const age = analysis.idade ? String(analysis.idade) : (analysis.age ? String(analysis.age) : String(selectedPatient.idade || "0"));
             const gender = analysis.genero || analysis.gender || "unknown";
 
-            // console.log('🔍 Full analysis response:', data);
-            // console.log('🔍 Extracted analysis object:', analysis);
-            // console.log('🔍 Emotions extracted:', emotions);
-            // console.log('🔍 Dominant emotion:', dominantEmotion);
-
             // Ensure emotions is not empty - add fallback
             const safeEmotions = Object.keys(emotions).length > 0 ? emotions : { neutral: 1.0 };
-
-            // console.log('✅ Safe emotions being sent:', safeEmotions);
-            // console.log('✅ Number of emotions:', Object.keys(safeEmotions).length);
 
             // 2. Save to History using v1.json schema
             const historyPayload = {
@@ -123,8 +122,6 @@ export function CameraCard({
                 timestamp: new Date().toISOString()
             };
 
-            // console.log('📤 History payload being sent:', JSON.stringify(historyPayload, null, 2));
-
             // Get current user ID
             try {
                 const meResponse = await api.get('/api/auth/me');
@@ -132,10 +129,8 @@ export function CameraCard({
                 const userId = meResponse.data.id || meResponse.data.userId || meResponse.data._id || meResponse.data.sub;
                 if (userId) historyPayload.cuidadorId = String(userId);
             } catch (e) {
-                // console.error("Could not get user ID", e);
+                // Silently fail
             }
-
-            // console.log('Sending history payload:', historyPayload);
 
             let suggestedMessage: string | undefined = undefined; // Não usar mensagem padrão
 
@@ -146,7 +141,7 @@ export function CameraCard({
                     suggestedMessage = historyResponse.data.suggestedMessage;
                 }
             } catch (error) {
-                // console.error('Failed to save emotion history:', error);
+                // Silently fail
             }
 
             const result: AnalysisResult = {
@@ -159,8 +154,7 @@ export function CameraCard({
             onAnalysisComplete(result);
 
         } catch (error) {
-            // console.error("Analysis failed", error);
-            // Optional: Show error toast to user
+            // Silently fail
         } finally {
             setIsCapturing(false);
         }

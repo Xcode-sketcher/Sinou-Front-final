@@ -3,6 +3,17 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 
+/**
+ * Componente CookieConsent
+ *
+ * Exibe um banner de consentimento de cookies na parte inferior da tela.
+ * O banner é exibido apenas se o usuário ainda não tiver aceitado os cookies.
+ *
+ * Funcionalidades:
+ * - Persistência da escolha do usuário via localStorage
+ * - Links para Política de Privacidade e Termos de Uso
+ * - Design responsivo e não intrusivo
+ */
 export function CookieConsent() {
     const [show, setShow] = useState(false);
 

@@ -6,6 +6,9 @@ import { Camera, StopCircle, Clock, RefreshCw, ArrowUp, Moon, Sun, Share2, Setti
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 
+/**
+ * Interface para definição de um item do menu
+ */
 interface MenuItem {
     label: string;
     icon: React.ComponentType<{ className?: string }>;
@@ -14,12 +17,18 @@ interface MenuItem {
     disabled?: boolean;
 }
 
+/**
+ * Interface para definição de uma seção do menu
+ */
 interface MenuSection {
     label: string;
     type: "header";
     items: MenuItem[];
 }
 
+/**
+ * Props do componente SystemContextMenu
+ */
 interface SystemContextMenuProps {
     children: React.ReactNode;
     onStartCamera: () => void;
@@ -29,6 +38,19 @@ interface SystemContextMenuProps {
     isAutoCaptureActive: boolean;
 }
 
+/**
+ * Componente SystemContextMenu
+ *
+ * Menu de contexto específico para o dashboard do sistema.
+ * Oferece controles rápidos para a câmera e captura automática,
+ * além das opções de navegação padrão.
+ *
+ * Funcionalidades:
+ * - Controle de câmera (Iniciar/Parar)
+ * - Controle de captura automática
+ * - Feedback visual do estado da câmera
+ * - Navegação e configurações
+ */
 export function SystemContextMenu({
     children,
     onStartCamera,

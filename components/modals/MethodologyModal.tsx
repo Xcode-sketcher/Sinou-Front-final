@@ -15,6 +15,21 @@ interface MethodologyModalProps {
     trigger?: React.ReactNode;
 }
 
+/**
+ * Modal de Metodologia (MethodologyModal)
+ *
+ * Apresenta informações sobre a metodologia ágil utilizada pela equipe.
+ * Explica conceitos como Scrum, Sprints, Daily e Kanban.
+ *
+ * Funcionalidades:
+ * - Exibição de conteúdo em modal (Dialog)
+ * - Animações de entrada para os cards
+ * - Trigger customizável ou botão padrão
+ *
+ * @param isOpen - Estado de controle de abertura do modal
+ * @param onClose - Função para fechar o modal
+ * @param trigger - Elemento opcional para acionar o modal
+ */
 export function MethodologyModal({ isOpen, onClose, trigger }: MethodologyModalProps) {
     const content = (
         <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">

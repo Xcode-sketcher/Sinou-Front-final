@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 
 /**
  * Cliente HTTP Axios configurado para a aplicação Sinout
@@ -24,7 +24,7 @@ import axios from 'axios';
  * - Configuração CORS
  */
 const api = axios.create({
-    baseURL: typeof window !== 'undefined' ? '/' : process.env.NEXT_PUBLIC_API_BASE_URL,
+    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? '/' : 'http://localhost:3000'),
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
@@ -32,85 +32,65 @@ const api = axios.create({
 });
 
 /**
- * Interceptor de requisições - Logging detalhado
+ * Instância separada para a API de processamento facial
+ */
+export const processingApi = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_PROCESSING_API_URL || 'http://localhost:5000',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
+
+/**
+ * Interceptor de requisições - Logging detalhado e autenticação
  *
  * Registra todas as requisições HTTP com informações completas:
  * - Método HTTP utilizado
  * - URL completa da requisição
  * - Dados enviados (se aplicável)
  * - Parâmetros de query
+ * - Adiciona token JWT automaticamente
  *
  * Útil para debugging e monitoramento em desenvolvimento.
  */
-api.interceptors.request.use(
-    (config) => {
-        // console.log('🚀 API Request:', {
-        //     method: config.method?.toUpperCase(),
-        //     url: config.url,
-        //     baseURL: config.baseURL,
-        //     fullURL: `${config.baseURL}${config.url}`,
-        //     data: config.data,
-        //     params: config.params
-        // });
-        return config;
-    },
-    (error) => {
-        // console.error('❌ Request Error:', error);
-        return Promise.reject(error);
+/**
+ * Interceptor de requisições - Autenticação
+ *
+ * Adiciona o token JWT automaticamente ao cabeçalho Authorization
+ * de todas as requisições, se estiver disponível no localStorage.
+ */
+const addAuth = (config: InternalAxiosRequestConfig) => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
     }
-);
+    return config;
+};
+
+api.interceptors.request.use(addAuth, (error) => {
+    return Promise.reject(error);
+});
+
+processingApi.interceptors.request.use(addAuth, (error) => {
+    return Promise.reject(error);
+});
 
 /**
  * Interceptor de respostas - Tratamento padronizado
  *
- * Processa todas as respostas HTTP com:
- * - Logging de sucesso em desenvolvimento
- * - Tratamento inteligente de erros
- * - Categorização de tipos de erro
- * - Mensagens de erro amigáveis
+ * Retorna a resposta diretamente se bem-sucedida.
  */
-api.interceptors.response.use(
-    (response) => {
-        // console.log('✅ API Response:', {
-        //     url: response.config.url,
-        //     status: response.status,
-        //     data: response.data
-        // });
-        return response;
-    },
-    (error) => {
-        // Tratamento especial para erros de autenticação
-        // Evita logging excessivo de erros esperados (401 em endpoints de auth)
-        const isAuthRelatedEndpoint = error.config?.url?.includes('/api/auth/') ||
-            error.config?.url?.includes('/api/users/me') ||
-            error.config?.url?.includes('/api/patient/');
-        const isUnauthorized = error.response?.status === 401;
+const handleResponse = (response: AxiosResponse) => {
+    return response;
+};
 
-        if (!(isAuthRelatedEndpoint && isUnauthorized)) {
-            // console.error('❌ API Error:', {
-            //     url: error.config?.url,
-            //     status: error.response?.status,
-            //     statusText: error.response?.statusText,
-            //     data: error.response?.data,
-            //     message: error.message
-            // });
+const handleError = (error: unknown) => {
+    // Mantém o tratamento de erro silencioso para endpoints de autenticação
+    // para evitar poluição no console do navegador em casos esperados (ex: 401)
+    return Promise.reject(error);
+};
 
-            // Fornece mensagens de erro mais específicas baseadas no tipo
-            if (error.response) {
-                // Servidor respondeu com erro
-                const message = error.response.data?.message || error.response.statusText;
-                // console.error(`Server Error (${error.response.status}):`, message);
-            } else if (error.request) {
-                // Requisição feita mas sem resposta
-                // console.error('Network Error: No response received from server. Is the backend running?');
-            } else {
-                // Erro na configuração da requisição
-                // console.error('Request Error:', error.message);
-            }
-        }
-
-        return Promise.reject(error);
-    }
-);
+api.interceptors.response.use(handleResponse, handleError);
+processingApi.interceptors.response.use(handleResponse, handleError);
 
 export default api;

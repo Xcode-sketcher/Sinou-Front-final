@@ -57,7 +57,6 @@ export const ViteContactSection = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // Lidar com submissão do formulário aqui
-        // console.log('Form submitted:', formData);
     };
 
     /**
@@ -74,7 +73,7 @@ export const ViteContactSection = () => {
     };
 
     return (
-        <section  className="py-20 relative overflow-hidden" id="contact">
+        <section className="py-20 relative overflow-hidden" id="contact">
             {/* Elementos decorativos de fundo com gradientes sutis */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/5 to-transparent" />
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/8 rounded-full blur-[100px] pointer-events-none" />
