@@ -41,6 +41,22 @@ interface ModernMenuProps {
     logoUrl?: string;
 }
 
+const DEFAULT_SOCIAL_ITEMS: SocialItem[] = [
+    { label: "GitHub", href: "https://github.com/Sinout-org" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/sinout/" },
+];
+
+const MENU_SUBTITLES: Record<string, string> = {
+    "Home": "Página inicial",
+    "Sobre": "Conheça nossa história",
+    "Docs": "Documentação técnica",
+    "Equipe": "Conheça nosso time",
+    "Planos": "Nossos planos",
+    "Estatística": "Dados e métricas",
+    "Central de Ajuda": "Tire suas dúvidas",
+    "Sistema": "Acesse o sistema",
+};
+
 /**
  * Subcomponente para os botões de seleção de tema.
  */
@@ -203,12 +219,13 @@ export function ModernMenu({
 
                 {/* Links sociais para desktop */}
                 <div className="hidden md:flex items-center space-x-4">
-                    {socialItems.map((social) => (
+                    {(socialItems.length > 0 ? socialItems : DEFAULT_SOCIAL_ITEMS).map((social) => (
                         <Link
                             key={social.label}
                             href={social.href}
                             target="_blank"
                             rel="noopener noreferrer"
+                            aria-label={social.label}
                             className="text-muted-foreground hover:text-primary transition-colors"
                         >
                             {social.label}
@@ -337,7 +354,9 @@ export function ModernMenu({
                                         </div>
                                         <div className="flex-1 text-left">
                                             <div className="text-lg font-semibold text-foreground">{item.label}</div>
-                                            <div className="text-xs text-muted-foreground/80 mt-0.5">Explore {item.label.toLowerCase()} & learn more</div>
+                                            <div className="text-xs text-muted-foreground/80 mt-0.5">
+                                                {MENU_SUBTITLES[item.label] || `Explore ${item.label.toLowerCase()}`}
+                                            </div>
                                         </div>
                                         <div className="text-muted-foreground/70 text-sm">→</div>
                                     </Link>
@@ -362,7 +381,7 @@ export function ModernMenu({
 
                                     {/* Grid de links sociais */}
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        {socialItems.map((social) => {
+                                        {(socialItems.length > 0 ? socialItems : DEFAULT_SOCIAL_ITEMS).map((social) => {
                                             const icon = (() => {
                                                 switch (social.label.toLowerCase()) {
                                                     case "github":
@@ -383,6 +402,7 @@ export function ModernMenu({
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="w-full flex items-center gap-4 px-5 py-3 rounded-xl border border-border bg-card hover:shadow-lg transition-transform duration-150 transform-gpu hover:-translate-y-1 active:scale-95 shadow-sm"
+                                                    aria-label={social.label}
                                                 >
                                                     <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-muted border border-border p-2">
                                                         {icon}
