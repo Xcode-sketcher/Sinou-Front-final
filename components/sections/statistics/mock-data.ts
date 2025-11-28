@@ -44,7 +44,7 @@ export const mockPatient: Patient = {
  */
 export const mockRules: Rule[] = [
     {
-        _id: "691de9f5404192217234036e",
+        id: "691de9f5404192217234036e",
         userId: 1,
         emotion: "neutral",
         intensityLevel: "superior",
@@ -56,7 +56,7 @@ export const mockRules: Rule[] = [
         updatedAt: null
     },
     {
-        _id: "691de9f5404192217234036f",
+        id: "691de9f5404192217234036f",
         userId: 1,
         emotion: "happy",
         intensityLevel: "superior",
@@ -68,7 +68,7 @@ export const mockRules: Rule[] = [
         updatedAt: null
     },
     {
-        _id: "691de9f54041922172340370",
+        id: "691de9f54041922172340370",
         userId: 1,
         emotion: "sad",
         intensityLevel: "superior",

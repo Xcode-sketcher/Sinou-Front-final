@@ -52,7 +52,7 @@ export const Footer7 = ({ className = "" }: { className?: string }) => {
   ];
 
   const socialLinks = [
-    { icon: Github, href: "https://github.com/sinout", label: "GitHub" },
+    { icon: Github, href: "https://github.com/Sinout-org", label: "GitHub" },
     { icon: Linkedin, href: "https://linkedin.com/company/sinout", label: "LinkedIn" },
   ];
 

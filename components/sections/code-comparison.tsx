@@ -34,7 +34,7 @@ export function CodeComparison() {
      * Atualiza o estado para mostrar feedback visual por 2 segundos
      */
     const copyToClipboard = () => {
-        navigator.clipboard.writeText("git clone https://github.com/sinout/equipe-projetos");
+        navigator.clipboard.writeText("git clone https://github.com/Sinout-org/equipe-projetos");
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
@@ -77,7 +77,7 @@ export function CodeComparison() {
                                     {/* Prompt do terminal com símbolo $ */}
                                     <span className="text-green-400 mr-2">$</span>
                                     {/* Comando de clone do repositório */}
-                                    <span className="flex-1">git clone https://github.com/sinout/equipe-projetos</span>
+                                    <span className="flex-1">git clone https://github.com/Sinout-org/equipe-projetos</span>
                                     {/* Botão de cópia com ícone dinâmico baseado no estado */}
                                     <button
                                         onClick={copyToClipboard}
