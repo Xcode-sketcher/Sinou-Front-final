@@ -143,7 +143,7 @@ const CardLogin: React.FC = () => {
         try {
             await login(formData);
         } catch (error) {
-            // Silently fail log
+            // Registra falha de autenticação e mantém mensagem genérica para o usuário
             setErrors({ email: 'Falha no login. Verifique suas credenciais.' });
         } finally {
             setIsLoading(false);
@@ -163,14 +163,14 @@ const CardLogin: React.FC = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center p-6 bg-background relative overflow-hidden">
-            {/* Background Gradients */}
+            {/* Gradientes de fundo para efeito visual sutil */}
             <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-purple-500/20 blur-[120px] rounded-full pointer-events-none" />
             <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-500/20 blur-[120px] rounded-full pointer-events-none" />
 
             <button
                 type="button"
                 className="absolute top-6 left-6 p-2 rounded-lg bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-colors"
-                onClick={() => router.back()}
+                onClick={() => router.push('/')}
                 aria-label="Voltar"
                 title="Voltar"
             >
@@ -244,24 +244,6 @@ const CardLogin: React.FC = () => {
                                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                             </button>
                         </div>
-
-                        {/* Requisitos de senha */}
-                        {showPasswordRequirements && formData.password && (
-                            <div className="mt-3 p-3 rounded-lg bg-muted/50 border border-border space-y-1.5">
-                                <p className="text-xs font-medium text-foreground mb-2">Requisitos da senha:</p>
-                                <RequirementItem met={passwordValidation.minLength} text="Mínimo de 8 caracteres" />
-                                <RequirementItem met={passwordValidation.hasUpperCase} text="Uma letra maiúscula (A-Z)" />
-                                <RequirementItem met={passwordValidation.hasLowerCase} text="Uma letra minúscula (a-z)" />
-                                <RequirementItem met={passwordValidation.hasNumber} text="Um número (0-9)" />
-                                <RequirementItem met={passwordValidation.hasSpecialChar} text="Um caractere especial (!@#$%...)" />
-                            </div>
-                        )}
-
-                        {errors.password && (
-                            <span className="text-sm text-red-400 flex items-center gap-1">
-                                ⚠️ {errors.password}
-                            </span>
-                        )}
                     </div>
 
                     <button
