@@ -23,7 +23,7 @@ import { HistoryItem, Patient, Rule } from "./types";
  */
 export const mockPatient: Patient = {
     _id: "2",
-    nome: "Private Patient",
+    nome: "Paciente Exemplo",
     id_cuidador: 11,
     data_cadastro: "2025-11-19T19:04:58.969+00:00",
     status: true,

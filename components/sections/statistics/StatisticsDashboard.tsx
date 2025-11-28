@@ -60,7 +60,7 @@ interface ApiRuleItem {
  * - Layout responsivo com grid adaptativo.
  */
 export function StatisticsDashboard() {
-    const [timeFilter, setTimeFilter] = useState<number>(24);
+    const [timeFilter, setTimeFilter] = useState<number>(0);
     const [filteredHistory, setFilteredHistory] = useState<HistoryItem[]>([]);
     const [rules, setRules] = useState<Rule[]>([]);
     const [patient, setPatient] = useState<Patient | null>(null);
@@ -106,7 +106,7 @@ export function StatisticsDashboard() {
             try {
                 [historyResponse, rulesResponse, patientResponse] = await fetchWithTimeout(
                     Promise.all([
-                        api.get(`/api/history/my-history?hours=${timeFilter}`),
+                        api.get(timeFilter === 0 ? '/api/history/my-history' : `/api/history/my-history?hours=${timeFilter}`),
                         api.get('/api/emotion-mappings/my-rules'),
                         api.get('/api/users/me')
                     ]),
@@ -232,7 +232,7 @@ export function StatisticsDashboard() {
                 <div className="flex items-center gap-2 bg-muted/30 p-1 rounded-lg border border-border">
                     <Filter className="w-4 h-4 ml-2 text-muted-foreground" />
                     <span className="text-sm text-muted-foreground mr-2">Filtrar:</span>
-                    {[6, 12, 24].map((hours) => (
+                    {[6, 12, 24, 0].map((hours) => (
                         <Button
                             key={hours}
                             variant={timeFilter === hours ? "secondary" : "ghost"}
@@ -240,7 +240,7 @@ export function StatisticsDashboard() {
                             onClick={() => handleFilterChange(hours)}
                             className="text-xs h-7"
                         >
-                            {hours}h
+                            {hours === 0 ? "Todas" : `${hours}h`}
                         </Button>
                     ))}
                 </div>
