@@ -1,6 +1,9 @@
 "use client";
 import React, { useEffect, useState, useCallback } from 'react';
 
+/**
+ * Interface que define a estrutura de uma partícula de efeito visual
+ */
 interface Particle {
   id: number;
   x: number;
@@ -19,33 +22,54 @@ interface Particle {
  * ao clicar ou passar sobre elementos.
  *
  * Funcionalidades:
- * - Cursor circular personalizado
- * - Efeito de rastro com partículas
- * - Feedback visual de clique (escala)
+ * - Cursor circular personalizado com cores da marca Sinout
+ * - Efeito de partículas explosivas ao clicar
+ * - Feedback visual de clique (redução de escala e opacidade)
  * - Ocultação automática quando o mouse sai da janela
+ * - Desativação automática em dispositivos touch/mobile
+ *
+ * @returns JSX.Element | null - Retorna null em dispositivos móveis/touch
  */
 export default function CustomCursor() {
+  /**
+   * Estado que controla se o cursor personalizado está habilitado.
+   * Apenas dispositivos com pointer fino (mouse) e suporte a hover são habilitados.
+   */
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  /** Posição atual do cursor (coordenadas X e Y) */
   const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  /** Controla a visibilidade do cursor (oculto quando o mouse sai da janela) */
   const [isVisible, setIsVisible] = useState(false);
+
+  /** Estado de clique ativo (usado para efeito de escala) */
   const [isClicked, setIsClicked] = useState(false);
-  // Novo estado para as partículas
+
+  /** Array de partículas ativas para o efeito de explosão */
   const [particles, setParticles] = useState<Particle[]>([]);
-  // Contador para IDs únicas das partículas
+
+  /** Contador incremental para gerar IDs únicas das partículas */
   const [particleIdCounter, setParticleIdCounter] = useState(0);
 
-  // Função para criar e adicionar partículas
+  /**
+   * Função responsável por criar e adicionar partículas no efeito de clique.
+   * Gera entre 5 e 8 partículas com propriedades aleatórias de direção,
+   * velocidade, duração e tamanho.
+   *
+   * @param x - Coordenada X do ponto de origem (posição do clique)
+   * @param y - Coordenada Y do ponto de origem (posição do clique)
+   */
   const createParticles = useCallback((x: number, y: number) => {
     const newParticles: Particle[] = [];
-    // Gera um número pequeno de partículas (ex: 3 a 6)
     const numParticles = Math.floor(Math.random() * 4) + 5;
 
     for (let i = 0; i < numParticles; i++) {
       const id = particleIdCounter + i;
-      // Define uma direção e velocidade aleatórias para cada partícula
-      const angle = Math.random() * Math.PI * 2; // Ângulo em radianos (0 a 360 graus)
-      const speed = Math.random() * 20 + 10; // Velocidade (distância que percorre)
-      const duration = Math.random() * 0.4 + 0.3; // Duração da animação (0.3s a 0.7s)
-      const size = Math.random() * 4 + 2; // Tamanho da partícula (2px a 6px)
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 20 + 10;
+      const duration = Math.random() * 0.4 + 0.3;
+      const size = Math.random() * 4 + 2;
 
       newParticles.push({
         id: id,
@@ -61,15 +85,52 @@ export default function CustomCursor() {
     setParticles((prevParticles) => [...prevParticles, ...newParticles]);
     setParticleIdCounter((prevCounter) => prevCounter + numParticles);
 
-    // Remove as partículas após a duração da animação para otimização
+    // Remove as partículas após a animação para otimização de memória
     newParticles.forEach(p => {
       setTimeout(() => {
         setParticles(prev => prev.filter(particle => particle.id !== p.id));
-      }, p.duration * 1000 + 50); // Adiciona um pequeno buffer
+      }, p.duration * 1000 + 50);
     });
-  }, [particleIdCounter]); // particleIdCounter como dependência para o useCallback
+  }, [particleIdCounter]);
 
+  /**
+   * Efeito para detectar se o dispositivo suporta pointer fino (mouse).
+   * Desabilita o cursor personalizado em dispositivos touch/mobile.
+   */
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const mq = window.matchMedia('(pointer: fine) and (hover: hover)');
+    const isTouch = 'ontouchstart' in window || (window as unknown as { ontouchstart?: unknown }).ontouchstart !== undefined;
+    setIsEnabled(mq.matches && !isTouch);
+
+    const handler = (e: MediaQueryListEvent) => {
+      setIsEnabled(e.matches && !isTouch);
+    };
+
+    // Adiciona listener com fallback para navegadores antigos
+    if (mq.addEventListener) {
+      mq.addEventListener('change', handler);
+    } else if ((mq as MediaQueryList & { addListener?: (callback: (e: MediaQueryListEvent) => void) => void }).addListener) {
+      (mq as MediaQueryList & { addListener: (callback: (e: MediaQueryListEvent) => void) => void }).addListener(handler);
+    }
+
+    return () => {
+      if (mq.removeEventListener) {
+        mq.removeEventListener('change', handler);
+      } else if ((mq as MediaQueryList & { removeListener?: (callback: (e: MediaQueryListEvent) => void) => void }).removeListener) {
+        (mq as MediaQueryList & { removeListener: (callback: (e: MediaQueryListEvent) => void) => void }).removeListener(handler);
+      }
+    };
+  }, []);
+
+  /**
+   * Efeito para registrar os event listeners de movimento e clique do mouse.
+   * Apenas executa quando o cursor está habilitado (dispositivos desktop).
+   */
+  useEffect(() => {
+    if (!isEnabled) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
       setIsVisible(true);
@@ -85,7 +146,6 @@ export default function CustomCursor() {
 
     const handleMouseDown = (e: MouseEvent) => {
       setIsClicked(true);
-      // Cria partículas na posição do clique
       createParticles(e.clientX, e.clientY);
     };
 
@@ -106,19 +166,23 @@ export default function CustomCursor() {
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [createParticles]); // createParticles como dependência
+  }, [isEnabled, createParticles]);
 
+  // Não renderiza nada em dispositivos móveis/touch
+  if (!isEnabled) return null;
+
+  // Calcula opacidade e escala baseado no estado atual
   const cursorOpacity = isVisible ? (isClicked ? 0.5 : 1) : 0;
   const cursorScale = isClicked ? 0.8 : 1;
 
   return (
     <>
+      {/* Estilos globais para ocultar o cursor padrão do sistema */}
       <style jsx global>{`
         * {
           cursor: none !important;
         }
 
-        // Keyframes para a animação das partículas
         @keyframes particle-fade-out {
           0% {
             opacity: 1;
@@ -126,12 +190,11 @@ export default function CustomCursor() {
           }
           100% {
             opacity: 0;
-            // O translate aqui será sobrescrito pelo estilo inline para cada partícula
           }
         }
       `}</style>
 
-      {/* Cursor personalizado */}
+      {/* Elemento visual do cursor personalizado */}
       <div
         style={{
           position: 'fixed',
@@ -150,7 +213,7 @@ export default function CustomCursor() {
         </svg>
       </div>
 
-      {/* Renderização das partículas */}
+      {/* Partículas do efeito de clique */}
       {particles.map((p) => (
         <div
           key={p.id}
@@ -160,25 +223,17 @@ export default function CustomCursor() {
             top: `${p.y}px`,
             width: `${p.size}px`,
             height: `${p.size}px`,
-            backgroundColor: '#FD7B2F', // Mesma cor do cursor
+            backgroundColor: '#FD7B2F',
             borderRadius: '50%',
             pointerEvents: 'none',
-            zIndex: 9998, // Um pouco abaixo do cursor principal
-            // Animação de movimento e fade out
+            zIndex: 9998,
             animation: `particle-fade-out ${p.duration}s ease-out forwards`,
             transform: `translate(
               ${Math.cos(p.angle) * p.speed}px,
               ${Math.sin(p.angle) * p.speed}px
             )`,
-            // Para garantir que o translate inicial seja 0 antes da animação, 
-            // a animação controlará o movimento.
-            // O transform acima é o valor final para a animação.
-            // Para o movimento, vamos definir via Keyframes no CSS.
-            //`animation-fill-mode: forwards` vai manter o estado final do keyframe.
-            // Para ter a transição suave de início até o `transform` final, 
-            // precisamos definir o `transform` inicial no keyframe.
           }}
-        ></div>
+        />
       ))}
     </>
   );

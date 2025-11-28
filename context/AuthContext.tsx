@@ -11,6 +11,12 @@ interface User {
     role: string;
     patientId?: string;
     patientName?: string;
+    profilePhoto?: number;
+    patient?: {
+        id: string;
+        fotoPerfil?: number;
+        [key: string]: any;
+    };
 }
 
 interface LoginData {
@@ -31,6 +37,7 @@ interface AuthContextType {
     login: (data: LoginData) => Promise<void>;
     register: (data: RegisterData) => Promise<void>;
     logout: () => Promise<void>;
+    refreshUser: () => Promise<boolean>;
 }
 
 /**
@@ -62,7 +69,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const checkAuth = async (): Promise<boolean> => {
         try {
             const response = await api.get('/api/users/me');
-            setUser(response.data);
+            let userData = response.data;
+
+            // Se o usuário possuir um patientId, busca os dados mais recentes do paciente
+            const patientId = userData.patientId || userData.patient?.id || userData.patient?._id;
+
+            if (patientId) {
+                try {
+                    // Busca dados atualizados do paciente para manter o avatar sincronizado
+                    // Adiciona timestamp para evitar cache
+                    const patientResponse = await api.get(`/api/patients/${patientId}?t=${new Date().getTime()}`);
+
+                    // Mescla os dados atualizados do paciente no objeto do usuário
+                    const freshPatientData = patientResponse.data;
+
+                    // Determina o índice do avatar a partir dos dados atualizados
+                    // Prioriza 'profilePhoto' conforme a documentação da API
+                    const avatarIndex = freshPatientData.profilePhoto || freshPatientData.fotoPerfil || freshPatientData.foto_perfil;
+
+                    userData = {
+                        ...userData,
+                        // Map the patient avatar to the top-level profilePhoto for easier access
+                        profilePhoto: avatarIndex,
+                        patient: {
+                            ...userData.patient,
+                            ...freshPatientData,
+                            // Ensure id is consistent if backend returns _id
+                            id: freshPatientData._id || freshPatientData.id || patientId,
+                            // Ensure profilePhoto is consistent
+                            profilePhoto: avatarIndex,
+                            fotoPerfil: avatarIndex, // Backward compatibility
+                            foto_perfil: avatarIndex // Backward compatibility
+                        }
+                    };
+                } catch (patientError) {
+                    // Falha ao buscar dados do paciente — mantém os dados existentes
+                }
+            }
+
+            // Gera uma nova referência de objeto para garantir que o React detecte a alteração
+            setUser({ ...userData });
             return true;
         } catch (error) {
             setUser(null);
@@ -124,7 +170,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+        <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser: checkAuth }}>
             {children}
         </AuthContext.Provider>
     );

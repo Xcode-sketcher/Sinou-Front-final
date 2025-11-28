@@ -37,7 +37,6 @@ export const Footer7 = ({ className = "" }: { className?: string }) => {
         { name: "Sobre Nós", href: "/sobre" },
         { name: "Equipe", href: "/equipe" },
         { name: "Recursos", href: "/sistema" },
-        { name: "Carreiras", href: "/carreiras" },
       ],
     },
     {
@@ -53,7 +52,7 @@ export const Footer7 = ({ className = "" }: { className?: string }) => {
 
   const socialLinks = [
     { icon: Github, href: "https://github.com/Sinout-org", label: "GitHub" },
-    { icon: Linkedin, href: "https://linkedin.com/company/sinout", label: "LinkedIn" },
+    { icon: Linkedin, href: "https://www.linkedin.com/company/sinout/", label: "LinkedIn" },
   ];
 
   return (
@@ -86,7 +85,7 @@ export const Footer7 = ({ className = "" }: { className?: string }) => {
               <div className="space-y-3 mb-6">
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
                   <Mail className="w-4 h-4 text-purple-400" />
-                  <span>contato@sinout.com</span>
+                  <span>suportesinout@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
                   <Phone className="w-4 h-4 text-blue-400" />

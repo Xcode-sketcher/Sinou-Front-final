@@ -74,16 +74,14 @@ export default function StatisticsPage() {
         return null;
     }
 
-    const socialItems = [
-        { label: "", href: "#" },
-    ];
+
 
     return (
         <div className="min-h-screen flex flex-col bg-background text-foreground">
             <header>
                 <title>Sinout - Estatísticas</title>
             </header>
-            <ModernMenu items={[]} socialItems={socialItems} />
+            <ModernMenu items={[]} />
 
             <main className="flex-grow pt-20">
                 <StatisticsDashboard />

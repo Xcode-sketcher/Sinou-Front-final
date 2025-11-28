@@ -32,16 +32,14 @@ export default function SistemaPage() {
         return null;
     }
 
-    const socialItems = [
-        { label: "", href: "#" },
-    ];
+
 
     return (
         <div className="min-h-screen flex flex-col bg-background text-foreground">
             <header>
                 <title>Sinout - Plataforma</title>
             </header>
-            <ModernMenu items={[]} socialItems={socialItems} />
+            <ModernMenu items={[]} />
 
             <main className="flex-grow pt-20">
                 <SystemDashboard />

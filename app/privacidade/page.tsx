@@ -4,16 +4,13 @@ import { ModernMenu } from "@/components/layout/Header";
 const Footer7 = dynamic(() => import("@/components/layout/Footer").then(mod => mod.Footer7));
 
 export default function Privacidade() {
-    const socialItems = [
-        { label: "", href: "#" },
-    ];
 
     return (
         <div className="min-h-screen flex flex-col bg-background text-foreground">
             <header>
                 <title>Sinout - Privacidade</title>
             </header>
-            <ModernMenu items={[]} socialItems={socialItems} />
+            <ModernMenu items={[]} />
 
             <main className="flex-grow pt-36 pb-16">
                 <div className="max-w-4xl mx-auto px-4">

@@ -8,14 +8,11 @@ import { ModernMenu } from "@/components/layout/Header";
 
 
 export default function AjudaPage() {
-    const socialItems = [
-        { label: "", href: "#" },
-        { label: "", href: "#" },
-    ];
+
 
     return (
         <>
-            <ModernMenu items={[]} socialItems={socialItems} />
+            <ModernMenu items={[]} />
             <FAQ />
             <Footer7 />
             {/* <VLibrasWidget /> */}

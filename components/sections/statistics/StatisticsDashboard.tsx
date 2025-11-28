@@ -60,7 +60,7 @@ interface ApiRuleItem {
  * - Layout responsivo com grid adaptativo.
  */
 export function StatisticsDashboard() {
-    const [timeFilter, setTimeFilter] = useState<number>(24);
+    const [timeFilter, setTimeFilter] = useState<number>(0);
     const [filteredHistory, setFilteredHistory] = useState<HistoryItem[]>([]);
     const [rules, setRules] = useState<Rule[]>([]);
     const [patient, setPatient] = useState<Patient | null>(null);
@@ -106,17 +106,17 @@ export function StatisticsDashboard() {
             try {
                 [historyResponse, rulesResponse, patientResponse] = await fetchWithTimeout(
                     Promise.all([
-                        api.get(`/api/history/my-history?hours=${timeFilter}`),
+                        api.get(timeFilter === 0 ? '/api/history/my-history' : `/api/history/my-history?hours=${timeFilter}`),
                         api.get('/api/emotion-mappings/my-rules'),
                         api.get('/api/users/me')
                     ]),
                     5000
                 );
             } catch (error) {
-                console.warn("API request timed out or failed, using mock data", error);
-                historyResponse = { data: mockHistory };
-                rulesResponse = { data: mockRules };
-                patientResponse = { data: mockPatient };
+                // Tempo limite atingido ou requisição falhou; usa fallback de arrays vazios
+                historyResponse = { data: [] };
+                rulesResponse = { data: [] };
+                patientResponse = { data: null };
             }
 
             if (!historyResponse || !rulesResponse || !patientResponse) {
@@ -156,7 +156,7 @@ export function StatisticsDashboard() {
             } else if (rawHistory && Array.isArray((rawHistory as { items?: ApiHistoryItem[] }).items)) {
                 historyArray = (rawHistory as { items?: ApiHistoryItem[] }).items!.map(mapHistoryItem);
             } else {
-                console.error("Unexpected history response format", rawHistory);
+                // Formato de resposta de histórico inesperado — ignora e segue sem dados
             }
 
             historyArray = historyArray.filter(item =>
@@ -187,7 +187,7 @@ export function StatisticsDashboard() {
             } else if (rawRules && Array.isArray((rawRules as { data?: ApiRuleItem[] }).data)) {
                 rulesArray = (rawRules as { data?: ApiRuleItem[] }).data!.map(mapRuleItem);
             } else {
-                console.error("Unexpected rules response format", rawRules);
+                // Formato de resposta de regras inesperado — ignora e segue sem regras
             }
 
             setRules(rulesArray);
@@ -210,7 +210,7 @@ export function StatisticsDashboard() {
             setError(null);
         } catch (err: unknown) {
             const error = err as Error;
-            console.error("Failed to fetch data", err);
+            // Falha ao buscar dados: error armazenado em estado para exibição ao usuário
             setError(error?.message || "Erro ao carregar dados");
             setFilteredHistory([]);
             setRules([]);
@@ -232,7 +232,7 @@ export function StatisticsDashboard() {
                 <div className="flex items-center gap-2 bg-muted/30 p-1 rounded-lg border border-border">
                     <Filter className="w-4 h-4 ml-2 text-muted-foreground" />
                     <span className="text-sm text-muted-foreground mr-2">Filtrar:</span>
-                    {[6, 12, 24].map((hours) => (
+                    {[6, 12, 24, 0].map((hours) => (
                         <Button
                             key={hours}
                             variant={timeFilter === hours ? "secondary" : "ghost"}
@@ -240,7 +240,7 @@ export function StatisticsDashboard() {
                             onClick={() => handleFilterChange(hours)}
                             className="text-xs h-7"
                         >
-                            {hours}h
+                            {hours === 0 ? "Todas" : `${hours}h`}
                         </Button>
                     ))}
                 </div>

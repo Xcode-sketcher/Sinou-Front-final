@@ -62,9 +62,7 @@ const Footer7 = dynamic(() => import("@/components/layout/Footer").then(mod => m
  */
 export default function TeamPage() {
     // Configuração dos links sociais para o menu
-    const socialItems = [
-        { label: "", href: "#" },
-    ];
+
 
 
     return (
@@ -73,7 +71,7 @@ export default function TeamPage() {
                 <title>Sinout - Equipe</title>
             </header>
             {/* Menu de navegação */}
-            <ModernMenu items={[]} socialItems={socialItems} />
+            <ModernMenu items={[]} />
 
             <main className="flex-grow">
                 {/* Hero Section com Pipeline Animation */}

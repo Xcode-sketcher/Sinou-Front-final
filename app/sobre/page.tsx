@@ -192,18 +192,13 @@ const FloatingElement = ({ children, delay = 0 }: FloatingElementProps) => (
  * - Call-to-action
  */
 export default function SobrePage() {
-    // Configuração dos links das redes sociais para o menu
-    const socialItems = [
-        { label: "", href: "#" },
-    ];
-
     return (
         <div className="min-h-screen bg-background">
             <header>
                 <title>Sobre Sinout</title>
             </header>
             {/* Menu de navegação moderno */}
-            <ModernMenu items={[]} socialItems={socialItems} />
+            <ModernMenu items={[]} />
 
             {/* Seção Hero - Introdução da história */}
             <section className="relative py-20 overflow-hidden">
