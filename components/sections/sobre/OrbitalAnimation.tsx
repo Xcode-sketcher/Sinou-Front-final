@@ -70,6 +70,9 @@ const SinoutIcons = {
 export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimationProps) {
     const [animationPhase, setAnimationPhase] = useState<'dark' | 'spark' | 'lit' | 'orbiting'>('dark');
     const [mounted, setMounted] = useState(false);
+    // Dynamic container width/height in pixels based on viewport — helps mobile responsiveness
+    const [containerSizePx, setContainerSizePx] = useState<number | null>(null);
+    const [containerHeightPx, setContainerHeightPx] = useState<number | null>(null);
 
     // Define the 6 core values as satellites with solid colors
     const satellites: ValueSatellite[] = [
@@ -95,6 +98,27 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
         const timer = setTimeout(() => setMounted(true), 0);
         return () => clearTimeout(timer);
     }, []);
+
+    // Update container size responsively based on viewport width
+    useEffect(() => {
+        const updateContainerSize = () => {
+            if (typeof window === 'undefined') return;
+            const vw = Math.max(320, Math.min(window.innerWidth, 1200));
+            const target = Math.min(config.container, Math.floor(vw * 0.92));
+            // compute scaled sizes to determine required height in compact mode
+            const corePx = Math.round(target * (config.core / config.container));
+            const satellitePx = Math.max(48, Math.round(target * (config.satellite / config.container)));
+            const gapPx = Math.round(satellitePx + 8);
+            const requiredHeight = corePx + gapPx * satellites.length + 40; // buffer
+            const finalHeight = Math.max(target, requiredHeight);
+            setContainerSizePx(target);
+            setContainerHeightPx(finalHeight);
+        };
+
+        updateContainerSize();
+        window.addEventListener('resize', updateContainerSize);
+        return () => window.removeEventListener('resize', updateContainerSize);
+    }, [config.container, satellites.length]);
 
     // Animation sequence
     useEffect(() => {
@@ -130,25 +154,35 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
         };
     };
 
+    // Effective container and scaled sizes used throughout the layout
+    const displayWidth = containerSizePx ?? config.container;
+    const displayHeight = containerHeightPx ?? displayWidth;
+    const scale = displayWidth / config.container;
+    const coreSize = Math.round(config.core * scale);
+    const satelliteBaseSize = Math.max(48, Math.round(config.satellite * scale));
+    const orbitSize = Math.round(config.orbit * scale);
+    const compactMode = displayWidth <= 360;
+
     if (!mounted) {
         // Return a simple placeholder during SSR to match initial client render
         return (
             <div
                 className="relative flex items-center justify-center"
-                style={{ height: config.container, width: config.container }}
+                style={{ height: containerSizePx ?? config.container, width: containerSizePx ?? config.container }}
             >
                 <div
                     className="absolute rounded-3xl flex items-center justify-center overflow-hidden bg-gray-900 dark:bg-gray-900 border-2 border-gray-800"
                     style={{
-                        width: config.core,
-                        height: config.core,
+                        width: Math.round(coreSize),
+                        height: Math.round(coreSize),
                         opacity: 0.3
                     }}
                 >
                     <img
                         src="/Logo.svg"
                         alt="Sinout Logo"
-                        className="w-20 h-20 opacity-30 object-contain"
+                        style={{ width: Math.round(coreSize * 0.65), height: Math.round(coreSize * 0.65) }}
+                        className="opacity-30 object-contain"
                     />
                 </div>
             </div>
@@ -158,13 +192,29 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
     return (
         <div
             className="relative flex items-center justify-center"
-            style={{ height: config.container, width: config.container }}
+            style={{ height: displayHeight, width: displayWidth }}
         >
+            {/* Super compact fallback for very small screens: simple vertical list */}
+            {displayWidth <= 320 && (
+                <div className="flex flex-col items-center gap-2 w-full" style={{ maxWidth: displayWidth, padding: 8 }}>
+                    <div className="rounded-2xl flex items-center justify-center bg-gray-900/80 border border-gray-800" style={{ width: coreSize, height: coreSize }}>
+                        <img src="/Logo.svg" alt="Sinout logo" style={{ width: coreSize * 0.6, height: coreSize * 0.6 }} />
+                    </div>
+                    <div className="w-full px-2">
+                        {satellites.map((s, i) => (
+                            <div key={i} className="flex items-center gap-2 py-2 px-3 rounded-lg bg-gray-800/80 border border-gray-700 text-white">
+                                <div className={`w-8 h-8 rounded-md ${s.color} flex items-center justify-center text-white`}>{s.icon}</div>
+                                <div className="text-sm font-semibold truncate">{s.label}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
             {/* SVG for connection lines */}
             <svg
                 className="absolute inset-0 pointer-events-none"
-                width={config.container}
-                height={config.container}
+                width={displayWidth}
+                height={displayHeight}
             >
                 <defs>
                     <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -174,14 +224,14 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
                 </defs>
 
                 {animationPhase === 'orbiting' && satellites.map((satellite, index) => {
-                    const pos = getSatellitePosition(satellite.angle, config.orbit);
+                    const pos = getSatellitePosition(satellite.angle, orbitSize);
                     return (
                         <motion.line
                             key={index}
-                            x1={config.container / 2}
-                            y1={config.container / 2}
-                            x2={config.container / 2 + pos.x}
-                            y2={config.container / 2 + pos.y}
+                            x1={displayWidth / 2}
+                            y1={displayHeight / 2}
+                            x2={displayWidth / 2 + pos.x}
+                            y2={displayHeight / 2 + pos.y}
                             stroke="url(#lineGradient)"
                             strokeWidth="1"
                             initial={{ pathLength: 0, opacity: 0 }}
@@ -197,8 +247,8 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
                 <motion.div
                     className="absolute w-3 h-3 rounded-full bg-gradient-to-r from-orange-400 to-orange-500 shadow-lg shadow-orange-500/50"
                     initial={{
-                        x: -config.container / 2 + 50,
-                        y: -config.container / 2 + 50,
+                        x: -(displayWidth / 2) + 50,
+                        y: -(displayHeight / 2) + 50,
                         scale: 0.5,
                         opacity: 0
                     }}
@@ -213,8 +263,8 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
                         ease: "easeInOut"
                     }}
                     style={{
-                        left: config.container / 2,
-                        top: config.container / 2
+                        left: displayWidth / 2,
+                        top: displayHeight / 2
                     }}
                 />
             )}
@@ -226,8 +276,8 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
                     : 'border-gray-800 dark:border-gray-800'
                     }`}
                 style={{
-                    width: config.core,
-                    height: config.core
+                    width: Math.round((containerSizePx ?? config.container) * (config.core / config.container)),
+                    height: Math.round((containerSizePx ?? config.container) * (config.core / config.container))
                 }}
                 initial={{ opacity: 0.3, scale: 0.9 }}
                 animate={{
@@ -246,7 +296,7 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
                         className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-orange-500/20 to-transparent"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: [0, 1, 0.7] }}
-                        transition={{ duration: 0.8, repeat: Infinity, repeatDelay: 2 }}
+                        transition={{ duration: 0.8, repeat: compactMode ? 0 : Infinity, repeatDelay: 2 }}
                     />
                 )}
 
@@ -255,7 +305,8 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
                     <img
                         src="/Logo.svg"
                         alt="Sinout Logo"
-                        className={`w-20 h-20 object-contain transition-opacity duration-500 ${animationPhase === 'lit' || animationPhase === 'orbiting' ? 'opacity-100' : 'opacity-30'
+                        style={{ width: Math.round(coreSize * 0.65), height: Math.round(coreSize * 0.65) }}
+                        className={`object-contain transition-opacity duration-500 ${animationPhase === 'lit' || animationPhase === 'orbiting' ? 'opacity-100' : 'opacity-30'
                             }`}
                     />
                 </div>
@@ -265,19 +316,33 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
             {animationPhase === 'orbiting' && (
                 <motion.div
                     className="absolute inset-0"
-                    animate={{ rotate: 360 }}
+                    animate={{ rotate: compactMode ? 0 : 360 }}
                     transition={{
                         duration: 20,
-                        repeat: Infinity,
+                        repeat: compactMode ? 0 : Infinity,
                         ease: "linear"
                     }}
                     style={{
-                        width: config.container,
-                        height: config.container
+                        width: displayWidth,
+                        height: displayHeight
                     }}
                 >
                     {satellites.map((satellite, index) => {
-                        const position = getSatellitePosition(satellite.angle, config.orbit);
+                        const effectiveContainer = containerSizePx ?? config.container;
+                        const scale = effectiveContainer / config.container;
+                        const satelliteSize = satelliteBaseSize;
+                        const orbit = Math.round(config.orbit * scale);
+                        let position = getSatellitePosition(satellite.angle, orbit);
+
+                        // Compact mode: render satellites stacked vertically below center to avoid overlap
+                        if (compactMode) {
+                            const offsetYStart = Math.round(coreSize / 2 + 10);
+                            const gap = Math.round(satelliteSize + 8);
+                            position = {
+                                x: 0,
+                                y: offsetYStart + (index - (satellites.length - 1) / 2) * gap
+                            };
+                        }
 
                         return (
                             <motion.div
@@ -292,34 +357,34 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
                                     scale: 1
                                 }}
                                 transition={{
-                                    opacity: { duration: 0.4, delay: index * 0.1 },
-                                    scale: { duration: 0.4, delay: index * 0.1 }
+                                    opacity: { duration: compactMode ? 0.12 : 0.4, delay: index * 0.05 },
+                                    scale: { duration: compactMode ? 0.12 : 0.4, delay: index * 0.05 }
                                 }}
                                 style={{
-                                    left: config.container / 2 + position.x - config.satellite / 2,
-                                    top: config.container / 2 + position.y - config.satellite / 2,
-                                    width: config.satellite,
-                                    height: config.satellite
+                                    left: displayWidth / 2 + position.x - satelliteSize / 2,
+                                    top: displayHeight / 2 + position.y - satelliteSize / 2,
+                                    width: satelliteSize,
+                                    height: satelliteSize
                                 }}
                             >
                                 {/* Counter-rotate the content so text stays readable */}
                                 <motion.div
-                                    animate={{ rotate: -360 }}
+                                    animate={compactMode ? {} : { rotate: -360 }}
                                     transition={{
                                         duration: 20,
-                                        repeat: Infinity,
+                                        repeat: compactMode ? 0 : Infinity,
                                         ease: "linear"
                                     }}
                                     className="w-full h-full"
                                 >
                                     <div
-                                        className="w-full h-full rounded-xl bg-gray-800/80 dark:bg-gray-800/80 border border-gray-700 backdrop-blur-sm shadow-lg flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
+                                        className={`w-full h-full rounded-xl bg-gray-800/80 dark:bg-gray-800/80 border border-gray-700 ${compactMode ? 'backdrop-blur-none shadow-sm' : 'backdrop-blur-sm shadow-lg'} flex items-center justify-center sm:hover:scale-110 transition-transform cursor-pointer`}
                                     >
                                         <div className="text-center px-2">
                                             <div className={`w-8 h-8 mx-auto mb-1 rounded-lg ${satellite.color} flex items-center justify-center text-white`}>
                                                 {satellite.icon}
                                             </div>
-                                            <span className="text-xs font-bold text-white whitespace-nowrap">
+                                            <span className="text-[10px] sm:text-xs font-bold text-white whitespace-nowrap max-w-[84px] truncate">
                                                 {satellite.label}
                                             </span>
                                         </div>
@@ -336,10 +401,10 @@ export function OrbitalAnimation({ size = 'lg', autoPlay = true }: OrbitalAnimat
                 <motion.div
                     className="absolute rounded-full border border-purple-500/10"
                     style={{
-                        width: config.orbit * 2,
-                        height: config.orbit * 2,
-                        left: config.container / 2 - config.orbit,
-                        top: config.container / 2 - config.orbit
+                        width: orbitSize * 2,
+                        height: orbitSize * 2,
+                        left: displayWidth / 2 - orbitSize,
+                        top: displayHeight / 2 - orbitSize
                     }}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{

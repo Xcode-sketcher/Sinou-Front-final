@@ -117,7 +117,7 @@ export const ViteContactSection = () => {
                                 </div>
                                 <div>
                                     <p className="text-foreground font-medium">Email</p>
-                                    <p className="text-muted-foreground">contato@sinout.com</p>
+                                    <p className="text-muted-foreground">suportesinout@gmail.com</p>
                                 </div>
                             </div>
 
