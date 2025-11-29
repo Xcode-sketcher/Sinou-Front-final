@@ -7,7 +7,6 @@ Este repositório contém a aplicação frontend do **Sinout**, desenvolvida com
 ## Tecnologias Utilizadas
 
 - **React** (v19)
-- **Vite** como bundler e servidor de desenvolvimento
 - **ESLint** e **Prettier** para linting e formatação de código
 - **Lucide** para ícones
 - **Next.js** para roteamento
