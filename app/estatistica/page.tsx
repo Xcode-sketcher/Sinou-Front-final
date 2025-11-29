@@ -1,7 +1,6 @@
 "use client";
 
 import { StatisticsDashboard } from "@/components/sections/statistics/StatisticsDashboard";
-import { ModernMenu } from "@/components/layout/Header";
 import dynamic from "next/dynamic";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
@@ -81,7 +80,7 @@ export default function StatisticsPage() {
             <header>
                 <title>Sinout - Estatísticas</title>
             </header>
-            <ModernMenu items={[]} />
+            {/* Cabeçalho fornecido pelo layout global */}
 
             <main className="flex-grow pt-20">
                 <StatisticsDashboard />

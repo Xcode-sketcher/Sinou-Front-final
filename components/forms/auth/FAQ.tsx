@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { ModernMenu } from "@/components/layout/Header";
 import { Plus, Minus, Sparkles, MessageCircle, Settings, Edit3, Zap, Smile } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -39,17 +38,6 @@ const customStyles = `
   .drifting-3 { animation: drift3 35s ease-in-out infinite; animation-delay: 5s; }
 `;
 
-const menuItems = [
-  { label: "Home", href: "/" },
-  { label: "Sobre", href: "/sobre" },
-  { label: "Equipe", href: "/equipe" },
-  { label: "Planos", href: "/#pagamento" },
-  { label: "Estatística", href: "/estatistica" },
-];
-const socialItems = [
-  { label: "", href: "#" },
-  { label: "", href: "#" },
-];
 
 interface FAQItemProps {
   icon: React.ElementType;
@@ -74,7 +62,6 @@ const FAQItem = ({ icon: Icon, question, answer, isOpen, toggle }: FAQItemProps)
   return (
     <div className="mb-4">
       <header>
-        <title>Sinout - FAQ</title>
       </header>
       <button
         onClick={toggle}
@@ -129,7 +116,7 @@ const FAQItem = ({ icon: Icon, question, answer, isOpen, toggle }: FAQItemProps)
  * Página de Ajuda / FAQ (AjudaPage).
  *
  * Apresenta uma lista de perguntas frequentes sobre o sistema Sinout.
- * Inclui animações de fundo e um call-to-action para contato.
+ * Inclui animações de fundo e uma chamada para ação (CTA) para contato.
  *
  * Funcionalidades:
  * - Listagem de perguntas expansíveis.
@@ -182,7 +169,7 @@ export default function AjudaPage() {
         </div>
 
 
-        <ModernMenu items={menuItems} socialItems={socialItems} />
+        {/* Cabeçalho fornecido pela página que importa o `ModernMenu`; evite renderizar o cabeçalho do site neste componente. */}
 
         <main className="container mx-auto px-4 pt-32 pb-20 max-w-4xl relative z-10">
 

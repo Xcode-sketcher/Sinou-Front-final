@@ -11,7 +11,6 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/context/AuthContext";
 import api from "@/lib/api";
-import { ModernMenu } from "@/components/layout/Header";
 import { Footer7 as Footer } from "@/components/layout/Footer";
 import { Check, CreditCard, Loader2, User as UserIcon, Shield, Bell, History } from "lucide-react";
 
@@ -119,7 +118,8 @@ export default function ProfilePage() {
       // Try to find patient ID from various possible sources
       // The backend often uses _id, so we check for that too
       const patientData = profile?.patient || user?.patient;
-      const patientId = patientData?.id || patientData?._id || profile?.patientId || user?.patientId;
+      const patientIdRaw = patientData?.id || patientData?._id || profile?.patientId || user?.patientId;
+      const patientId = patientIdRaw ? String(patientIdRaw) : undefined;
 
       if (!patientId) {
         // ID do paciente não encontrado — usuário pode não possuir paciente vinculado
@@ -156,8 +156,8 @@ export default function ProfilePage() {
           ...prev,
           patient: {
             ...prev.patient,
-            id: patientId,
-            _id: patientId,
+            id: patientId!,
+            _id: patientId!,
             profilePhoto: selectedAvatar,
             fotoPerfil: selectedAvatar // Keep for backward compatibility if needed locally
           }
@@ -226,7 +226,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <ModernMenu items={[]} />
+      {/* Cabeçalho fornecido pelo layout global */}
 
       <main className="flex-1 container mx-auto px-4 pt-32 pb-12">
         <div className="max-w-4xl mx-auto space-y-8">

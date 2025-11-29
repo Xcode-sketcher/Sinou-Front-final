@@ -46,6 +46,30 @@ interface ApiRuleItem {
 }
 
 /**
+ * Interface para dados de paciente retornados pela API.
+ * Inclui campos que podem aparecer em diferentes formas dependendo do endpoint.
+ */
+interface ApiPatientItem {
+    patientId?: number;
+    id?: number | string;
+    _id?: number | string;
+    patientName?: string;
+    name?: string;
+    nome?: string;
+    username?: string;
+    email?: string;
+    userId?: number;
+    caregiverId?: number;
+    id_cuidador?: number;
+    createdAt?: string;
+    data_cadastro?: string;
+    additionalInfo?: Record<string, unknown> | null;
+    informacoes_adicionais?: Record<string, unknown> | null;
+    createdBy?: string;
+    criado_por?: string;
+}
+
+/**
  * Dashboard principal de estatísticas do sistema Sinout.
  *
  * Componente central que orquestra a exibição de dados estatísticos do paciente,
@@ -84,9 +108,9 @@ export function StatisticsDashboard() {
         setLoading(true);
         setError(null);
 
-        let historyResponse: { data: any } | undefined;
-        let rulesResponse: { data: any } | undefined;
-        let patientResponse: { data: any } | undefined;
+        let historyResponse: { data: ApiHistoryItem[] } | undefined;
+        let rulesResponse: { data: ApiRuleItem[] } | undefined;
+        let patientResponse: { data: ApiPatientItem | null } | undefined;
 
         try {
             const fetchWithTimeout = <T,>(promise: Promise<T>, timeoutMs: number): Promise<T> => {
@@ -195,14 +219,14 @@ export function StatisticsDashboard() {
             const patientData = patientResponse.data;
             if (patientData) {
                 const mappedPatient: Patient = {
-                    _id: patientData.patientId || patientData.id || patientData._id,
-                    nome: patientData.patientName || patientData.name || patientData.nome || patientData.username || patientData.email,
-                    id_cuidador: patientData.userId || patientData.caregiverId || patientData.id_cuidador || 1,
-                    data_cadastro: patientData.createdAt || patientData.data_cadastro || new Date().toISOString(),
+                    _id: String(patientData.patientId || patientData.id || patientData._id),
+                    nome: String(patientData.patientName || patientData.name || patientData.nome || patientData.username || patientData.email || ''),
+                    id_cuidador: Number(patientData.userId || patientData.caregiverId || patientData.id_cuidador || 1),
+                    data_cadastro: String(patientData.createdAt || patientData.data_cadastro || new Date().toISOString()),
                     status: true,
-                    informacoes_adicionais: patientData.additionalInfo || patientData.informacoes_adicionais || null,
+                    informacoes_adicionais: typeof patientData.informacoes_adicionais === 'string' ? patientData.informacoes_adicionais : (patientData.additionalInfo ? JSON.stringify(patientData.additionalInfo) : null),
                     foto_perfil: null,
-                    criado_por: patientData.createdBy || patientData.criado_por || 'user'
+                    criado_por: String(patientData.createdBy || patientData.criado_por || 'user')
                 };
                 setPatient(mappedPatient);
             }

@@ -1,10 +1,9 @@
 /**
- * Página Inicial (Home).
- * Landing page focada em apresentar a Sinout e direcionar para a equipe.
+ * Página Inicial
+ * Página de entrada focada em apresentar a Sinout e direcionar visitantes às seções principais do site.
  */
 "use client";
 
-import { ModernMenu } from "@/components/layout/Header";
 import { Footer7 } from "@/components/layout/Footer";
 import Particles from "@/components/ui/Particles";
 import { HeroGeometricAnimation } from "@/components/sections/hero-geometric-animation";
@@ -21,8 +20,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground overflow-x-hidden">
-      {/* Menu de navegação */}
-      <ModernMenu items={[]} />
+      {/* O `ModernMenu` é renderizado no layout global; evite renderizar novamente nesta página para prevenir duplicação. */}
 
       <main className="flex-grow">
         {/* Hero Section com Animação Geométrica e Partículas */}

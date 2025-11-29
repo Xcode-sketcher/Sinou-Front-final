@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { ContextMenu } from "@/components/ui/ContextMenu";
+import HeaderGuard from "@/components/layout/HeaderGuard";
 import { AuthProvider } from "@/context/AuthContext";
 import { CookieConsent } from "@/components/ui/CookieConsent";
 import Script from "next/script";
@@ -76,6 +77,7 @@ export default function RootLayout({
           <AuthProvider>
             <ContextMenu />
             <CookieConsent />
+            <HeaderGuard items={[]} />
             {children}
             <VLibras />
           </AuthProvider>

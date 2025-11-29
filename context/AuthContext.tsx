@@ -15,7 +15,7 @@ interface User {
     patient?: {
         id: string;
         fotoPerfil?: number;
-        [key: string]: any;
+        [key: string]: unknown;
     };
 }
 

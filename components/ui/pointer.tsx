@@ -35,7 +35,10 @@ export default function CustomCursor() {
    * Estado que controla se o cursor personalizado está habilitado.
    * Apenas dispositivos com pointer fino (mouse) e suporte a hover são habilitados.
    */
-  const [isEnabled, setIsEnabled] = useState(false);
+  // Start disabled to match SSR and avoid hydration mismatch.
+  const [isEnabled, setIsEnabled] = useState<boolean>(false);
+  // Track mount state to only render cursor after hydration.
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
   /** Posição atual do cursor (coordenadas X e Y) */
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -98,11 +101,22 @@ export default function CustomCursor() {
    * Desabilita o cursor personalizado em dispositivos touch/mobile.
    */
   useEffect(() => {
+    // Defer mount flag update to avoid synchronous setState inside effect
+    const id = window.setTimeout(() => setIsMounted(true), 0);
+    return () => clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
     if (typeof window === 'undefined') return;
 
     const mq = window.matchMedia('(pointer: fine) and (hover: hover)');
     const isTouch = 'ontouchstart' in window || (window as unknown as { ontouchstart?: unknown }).ontouchstart !== undefined;
-    setIsEnabled(mq.matches && !isTouch);
+
+    // Update initial state after mount asynchronously to avoid sync setState in effect
+    const raf = window.requestAnimationFrame(() => {
+      setIsEnabled(mq.matches && !isTouch);
+    });
 
     const handler = (e: MediaQueryListEvent) => {
       setIsEnabled(e.matches && !isTouch);
@@ -116,20 +130,21 @@ export default function CustomCursor() {
     }
 
     return () => {
+      window.cancelAnimationFrame(raf);
       if (mq.removeEventListener) {
         mq.removeEventListener('change', handler);
       } else if ((mq as MediaQueryList & { removeListener?: (callback: (e: MediaQueryListEvent) => void) => void }).removeListener) {
         (mq as MediaQueryList & { removeListener: (callback: (e: MediaQueryListEvent) => void) => void }).removeListener(handler);
       }
     };
-  }, []);
+  }, [isMounted]);
 
   /**
    * Efeito para registrar os event listeners de movimento e clique do mouse.
    * Apenas executa quando o cursor está habilitado (dispositivos desktop).
    */
   useEffect(() => {
-    if (!isEnabled) return;
+    if (!isMounted || !isEnabled) return;
 
     const handleMouseMove = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
@@ -166,10 +181,10 @@ export default function CustomCursor() {
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isEnabled, createParticles]);
+  }, [isMounted, isEnabled, createParticles]);
 
-  // Não renderiza nada em dispositivos móveis/touch
-  if (!isEnabled) return null;
+  // Não renderiza nada no SSR ou antes do componente montar
+  if (!isMounted || !isEnabled) return null;
 
   // Calcula opacidade e escala baseado no estado atual
   const cursorOpacity = isVisible ? (isClicked ? 0.5 : 1) : 0;

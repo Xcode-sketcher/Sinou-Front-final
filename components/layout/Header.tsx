@@ -221,11 +221,23 @@ export function ModernMenu({
 
     const menuItems = getMenuItems();
 
+    // Filter out the menu item that points to the current page
+    const filteredMenuItems = menuItems.filter((item) => {
+        // keep items with an anchor - they are section links
+        if (item.href.includes('#')) return true;
+        // Normalize href paths (strip query/hash)
+        const itemPath = item.href.split('?')[0].split('#')[0];
+        const current = (pathname || '/').split('?')[0].split('#')[0];
+        return itemPath !== current;
+    });
+
     // Função auxiliar para renderizar avatar de forma segura
     const renderAvatar = () => {
         if (!user) return null;
 
-        const avatarIndex = user.profilePhoto || user.patient?.profilePhoto || user.patient?.fotoPerfil || user.patient?.foto_perfil;
+        // Normalize avatar index to a number to avoid runtime or type errors
+        const avatarRaw = user.profilePhoto ?? user.patient?.profilePhoto ?? user.patient?.fotoPerfil ?? user.patient?.foto_perfil;
+        const avatarIndex = typeof avatarRaw === 'number' ? avatarRaw : (typeof avatarRaw === 'string' ? parseInt(avatarRaw, 10) || 0 : 0);
         const avatarUrl = getAvatarUrl(avatarIndex || 0);
 
         if (avatarUrl) {
@@ -263,7 +275,7 @@ export function ModernMenu({
 
                 {/* Menu de navegação para desktop */}
                 <nav className="hidden md:flex items-center space-x-8" role="navigation" aria-label="Navegação principal">
-                    {menuItems.map((item) => (
+                    {filteredMenuItems.map((item) => (
                         <Link
                             key={item.label}
                             href={item.href}
@@ -379,7 +391,7 @@ export function ModernMenu({
 
                                 {/* Navegação com estilo de botões */}
                                 <nav className="flex flex-col space-y-2" aria-label="Links de navegação">
-                                    {menuItems.map((item) => {
+                                    {filteredMenuItems.map((item) => {
                                         // Ícone baseado no label
                                         let ItemIcon = IconHome;
                                         if (item.label === "Home") ItemIcon = IconHome;

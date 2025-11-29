@@ -1,5 +1,4 @@
 import dynamic from 'next/dynamic';
-import { ModernMenu } from "@/components/layout/Header";
 
 const Footer7 = dynamic(() => import("@/components/layout/Footer").then(mod => mod.Footer7));
 
@@ -10,7 +9,7 @@ export default function Termos() {
             <header>
                 <title>Sinout - Termos</title>
             </header>
-            <ModernMenu items={[]} />
+            {/* Cabeçalho fornecido pelo layout global */}
 
             <main className="flex-grow pt-36 pb-16">
                 <div className="max-w-4xl mx-auto px-4">

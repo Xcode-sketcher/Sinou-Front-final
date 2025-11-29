@@ -137,8 +137,8 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
  * - Grid responsivo (1 coluna mobile, 2 tablet, 4 desktop)
  * - Animações de entrada staggered para cada card
  * - Efeitos hover avançados em cada projeto
- * - Botão de call-to-action para ver mais funcionalidades
- * - Design consistente com o restante da landing page
+ * - Botão de chamada para ver mais funcionalidades
+ * - Design consistente com o restante da página inicial
  *
  * @component
  * @example
@@ -205,7 +205,7 @@ export const ViteProjectsGallery = () => {
                     ))}
                 </div>
 
-                {/* Call-to-action para ver mais funcionalidades */}
+                {/* Chamada para ver mais funcionalidades */}
                 <div className="text-center mt-12">
                     <Link href="/features">
                         <button className="px-8 py-3 rounded-full bg-card hover:bg-card/80 border border-border text-foreground font-medium transition-all hover:scale-105 flex items-center gap-2 mx-auto">
