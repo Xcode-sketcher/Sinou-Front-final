@@ -48,10 +48,11 @@ const teamMembers = [
         avatar: "/Eduardo.svg",
         description: "Responsável pela arquitetura, integração com IA e operação dos ambientes de produção.",
         contributions: [
-            "Arquitetura do sistema em Next.js",
+            "Arquitetura do sistema",
             "Implementação do reconhecimento facial e integração com APIs de IA",
             "Pipelines de CI/CD e práticas de observabilidade",
-            "Gestão da infraestrutura e coordenação técnica"
+            "Gestão da infraestrutura e coordenação técnica",
+            "Desenvolvimento de funcionalidades críticas"
         ],
         social: {
             github: "https://github.com/Xcode-sketcher",

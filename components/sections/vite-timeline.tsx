@@ -50,11 +50,11 @@ const TimelineItem = ({ data, index }: { data: TimelineItemData; index: number }
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: index * 0.2 }}
-            className={`flex items-center justify-between w-full mb-12 ${isEven ? "flex-row-reverse" : "flex-row"}`}
+            className={`flex items-center justify-between w-full mb-12 ${isEven ? "sm:flex-row-reverse flex-col-reverse" : "sm:flex-row flex-col"}`}
         >
             {/* Lado do conteúdo */}
-            <div className="w-5/12">
-                <div className="p-6 rounded-2xl bg-card/50 border border-border backdrop-blur-sm hover:border-purple-500/30 transition-colors group">
+            <div className="sm:w-5/12 w-full">
+                <div className="p-6 rounded-2xl bg-card/50 border border-border backdrop-blur-sm hover:border-purple-500/30 transition-colors group overflow-hidden w-full">
                     {/* Cabeçalho com ícone e data */}
                     <div className="flex items-center gap-3 mb-3">
                         <div className={`p-2 rounded-lg bg-gradient-to-br ${data.color} bg-opacity-10`}>
@@ -63,26 +63,26 @@ const TimelineItem = ({ data, index }: { data: TimelineItemData; index: number }
                         <span className="text-sm font-mono text-muted-foreground">{data.date}</span>
                     </div>
                     {/* Título com efeito hover gradiente */}
-                    <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 transition-all">
+                    <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 transition-all break-words">
                         {data.title}
                     </h3>
                     {/* Descrição do valor */}
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    <p className="text-muted-foreground text-sm leading-relaxed whitespace-normal break-words">
                         {data.description}
                     </p>
                 </div>
             </div>
 
             {/* Nó central da linha do tempo */}
-            <div className="w-2/12 flex justify-center relative">
+            <div className="sm:w-2/12 w-full flex sm:justify-center justify-between relative">
                 {/* Círculo indicador com gradiente e sombra */}
                 <div className="w-4 h-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 shadow-[0_0_10px_rgba(168,85,247,0.5)] z-10" />
                 {/* Linha vertical conectando os itens */}
-                <div className="absolute top-4 bottom-[-48px] w-0.5 bg-border" />
+                <div className="absolute sm:top-4 top-8 sm:bottom-[-48px] bottom-0 w-0.5 bg-border" />
             </div>
 
             {/* Lado vazio para balanceamento visual */}
-            <div className="w-5/12" />
+            <div className="sm:w-5/12 w-full" />
         </motion.div>
     );
 };
