@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import type { FormEvent, ChangeEvent } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import AuthLogo from './AuthLogo';
 import { Eye, EyeOff, ArrowLeft, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
@@ -179,8 +179,8 @@ const CardRegister: React.FC = () => {
                 phone: formData.phone,
                 patientName: formData.patientName,
             });
-        } catch (error) {
-            // Silently fail log
+        } catch {
+            // Falha no registro — exibe mensagem genérica ao usuário
             setErrors({ email: 'Falha no cadastro. Tente novamente.' });
         } finally {
             setIsLoading(false);
@@ -215,11 +215,7 @@ const CardRegister: React.FC = () => {
             </button>
 
             <div className="w-full max-w-md bg-card border border-border rounded-2xl p-8 shadow-2xl relative z-10">
-                <div className="flex justify-center mb-8">
-                    <div className="relative w-24 h-24">
-                        <Image src="/Logo.svg" alt="Logo" fill className="object-contain" />
-                    </div>
-                </div>
+                <AuthLogo />
 
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-foreground mb-2">Criar conta</h1>

@@ -102,7 +102,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                             foto_perfil: avatarIndex // Backward compatibility
                         }
                     };
-                } catch (patientError) {
+                } catch {
                     // Falha ao buscar dados do paciente — mantém os dados existentes
                 }
             }
@@ -110,7 +110,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             // Gera uma nova referência de objeto para garantir que o React detecte a alteração
             setUser({ ...userData });
             return true;
-        } catch (error) {
+        } catch {
             setUser(null);
             return false;
         } finally {
@@ -150,7 +150,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             } else {
                 router.push('/login');
             }
-        } catch (e) {
+        } catch {
             router.push('/login');
         }
     };
@@ -161,7 +161,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const logout = async () => {
         try {
             await api.post('/api/auth/logout');
-        } catch (error) {
+        } catch {
+            // Falha ao comunicar logout ao servidor — prossegue com limpeza local
         } finally {
             localStorage.removeItem('authToken');
             setUser(null);

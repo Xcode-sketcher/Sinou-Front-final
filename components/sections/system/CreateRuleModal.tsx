@@ -64,8 +64,8 @@ export function CreateRuleModal({ isOpen, onClose, onRuleCreated }: CreateRuleMo
         try {
             const response = await api.get('/api/emotion-mappings/my-rules');
             setRules(response.data || []);
-        } catch (error) {
-
+        } catch {
+            // Falha ao buscar regras — ignora silenciosamente
         }
     };
 
@@ -79,7 +79,8 @@ export function CreateRuleModal({ isOpen, onClose, onRuleCreated }: CreateRuleMo
         try {
             await api.delete(`/api/emotion-mappings/${id}`);
             fetchRules();
-        } catch (error) {
+        } catch {
+            // Falha ao excluir regra — ignora silenciosamente
         }
     };
 
@@ -131,7 +132,7 @@ export function CreateRuleModal({ isOpen, onClose, onRuleCreated }: CreateRuleMo
                 priority: 1,
                 message: ""
             });
-        } catch (error) {
+        } catch {
             alert("Erro ao salvar regra");
         } finally {
             setLoading(false);
