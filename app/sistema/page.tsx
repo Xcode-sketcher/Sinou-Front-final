@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { SystemDashboard } from "@/components/sections/system/SystemDashboard";
-import { ModernMenu } from "@/components/layout/Header";
 import dynamic from "next/dynamic";
 
 
@@ -39,7 +38,7 @@ export default function SistemaPage() {
             <header>
                 <title>Sinout - Plataforma</title>
             </header>
-            <ModernMenu items={[]} />
+            {/* Cabeçalho fornecido pelo layout global */}
 
             <main className="flex-grow pt-20">
                 <SystemDashboard />

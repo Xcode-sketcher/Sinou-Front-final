@@ -8,12 +8,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/context/AuthContext";
 import api from "@/lib/api";
-import { ModernMenu } from "@/components/layout/Header";
 import { Footer7 as Footer } from "@/components/layout/Footer";
-import { Check, CreditCard, Loader2, User as UserIcon, Shield, Bell, History } from "lucide-react";
+import { Check, CreditCard, Loader2, Shield } from "lucide-react";
 
 
 const AVATAR_SEEDS = [
@@ -33,12 +31,6 @@ const AVATAR_SEEDS = [
   "Coco",
   "Lucky"
 ];
-
-const getAvatarUrl = (index: number) => {
-  if (!index || index < 1 || index > AVATAR_SEEDS.length) return null;
-  const seed = AVATAR_SEEDS[index - 1];
-  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`;
-};
 
 interface UserProfile {
   id: string;
@@ -105,7 +97,7 @@ export default function ProfilePage() {
       } else if (data.plan) {
         setSelectedPlan(data.plan);
       }
-    } catch (error) {
+    } catch {
       // Erro ao buscar perfil — registra para diagnóstico (sem exibir log em produção)
     } finally {
       setLoading(false);
@@ -119,7 +111,8 @@ export default function ProfilePage() {
       // Try to find patient ID from various possible sources
       // The backend often uses _id, so we check for that too
       const patientData = profile?.patient || user?.patient;
-      const patientId = patientData?.id || patientData?._id || profile?.patientId || user?.patientId;
+      const patientIdRaw = patientData?.id || patientData?._id || profile?.patientId || user?.patientId;
+      const patientId = patientIdRaw ? String(patientIdRaw) : undefined;
 
       if (!patientId) {
         // ID do paciente não encontrado — usuário pode não possuir paciente vinculado
@@ -135,7 +128,7 @@ export default function ProfilePage() {
         // Use /api/patients (English) as seen in PatientSelector
         const patientResponse = await api.get(`/api/patients/${patientId}`);
         currentPatientData = patientResponse.data;
-      } catch (fetchError) {
+      } catch {
         // Falha ao buscar dados completos do paciente - prossegue com atualização parcial
       }
 
@@ -156,8 +149,8 @@ export default function ProfilePage() {
           ...prev,
           patient: {
             ...prev.patient,
-            id: patientId,
-            _id: patientId,
+            id: patientId!,
+            _id: patientId!,
             profilePhoto: selectedAvatar,
             fotoPerfil: selectedAvatar // Keep for backward compatibility if needed locally
           }
@@ -165,7 +158,7 @@ export default function ProfilePage() {
       });
 
       alert("Avatar atualizado com sucesso!");
-    } catch (error) {
+    } catch {
       // Erro ao salvar avatar - informa usuário e registra internamente
       alert("Erro ao salvar avatar. Tente novamente.");
     } finally {
@@ -185,7 +178,7 @@ export default function ProfilePage() {
 
       setIsEditing(false);
       alert("Perfil atualizado com sucesso!");
-    } catch (error) {
+    } catch {
       // Erro ao salvar perfil - registra para diagnóstico
       alert("Erro ao salvar perfil.");
     } finally {
@@ -208,7 +201,7 @@ export default function ProfilePage() {
 
       setIsPlanModalOpen(false);
       alert("Plano e informações de pagamento atualizados com sucesso!");
-    } catch (error) {
+    } catch {
       // Erro ao atualizar plano - registra para diagnóstico
       alert("Erro ao atualizar plano.");
     } finally {
@@ -226,7 +219,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <ModernMenu items={[]} />
+      {/* Cabeçalho fornecido pelo layout global */}
 
       <main className="flex-1 container mx-auto px-4 pt-32 pb-12">
         <div className="max-w-4xl mx-auto space-y-8">
@@ -354,7 +347,7 @@ export default function ProfilePage() {
                     </div>
                     <div className="text-right">
                       <span className="block font-bold text-xl">
-                        {selectedPlan === 'premium' ? 'R$ 29,90' : 'R$ 0,00'}
+                        {selectedPlan === 'premium' ? 'R$ 99,99' : 'R$ 0,00'}
                       </span>
                       <span className="text-xs text-muted-foreground">/mês</span>
                     </div>
@@ -409,7 +402,7 @@ export default function ProfilePage() {
                               onClick={() => setSelectedPlan('premium')}
                             >
                               <span className="font-semibold">Premium</span>
-                              <span className="text-sm text-muted-foreground">R$ 29,90/mês</span>
+                              <span className="text-sm text-muted-foreground">R$ 100,00/mês</span>
                             </div>
                           </div>
                         </div>

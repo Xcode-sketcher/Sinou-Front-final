@@ -1,15 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-// Link removed, CTAs stripped from this component
-// CTA buttons intentionally removed per request
+// Link removido, CTAs removidos deste componente conforme solicitação
 import { VitePipelineAnimation } from "./vite-pipeline-animation";
 
 /**
- * Seção hero (principal) da landing page do Sinout
+ * Seção hero (principal) da página inicial do Sinout
  *
  * Componente que apresenta a mensagem principal da empresa com título impactante,
- * descrição explicativa e call-to-actions. Inclui animações de entrada sequenciais
+ * descrição explicativa e chamadas para ação (CTAs). Inclui animações de entrada sequenciais
  * e um componente de animação visual que representa o pipeline de desenvolvimento.
  *
  * Estrutura da seção:
@@ -59,10 +58,10 @@ export function ViteHero() {
                             transition={{ duration: 0.5, delay: 0.1 }}
                             className="text-lg md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto md:mx-0"
                         >
-                           Profissionais dedicados a desenvolver soluções que ampliam a autonomia e dão mais liberdade para se expressar.
+                            Profissionais dedicados a desenvolver soluções que ampliam a autonomia e dão mais liberdade para se expressar.
                         </motion.p>
 
-                        {/* (CTA buttons intentionally removed) */}
+                        {/* (CTAs removidos conforme solicitação) */}
                     </div>
 
                     {/* Seção de animação visual - ocupa metade da largura no desktop */}

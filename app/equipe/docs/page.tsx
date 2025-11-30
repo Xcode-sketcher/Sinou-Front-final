@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Github, Linkedin } from "lucide-react";
-import { ModernMenu } from "@/components/layout/Header";
 import { MethodologyModal } from "@/components/modals/MethodologyModal";
 
 const teamMembers = [
@@ -116,7 +115,7 @@ export default function TeamDocsPage() {
 
     return (
         <div className="min-h-screen bg-background text-foreground">
-            <ModernMenu items={[]} />
+            {/* Cabeçalho fornecido pelo layout global */}
 
             <main className="container mx-auto px-4 py-24">
                 <div className="mb-8">

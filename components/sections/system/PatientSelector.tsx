@@ -56,7 +56,8 @@ export function PatientSelector({ selectedPatient, onSelect }: PatientSelectorPr
                     ];
                     setPatients(mockPatients);
                 }
-            } catch (error) {
+            } catch {
+                // Falha ao buscar pacientes — ignora silenciosamente
             } finally {
                 setLoading(false);
             }

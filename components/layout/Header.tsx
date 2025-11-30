@@ -133,7 +133,7 @@ export function ModernMenu({
     const pathname = usePathname();
     const { user, logout } = useAuth();
 
-    // Determine which social items to display
+    // Determina quais itens de redes sociais devem ser exibidos
     const displaySocialItems = (socialItems && socialItems.length > 0 && socialItems.some(item => item.label !== ""))
         ? socialItems
         : DEFAULT_SOCIAL_ITEMS;
@@ -221,11 +221,23 @@ export function ModernMenu({
 
     const menuItems = getMenuItems();
 
-    // Função auxiliar para renderizar avatar de forma segura
+    // Filtra o item do menu que aponta para a página atual
+    const filteredMenuItems = menuItems.filter((item) => {
+        // preserva itens com âncora — são links para seções
+        if (item.href.includes('#')) return true;
+        // Normaliza os paths dos hrefs (remove query/hash)
+        const itemPath = item.href.split('?')[0].split('#')[0];
+        const current = (pathname || '/').split('?')[0].split('#')[0];
+        return itemPath !== current;
+    });
+
+    // Função utilitária para renderizar o avatar do usuário de forma segura
     const renderAvatar = () => {
         if (!user) return null;
 
-        const avatarIndex = user.profilePhoto || user.patient?.profilePhoto || user.patient?.fotoPerfil || user.patient?.foto_perfil;
+        // Normaliza o índice do avatar para número, evitando erros de tempo de execução ou de tipagem
+        const avatarRaw = user.profilePhoto ?? user.patient?.profilePhoto ?? user.patient?.fotoPerfil ?? user.patient?.foto_perfil;
+        const avatarIndex = typeof avatarRaw === 'number' ? avatarRaw : (typeof avatarRaw === 'string' ? parseInt(avatarRaw, 10) || 0 : 0);
         const avatarUrl = getAvatarUrl(avatarIndex || 0);
 
         if (avatarUrl) {
@@ -263,7 +275,7 @@ export function ModernMenu({
 
                 {/* Menu de navegação para desktop */}
                 <nav className="hidden md:flex items-center space-x-8" role="navigation" aria-label="Navegação principal">
-                    {menuItems.map((item) => (
+                    {filteredMenuItems.map((item) => (
                         <Link
                             key={item.label}
                             href={item.href}
@@ -311,6 +323,14 @@ export function ModernMenu({
                                     <span className="text-xs text-muted-foreground">{user.email}</span>
                                 </div>
                             </Link>
+                            {/* Botão de acesso rápido ao sistema — exibido somente quando o usuário está logado */}
+                            <Link href="/sistema" aria-label="Acessar o Sistema" className="ml-0">
+                                {/* Ajuste visual para combinar com o botão do menu e manter tamanho discreto */}
+                                <Button variant="default" size="sm" className="hidden md:inline-flex items-center gap-2">
+                                    <IconMonitor className="h-4 w-4" />
+                                    <span className="text-sm">Acessar Sistema</span>
+                                </Button>
+                            </Link>
                             <Button variant="ghost" size="icon" onClick={logout} title="Sair">
                                 <LogOut className="h-5 w-5" />
                             </Button>
@@ -320,7 +340,7 @@ export function ModernMenu({
                             <Link href="/login">
                                 <Button variant="ghost">Entrar</Button>
                             </Link>
-                            <Link href="/cadastro">
+                            <Link href="/register">
                                 <Button>Cadastrar</Button>
                             </Link>
                         </div>
@@ -379,8 +399,8 @@ export function ModernMenu({
 
                                 {/* Navegação com estilo de botões */}
                                 <nav className="flex flex-col space-y-2" aria-label="Links de navegação">
-                                    {menuItems.map((item) => {
-                                        // Ícone baseado no label
+                                    {filteredMenuItems.map((item) => {
+                                        // Seleciona o ícone com base no rótulo (label)
                                         let ItemIcon = IconHome;
                                         if (item.label === "Home") ItemIcon = IconHome;
                                         else if (item.label === "Sobre") ItemIcon = IconInfo;

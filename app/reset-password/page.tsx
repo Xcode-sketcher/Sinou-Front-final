@@ -1,5 +1,4 @@
 import CardResetPassword from "@/components/forms/auth/CardResetPassword";
-import CustomCursor from "@/components/ui/pointer";
 
 /**
  * Página de Solicitação de Reset de Senha

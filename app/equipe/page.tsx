@@ -1,7 +1,6 @@
 "use client";
 
 import dynamic from 'next/dynamic';
-import { ModernMenu } from "@/components/layout/Header";
 import { motion } from "framer-motion";
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -11,7 +10,7 @@ import { FrameworkLogos } from "@/components/sections/framework-logos";
 import { CodeComparison } from "@/components/sections/code-comparison";
 import { TechTeam } from "@/components/sections/tech-team";
 import { VLibras } from '@/components/Vlibras';
-// Removed local CTAs (buttons) per request — content simplified
+// CTAs locais removidos conforme solicitado — conteúdo simplificado
 
 const Footer7 = dynamic(() => import("@/components/layout/Footer").then(mod => mod.Footer7));
 
@@ -61,7 +60,7 @@ const Footer7 = dynamic(() => import("@/components/layout/Footer").then(mod => m
  * @returns {JSX.Element} Página completa da equipe com todas as seções
  */
 export default function TeamPage() {
-    // Configuração dos links sociais para o menu
+    // Configuração dos links sociais para o menu (se necessário)
 
 
 
@@ -70,8 +69,7 @@ export default function TeamPage() {
             <header>
                 <title>Sinout - Equipe</title>
             </header>
-            {/* Menu de navegação */}
-            <ModernMenu items={[]} />
+            {/* Cabeçalho fornecido pelo layout global */}
 
             <main className="flex-grow">
                 {/* Hero Section com Pipeline Animation */}
@@ -80,7 +78,7 @@ export default function TeamPage() {
                 {/* Framework Logos Marquee */}
                 <FrameworkLogos />
 
-                {/* Top info area (heading + description) — restored without CTAs */}
+                {/* Área superior de informações (título + descrição) — restaurada sem CTAs */}
                 <section className="py-8 bg-muted/0">
                     <div className="container mx-auto px-4">
                         <motion.div
@@ -97,7 +95,7 @@ export default function TeamPage() {
                                 Descubra os profissionais por trás da Sinout: suas funções, contribuições e a metodologia que usamos para entregar valor.
                             </p>
 
-                            {/* CTA buttons: link to docs page */}
+                            {/* Botões CTA: link para a documentação da equipe */}
                             <div className="flex items-center justify-center gap-3 mt-4">
                                 <Button asChild>
                                     <Link href="/equipe/docs">Ver Documentação</Link>
@@ -108,7 +106,7 @@ export default function TeamPage() {
                     </div>
                 </section>
 
-                {/* (previously here) */}
+                {/* (anteriormente presente aqui) */}
 
                 {/* Features Grid */}
                 <ViteFeatures />
@@ -119,10 +117,10 @@ export default function TeamPage() {
                 {/* Team Section */}
                 <TechTeam />
 
-                {/* bottom CTA removed — moved to top hero area per user request */}
+                {/* CTA inferior removido — movido para a área hero superior conforme solicitado */}
             </main>
 
-            {/* Page-level methodology modal removed (modal still available elsewhere) */}
+            {/* Modal de metodologia em nível de página removido (o modal permanece disponível em outro local) */}
 
             {/* Rodapé */}
             <Footer7 className="mt-auto border-t border-border bg-muted/30" />

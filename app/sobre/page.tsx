@@ -11,15 +11,14 @@
  * - Seção hero com introdução da história
  * - Timeline interativa da jornada de desenvolvimento
  * - Apresentação dos valores fundamentais
- * - Call-to-action para engajamento do usuário
+ * - Chamada para ação (call-to-action) para engajamento do usuário
  */
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ModernMenu } from "@/components/layout/Header";
 import { OrbitalAnimation } from "@/components/sections/sobre/OrbitalAnimation";
 
-// Custom Icons to replace Lucide
+// Ícones personalizados para substituir o conjunto Lucide (estética consistente)
 const CustomIcons = {
     Heart: (props: React.SVGProps<SVGSVGElement>) => (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -109,7 +108,7 @@ const JourneyStep = ({
      * @returns Classe CSS do gradiente para a linha de conexão
      */
     const getConnectionColor = (colorClass: string) => {
-        // Simplified to Purple/Orange theme
+        // Simplificado para o tema Roxo/Laranja
         if (colorClass.includes('orange')) return 'from-orange-500 to-purple-500';
         return 'from-purple-500 to-orange-500';
     };
@@ -150,38 +149,6 @@ const JourneyStep = ({
 };
 
 /**
- * Props do componente FloatingElement
- */
-interface FloatingElementProps {
-    /** Elementos filhos a serem animados */
-    children: React.ReactNode;
-    /** Atraso da animação em segundos */
-    delay?: number;
-}
-
-/**
- * Componente FloatingElement
- *
- * Aplica animação de flutuação suave aos elementos filhos.
- * Utilizado para criar movimento sutil em ícones e elementos decorativos.
- */
-const FloatingElement = ({ children, delay = 0 }: FloatingElementProps) => (
-    <motion.div
-        animate={{
-            y: [0, -10, 0],
-        }}
-        transition={{
-            duration: 3,
-            repeat: Infinity,
-            delay,
-            ease: "easeInOut"
-        }}
-    >
-        {children}
-    </motion.div>
-);
-
-/**
  * Componente principal da página Sobre
  *
  * Renderiza a página completa "Sobre nós" com todas as seções:
@@ -189,16 +156,15 @@ const FloatingElement = ({ children, delay = 0 }: FloatingElementProps) => (
  * - Seção hero com introdução
  * - Timeline da jornada
  * - Valores da empresa
- * - Call-to-action
+ * - Chamada para ação (call-to-action)
  */
 export default function SobrePage() {
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-background pt-32">
             <header>
                 <title>Sobre Sinout</title>
             </header>
-            {/* Menu de navegação moderno */}
-            <ModernMenu items={[]} />
+            {/* Cabeçalho fornecido pelo layout global */}
 
             {/* Seção Hero - Introdução da história */}
             <section className="relative py-20 overflow-hidden">

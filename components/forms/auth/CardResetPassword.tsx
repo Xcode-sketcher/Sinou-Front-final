@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 import type { FormEvent, ChangeEvent } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import AuthLogo from './AuthLogo';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 
@@ -73,11 +73,7 @@ const CardResetPassword: React.FC = () => {
             </button>
 
             <div className="w-full max-w-md bg-card border border-border rounded-2xl p-8 shadow-2xl relative z-10">
-                <div className="flex justify-center mb-8">
-                    <div className="relative w-16 h-16">
-                        <Image src="/Logo.svg" alt="Logo" fill className="object-contain" />
-                    </div>
-                </div>
+                <AuthLogo />
 
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-foreground mb-2">Redefinir senha</h1>

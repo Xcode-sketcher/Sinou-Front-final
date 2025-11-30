@@ -24,26 +24,12 @@ const videoConstraints = {
     facingMode: "user"
 };
 
-// Helper function to get suggested messages based on dominant emotion
-const getSuggestedMessage = (emotion: string): string => {
-    const messages: Record<string, string> = {
-        happy: "Paciente parece estar bem e animado! Continue com atividades positivas.",
-        sad: "Paciente aparenta estar triste. Considere oferecer conforto e apoio emocional.",
-        angry: "Paciente mostra sinais de irritação. Mantenha calma e dê espaço se necessário.",
-        surprise: "Paciente parece surpreso. Observe o contexto para entender melhor a reação.",
-        fear: "Paciente demonstra medo ou ansiedade. Ofereça segurança e tranquilidade.",
-        disgust: "Paciente mostra desgosto. Identifique e remova possíveis causas de desconforto.",
-        neutral: "Expressão neutra detectada. Continue monitorando para mudanças emocionais."
-    };
-    return messages[emotion] || "Análise emocional concluída. Continue monitorando.";
-};
-
 /**
- * Card da Câmera
+ * CameraCard
  *
- * Componente responsável pela captura de vídeo e análise facial.
- * Utiliza a webcam para capturar imagens e envia para a API de processamento.
- * Suporta captura manual e automática.
+ * Componente responsável pela captura de vídeo e análise facial do paciente.
+ * Utiliza a webcam para capturar imagens, encaminha-as ao serviço de processamento
+ * e registra os resultados no histórico. Suporta captura manual e automática.
  */
 export function CameraCard({
     selectedPatient,
@@ -60,9 +46,9 @@ export function CameraCard({
     const [models, setModels] = useState<{ nome: string; velocidade: string }[]>([]);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-    // Load available models (using mock data since API endpoint doesn't exist)
+    // Carrega os modelos disponíveis (dados simulados; endpoint real pode não existir)
     useEffect(() => {
-        // Set default models for demonstration
+        // Define modelos padrão para demonstração
         setModels([
             { nome: "Facenet", velocidade: "Normal" },
             { nome: "VGG-Face", velocidade: "Lento" },
@@ -82,11 +68,7 @@ export function CameraCard({
         setIsCapturing(true);
 
         try {
-            // Convert base64 to blob (keep for now, but also send base64)
-            const res = await fetch(imageSrc);
-            const blob = await res.blob();
-
-            // Send as JSON to base64 endpoint
+            // Prepara payload JSON para envio ao endpoint que recebe base64
             const base64Data = imageSrc.split(',')[1];
             const payload = {
                 imageBase64: base64Data,
@@ -94,24 +76,24 @@ export function CameraCard({
                 detector: "opencv"
             };
 
-            // 1. Analyze Face (Real API Call) - using base64 endpoint
+            // 1. Analisar o rosto (chamada ao backend) via endpoint de base64
             const analyzeResponse = await processingApi.post('/api/FacialAnalysis/analyze-base64', payload);
 
             const data = analyzeResponse.data;
 
-            // Handle different response structures (DeepFace sometimes returns array or object)
+            // Normaliza possíveis estruturas de resposta (array ou objeto variam conforme backend)
             const analysis = Array.isArray(data) ? data[0] : (data.analise || data);
 
-            // Extract data with fallbacks - IMPORTANTE: Backend C# retorna em português!
+            // Extrai dados com alternativas; OBS: o backend pode retornar campos em português
             const emotions = analysis.emocoes || analysis.emotion || analysis.emotions || {};
             const dominantEmotion = analysis.emocao || analysis.emocao_dominante || analysis.dominant_emotion || "neutral";
             const age = analysis.idade ? String(analysis.idade) : (analysis.age ? String(analysis.age) : String(selectedPatient.idade || "0"));
             const gender = analysis.genero || analysis.gender || "unknown";
 
-            // Ensure emotions is not empty - add fallback
+            // Garante que o objeto de emoções não esteja vazio; aplica fallback quando necessário
             const safeEmotions = Object.keys(emotions).length > 0 ? emotions : { neutral: 1.0 };
 
-            // 2. Save to History using v1.json schema
+            // 2. Registrar resultado no histórico conforme esquema v1.json
             const historyPayload = {
                 cuidadorId: "0", // Will be updated with actual user ID
                 patientId: String(selectedPatient._id),
@@ -122,17 +104,17 @@ export function CameraCard({
                 timestamp: new Date().toISOString()
             };
 
-            // Get current user ID
+            // Obtém o ID do usuário logado (cuidador) para associar ao histórico
             try {
                 const meResponse = await api.get('/api/auth/me');
-                // Handle various auth response formats
+                // Trata diferentes formatos de resposta do endpoint de autenticação
                 const userId = meResponse.data.id || meResponse.data.userId || meResponse.data._id || meResponse.data.sub;
                 if (userId) historyPayload.cuidadorId = String(userId);
-            } catch (e) {
-                // Silently fail
+            } catch {
+                // Falha ao recuperar ID do usuário — não interrompe o fluxo de execução
             }
 
-            let suggestedMessage: string | undefined = undefined; // Não usar mensagem padrão
+            let suggestedMessage: string | undefined = undefined; // Não definir mensagem padrão por padrão
 
             try {
                 const historyResponse = await api.post('/api/history/cuidador-emotion', historyPayload);
@@ -140,8 +122,8 @@ export function CameraCard({
                 if (historyResponse.data?.suggestedMessage) {
                     suggestedMessage = historyResponse.data.suggestedMessage;
                 }
-            } catch (error) {
-                // Silently fail
+            } catch {
+                // Falha ao gravar histórico — não interrompe o fluxo de execução
             }
 
             const result: AnalysisResult = {
@@ -153,8 +135,8 @@ export function CameraCard({
 
             onAnalysisComplete(result);
 
-        } catch (error) {
-            // Silently fail
+        } catch {
+            // Falha ao realizar a análise — erro é ignorado para não interromper a aplicação
         } finally {
             setIsCapturing(false);
         }
@@ -341,12 +323,12 @@ export function CameraCard({
                     >
                         {models.map(model => (
                             <option key={model.nome} value={model.nome}>
-                                {model.nome} ({model.velocidade})
+                                {model.nome}
                             </option>
                         ))}
                     </select>
                     <p className="text-[10px] text-muted-foreground">
-                        Recomendado: Facenet para melhor precisão
+                        Recomendado: Facenet para melhor balanço entre precisão e velocidade
                     </p>
                 </div>
             </div>

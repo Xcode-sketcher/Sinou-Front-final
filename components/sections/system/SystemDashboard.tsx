@@ -94,10 +94,15 @@ export function SystemDashboard() {
                     patientsList = data.patients;
                 }
 
-                patientsList = patientsList.map(patient => ({
-                    ...patient,
-                    _id: String(patient._id)
-                }));
+                patientsList = patientsList.map(patient => {
+                    const p = patient as unknown as Record<string, unknown>;
+                    return {
+                        ...patient,
+                        _id: String(patient._id || p.id || ''),
+                        // Garante que o nome seja mapeado corretamente de diferentes campos da API
+                        nome: String(patient.nome || p.name || p.patientName || 'Paciente')
+                    };
+                });
 
                 if (patientsList.length === 0) {
                     const mockPatient: Patient = {
@@ -118,7 +123,8 @@ export function SystemDashboard() {
                 if (patientsList.length > 0) {
                     setSelectedPatient(patientsList[0]);
                 }
-            } catch (error) {
+            } catch {
+                // Falha ao buscar pacientes — utiliza fallback
                 if (user) {
                     const fallbackPatient: Patient = {
                         _id: "1",
@@ -187,7 +193,7 @@ export function SystemDashboard() {
                         <p className="text-muted-foreground">
                             Quando o rosto fala, o mundo entende
                         </p>
-                        {user?.patientName && !loadingPatient && selectedPatient && (
+                        {!loadingPatient && selectedPatient && (
                             <div className="flex items-center gap-4 mt-3">
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                     <span className="font-medium text-primary">Paciente: {selectedPatient.nome}</span>

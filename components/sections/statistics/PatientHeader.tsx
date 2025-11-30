@@ -9,7 +9,7 @@
  * Funcionalidades principais:
  * - Avatar circular com foto do paciente ou inicial do nome
  * - Indicador visual de status (ativo/inativo) com cores diferenciadas
- * - Informações completas: nome, data de cadastro, ID do cuidador
+ * - Informações completas: nome, data de cadastro, nome do cuidador
  * - Campo opcional para informações adicionais do paciente
  * - Design responsivo com layout adaptável (vertical mobile, horizontal desktop)
  * - Efeitos visuais com gradientes e sombras
@@ -22,6 +22,7 @@ import { User, Calendar, Info } from "lucide-react";
 import { Patient } from "./types";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
+import { useAuth } from "@/context/AuthContext";
 
 /**
  * Props do componente PatientHeader
@@ -37,6 +38,11 @@ interface PatientHeaderProps {
  * com foto, status e dados cadastrais organizados visualmente
  */
 export function PatientHeader({ patient }: PatientHeaderProps) {
+    const { user } = useAuth();
+
+    // Nome do cuidador: usa o nome do usuário logado ou o campo criado_por do paciente
+    const caregiverName = user?.name || patient.criado_por || "Cuidador";
+
     return (
         <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -83,7 +89,7 @@ export function PatientHeader({ patient }: PatientHeaderProps) {
                             {/* ID do cuidador responsável */}
                             <div className="flex items-center gap-1">
                                 <User className="w-4 h-4" />
-                                <span>Cuidador ID: {patient.id_cuidador}</span>
+                                <span>Cuidador: {caregiverName}</span>
                             </div>
                             {/* Informações adicionais (se existirem) */}
                             {patient.informacoes_adicionais && (

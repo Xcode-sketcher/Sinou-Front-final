@@ -3,8 +3,8 @@ import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import type { FormEvent, ChangeEvent } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { Eye, EyeOff, ArrowLeft, Loader2, CheckCircle2, XCircle } from 'lucide-react';
+import AuthLogo from './AuthLogo';
+import { Eye, EyeOff, ArrowLeft, Loader2 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 
@@ -45,7 +45,6 @@ const CardLogin: React.FC = () => {
     const [errors, setErrors] = useState<FormErrors>({});
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -64,12 +63,6 @@ const CardLogin: React.FC = () => {
         };
     };
 
-    const isPasswordValid = (validation: PasswordValidation): boolean => {
-        return Object.values(validation).every(Boolean);
-    };
-
-    const passwordValidation = validatePasswordStrength(formData.password);
-
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -82,17 +75,6 @@ const CardLogin: React.FC = () => {
                 ...prev,
                 [name]: undefined,
             }));
-        }
-    };
-
-    const handlePasswordFocus = () => {
-        setShowPasswordRequirements(true);
-    };
-
-    const handlePasswordBlur = () => {
-        // Mantém visível se houver erro ou se a senha não estiver vazia
-        if (!formData.password) {
-            setShowPasswordRequirements(false);
         }
     };
 
@@ -129,7 +111,6 @@ const CardLogin: React.FC = () => {
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
-            setShowPasswordRequirements(true);
             if (newErrors.email) {
                 emailRef.current?.focus();
             } else if (newErrors.password) {
@@ -142,24 +123,13 @@ const CardLogin: React.FC = () => {
 
         try {
             await login(formData);
-        } catch (error) {
+        } catch {
             // Registra falha de autenticação e mantém mensagem genérica para o usuário
             setErrors({ email: 'Falha no login. Verifique suas credenciais.' });
         } finally {
             setIsLoading(false);
         }
     };
-
-    const RequirementItem = ({ met, text }: { met: boolean; text: string }) => (
-        <div className={`flex items-center gap-2 text-xs transition-colors ${met ? 'text-green-400' : 'text-muted-foreground'}`}>
-            {met ? (
-                <CheckCircle2 className="w-3.5 h-3.5" />
-            ) : (
-                <XCircle className="w-3.5 h-3.5" />
-            )}
-            <span>{text}</span>
-        </div>
-    );
 
     return (
         <div className="min-h-screen flex items-center justify-center p-6 bg-background relative overflow-hidden">
@@ -179,16 +149,7 @@ const CardLogin: React.FC = () => {
 
             <div className="w-full max-w-md bg-card border border-border rounded-2xl p-8 shadow-2xl relative z-10">
                 {/* Logo */}
-                <div className="flex justify-center">
-                    <div className="relative w-56 h-56">
-                        <Image
-                            src="/Logo.svg"
-                            alt="Logo"
-                            fill
-                            className="object-contain"
-                        />
-                    </div>
-                </div>
+                <AuthLogo />
 
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-foreground mb-2">Login</h1>
@@ -228,8 +189,6 @@ const CardLogin: React.FC = () => {
                                 type={showPassword ? 'text' : 'password'}
                                 value={formData.password}
                                 onChange={handleInputChange}
-                                onFocus={handlePasswordFocus}
-                                onBlur={handlePasswordBlur}
                                 placeholder="••••••••"
                                 className={`w-full px-4 py-3 rounded-xl bg-background border ${errors.password ? 'border-red-500/50 focus:border-red-500' : 'border-border focus:border-purple-500'} text-foreground placeholder-muted-foreground outline-none transition-all pr-12`}
                                 aria-invalid={!!errors.password}

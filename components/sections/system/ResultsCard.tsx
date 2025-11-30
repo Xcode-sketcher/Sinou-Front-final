@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { AnalysisResult } from "./SystemDashboard";
-import { MessageSquare, AlertCircle, CheckCircle2 } from "lucide-react";
+import { MessageSquare, CheckCircle2 } from "lucide-react";
 
 /**
  * Propriedades do componente ResultsCard.
@@ -20,16 +20,6 @@ const emotionTranslations: Record<string, string> = {
     fear: "Medo",
     disgust: "Desgosto",
     neutral: "Neutro",
-};
-
-const emotionColors: Record<string, string> = {
-    happy: "text-green-500",
-    sad: "text-blue-500",
-    angry: "text-red-500",
-    surprise: "text-yellow-500",
-    fear: "text-purple-500",
-    disgust: "text-orange-500",
-    neutral: "text-gray-500",
 };
 
 /**
