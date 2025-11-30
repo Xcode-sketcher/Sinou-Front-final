@@ -149,38 +149,6 @@ const JourneyStep = ({
 };
 
 /**
- * Props do componente FloatingElement
- */
-interface FloatingElementProps {
-    /** Elementos filhos a serem animados */
-    children: React.ReactNode;
-    /** Atraso da animação em segundos */
-    delay?: number;
-}
-
-/**
- * Componente FloatingElement
- *
- * Aplica animação de flutuação suave aos elementos filhos.
- * Utilizado para criar movimento sutil em ícones e elementos decorativos.
- */
-const FloatingElement = ({ children, delay = 0 }: FloatingElementProps) => (
-    <motion.div
-        animate={{
-            y: [0, -10, 0],
-        }}
-        transition={{
-            duration: 3,
-            repeat: Infinity,
-            delay,
-            ease: "easeInOut"
-        }}
-    >
-        {children}
-    </motion.div>
-);
-
-/**
  * Componente principal da página Sobre
  *
  * Renderiza a página completa "Sobre nós" com todas as seções:
