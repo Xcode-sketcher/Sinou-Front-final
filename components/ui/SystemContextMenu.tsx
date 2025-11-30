@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Camera, StopCircle, Clock, RefreshCw, ArrowUp, Moon, Sun, Share2, Settings, HelpCircle, Info, CreditCard, FileText } from "lucide-react";
+import { Camera, StopCircle, Clock, RefreshCw, ArrowUp, Moon, Sun, Share2, HelpCircle, Info, CreditCard, FileText } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 

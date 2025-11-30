@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Minus, Sparkles, MessageCircle, Settings, Edit3, Zap, Smile } from "lucide-react";
+import { Plus, Minus, Sparkles, Settings, Edit3, Zap, Smile } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -172,18 +172,10 @@ export default function AjudaPage() {
         {/* Cabeçalho fornecido pela página que importa o `ModernMenu`; evite renderizar o cabeçalho do site neste componente. */}
 
         <main className="container mx-auto px-4 pt-32 pb-20 max-w-4xl relative z-10">
+          {/* Título para leitores de tela, mantemos sem duplicar visualmente */}
+          <h1 className="sr-only">Perguntas Frequentes</h1>
 
-          <div className="text-center mb-14 space-y-4">
-            <div className="inline-block p-4 bg-purple-100 dark:bg-purple-900/30 rounded-2xl mb-2 shadow-inner floating">
-              <MessageCircle className="w-10 h-10 text-purple-600 dark:text-purple-400" />
-            </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 pb-2 leading-tight">
-              Perguntas Frequentes
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Descubra como o Sinout pode transformar sua comunicação
-            </p>
-          </div>
+          {/* Cabeçalho do site é fornecido pelo layout global; removendo título duplicado para evitar visual duplicado */}
 
           <div className="space-y-4">
             {faqs.map((faq, index) => (
