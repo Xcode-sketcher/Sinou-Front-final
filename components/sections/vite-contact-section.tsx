@@ -128,7 +128,7 @@ export const ViteContactSection = () => {
                                 </div>
                                 <div>
                                     <p className="text-foreground font-medium">Telefone</p>
-                                    <p className="text-muted-foreground">(11) 9999-9999</p>
+                                    <p className="text-muted-foreground">(11) 96478-3902</p>
                                 </div>
                             </div>
 
